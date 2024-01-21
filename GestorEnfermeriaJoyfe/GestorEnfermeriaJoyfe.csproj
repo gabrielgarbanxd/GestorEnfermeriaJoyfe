@@ -7,4 +7,17 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="Infraestructure\" />
+    <Folder Include="Application\" />
+    <Folder Include="Adapters\" />
+    <Folder Include="UI\Assets\Images\" />
+    <Folder Include="UI\Assets\Fonts\" />
+    <Folder Include="UI\Components\" />
+    <Folder Include="UI\ViewModels\" />
+    <Folder Include="UI\Views\" />
+    <Folder Include="UI\Styles\" />
+  </ItemGroup>
+
 </Project>
