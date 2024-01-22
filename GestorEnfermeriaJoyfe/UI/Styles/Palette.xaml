@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- *** General Colors *** -->
+    <SolidColorBrush x:Key="color1" Color="#CAF0F8"/>
+    <SolidColorBrush x:Key="color2" Color="#90E0EF"/>
+    <SolidColorBrush x:Key="color3" Color="#48CAE4"/>
+    <SolidColorBrush x:Key="color4" Color="#00B4D8"/>
+    <SolidColorBrush x:Key="color5" Color="#0096C7"/>
+    <SolidColorBrush x:Key="color6" Color="#0077B6"/>
+    <SolidColorBrush x:Key="color7" Color="#015BA0"/>
+    <SolidColorBrush x:Key="color8" Color="#024D95"/>
+    <SolidColorBrush x:Key="color8.5" Color="#023C73"/>
+    <SolidColorBrush x:Key="color9" Color="#012A50"/>
+    <SolidColorBrush x:Key="red" Color="#F71735"/>
+
+    <SolidColorBrush x:Key="white" Color="#ffffff"/>
+
+    <SolidColorBrush x:Key="temp1" Color="#f6f8fa"/>
+    <SolidColorBrush x:Key="temp2" Color="#E0F4F9"/>
+    <SolidColorBrush x:Key="temptable1" Color="#f9fcfe"/>
+    <SolidColorBrush x:Key="temptHover" Color="#ADE8F4"/>
+
+    <SolidColorBrush x:Key="tempControlBtn" Color="#E3E6EB"/>
+
+    <Color x:Key="color11">#CAF0F8</Color>
+    <Color x:Key="color12">#90E0EF</Color>
+    <Color x:Key="color13">#48CAE4</Color>
+    <Color x:Key="color14">#00B4D8</Color>
+    <Color x:Key="color15">#0096C7</Color>
+    <Color x:Key="color16">#0077B6</Color>
+    <Color x:Key="color17">#015BA0</Color>
+    <Color x:Key="color18">#024D95</Color>
+    <Color x:Key="color18.5">#023C73</Color>
+    <Color x:Key="color19">#012A50</Color>
+
+    
+    <Color x:Key="temp">#f6f8fa</Color>
+    <Color x:Key="temp22">#E0F4F9</Color>
+    <Color x:Key="tempTable">#f9fcfe</Color>
+    <Color x:Key="tempHover">#ADE8F4</Color>
+
+    <!-- *** Background Colors *** -->
+    <Color x:Key="backgroudColor1">#4AA1D7</Color>
+    <Color x:Key="backgroudColor2">#001F4D</Color>
+    <Color x:Key="backgroudColor3">#8FC0E1</Color>
+
+    <!-- *** General Text *** -->
+    <SolidColorBrush x:Key="text">#000B14</SolidColorBrush>
+
+
+
+</ResourceDictionary>

@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="GestorEnfermeriaJoyfe.UI.Components.FormGroup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <StackPanel Margin="0,0,0,10">
+        
+        <Label Content="{Binding LabelText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat"
+               Padding="0,0,0,4"/>
+
+        <Border CornerRadius="5" 
+                Padding="5"
+                BorderThickness="1">
+
+            <TextBox x:Name="txtNombre"
+                     Text="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                     FontSize="13"
+                     FontWeight="Medium"
+                     FontFamily="Montserrat"                            
+                     Foreground="{StaticResource color9}"
+                     CaretBrush="LightGray"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0"
+                     Height="20"
+                     VerticalContentAlignment="Center"
+                     Background="Transparent"/>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="DarkGray"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource color4}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource color4}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            
+        </Border>
+
+    </StackPanel>
+</UserControl>

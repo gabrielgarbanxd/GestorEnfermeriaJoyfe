@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿    <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,16 +8,48 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
-    <Folder Include="Infraestructure\" />
+    <None Remove="UI\Assets\Images\estadisticas1.jfif" />
+    <None Remove="UI\Assets\Images\estadisticas2.jfif" />
+    <None Remove="UI\Assets\Images\imagen_background.jpg" />
+    <None Remove="UI\Assets\Images\key-icon.png" />
+    <None Remove="UI\Assets\Images\OIG__5_-removebg-preview.png" />
+    <None Remove="UI\Assets\Images\OIG__6_-removebg-preview.png" />
+    <None Remove="UI\Assets\Images\user-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="UI\Assets\Images\estadisticas1.jfif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Assets\Images\estadisticas2.jfif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Assets\Images\imagen_background.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Assets\Images\key-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Assets\Images\OIG__5_-removebg-preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Assets\Images\OIG__6_-removebg-preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Assets\Images\user-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Application\" />
     <Folder Include="Adapters\" />
-    <Folder Include="UI\Assets\Images\" />
     <Folder Include="UI\Assets\Fonts\" />
-    <Folder Include="UI\Components\" />
-    <Folder Include="UI\ViewModels\" />
-    <Folder Include="UI\Views\" />
-    <Folder Include="UI\Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+    <PackageReference Include="MySql.Data" Version="8.2.0" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,170 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp">
+                    
+
+    <!-- //=====>> BUTTON MENU LEFT <<=====// -->
+    <Style x:Key="menuButton" TargetType="RadioButton">
+        
+        <!-- *** Normal *** -->
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource text}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderThickness="4,0,0,0"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            
+            <!-- *** Hover *** -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource temptHover}"/>
+                <Setter Property="Foreground" Value="{StaticResource text}"/>
+                <Setter Property="BorderBrush" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+            
+            <!-- *** Clicked *** -->
+            <Trigger Property="IsChecked" Value="True">
+                <!--<Setter Property="Background" Value="{StaticResource color6}"/>-->
+                <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+                <Setter Property="BorderBrush" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+
+        </Style.Triggers>
+
+    </Style>
+
+    <!-- //=====>> ICON MENU LEFT <<=====// -->
+    <Style x:Key="menuButtonIcon" TargetType="fIcons:IconImage">
+        <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+        <Setter Property="Width" Value="22"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Margin" Value="35,0,20,0"/>
+    </Style>
+
+    <!-- //=====>> TEXT MENU LEFT <<=====// -->
+    <Style x:Key="menuButtonText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="13.5"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+
+
+    <!-- //=====>> HEADER WINDOW BUTTON <<=====// -->
+    <Style x:Key="controlButton" TargetType="Button">
+        
+        <!-- *** Normal *** -->
+        <Setter Property="Width" Value="35"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource text}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <Style.Triggers>
+            
+            <!-- *** Hover *** -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+                <Setter Property="Foreground" Value="{StaticResource text}"/>
+            </Trigger>
+            
+        </Style.Triggers>
+        
+    </Style>
+
+    <!-- //=====>> ICON HEADER WINDOW BUTTON <<=====// -->
+    <Style x:Key="controlButtonIcon" TargetType="fIcons:IconImage">
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+        <Setter Property="Width" Value="9"/>
+        <Setter Property="Height" Value="9"/>
+    </Style>
+
+
+    <!-- //=====>> BUTTON PACIENTE ACTION <<=====// -->
+    <Style x:Key="actionPacienteBtn" TargetType="Button">
+
+        <!-- *** Normal *** -->
+        <Setter Property="Margin" Value="5,0"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    
+                    <Border Height="40"
+                            CornerRadius="10"
+                            Background="{TemplateBinding Background}">
+
+                        <Grid>
+                            <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                            <Rectangle x:Name="HoverRectangle" 
+                                       Fill="#33000000" 
+                                       Visibility="Hidden" 
+                                       RadiusX="10" 
+                                       RadiusY="10"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- *** Hover *** -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverRectangle" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!-- *** Hover Without Backgroud Stablished *** -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <!-- //=====>> ICON BUTTON PACIENTE ACTION <<=====// -->
+    <Style x:Key="iconActionPacienteBtn" TargetType="fIcons:IconImage">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+    </Style>
+
+    <!-- //=====>> TEXT BUTTON PACIENTE ACTION <<=====// -->
+    <Style x:Key="textActionPacienteBtn" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="13.5"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+</ResourceDictionary>
