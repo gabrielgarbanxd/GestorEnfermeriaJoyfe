@@ -44,6 +44,7 @@
   <ItemGroup>
     <Folder Include="Application\" />
     <Folder Include="Adapters\" />
+    <Folder Include="Domain\User\ValueObjects\" />
     <Folder Include="UI\Assets\Fonts\" />
   </ItemGroup>
 
