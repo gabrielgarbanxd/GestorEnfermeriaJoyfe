@@ -9,7 +9,7 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
 {
     public class UserId : NumberValueObject
     {
-        private const int MinUserIdValue = 1;
+        private const int MinUserIdValue = 0;
 
         public UserId(int value) : base(value)
         {

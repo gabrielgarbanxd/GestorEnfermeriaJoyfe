@@ -81,7 +81,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
                 catch (Exception e)
                 {
 
-                   // mostramos la excepcion
+                    // mostramos la excepcion
                     MessageBox.Show(e.ToString());
                 }
 

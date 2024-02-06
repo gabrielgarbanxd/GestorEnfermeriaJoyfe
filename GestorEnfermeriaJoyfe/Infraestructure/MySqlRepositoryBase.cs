@@ -9,11 +9,19 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
     public abstract class MySqlRepositoryBase
     {
         private readonly MySqlConnection _connection;
+        private readonly IObjectMapper? _mapper;
+        private readonly string _connectionString = "Server=localhost;Port=3309;Database=login;User=root;Password=joyfe;";
+
+        public MySqlRepositoryBase(IObjectMapper mapper)
+        {
+            _connection = new MySqlConnection(_connectionString);
+            _mapper = mapper;
+        }
 
         public MySqlRepositoryBase()
         {
-            string connectionString = "Server=localhost;Port=3309;Database=login;User=root;Password=joyfe;";
-            _connection = new MySqlConnection(connectionString);
+            _connection = new MySqlConnection(_connectionString);
+            _mapper = null;
         }
 
         protected MySqlConnection GetSqlConnection()
@@ -84,6 +92,13 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
         }
 
 
-        protected abstract T MapToEntity<T>(IDataReader reader);
+        protected T MapToEntity<T>(IDataReader reader)
+        {
+            if (_mapper == null)
+            {
+                throw new InvalidOperationException("No mapper provided");
+            }
+            return _mapper.Map<T>(reader);
+        }
     }
 }

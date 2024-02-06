@@ -9,12 +9,11 @@ namespace GestorEnfermeriaJoyfe.Domain.User
 {
     public interface IUserContract
     {
+        Task<List<User>> GetAllAsync();
         Task<User> FindAsync(UserId userId);
         Task<User> GetByEmailAsync(UserEmail email);
         Task AddAsync(User user);
         Task UpdateAsync(User user);
-        Task RemoveAsync(User user);
         Task DeleteAsync(User user);
-        Task<List<User>> GetAllAsync();
     }
 }

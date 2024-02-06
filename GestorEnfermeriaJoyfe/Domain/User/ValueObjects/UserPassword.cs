@@ -13,10 +13,10 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
         {
             EnsureIsNotEmpty(value);
             EnsureValidLength(value);
-            EnsureHasUpperCase(value);
-            EnsureHasLowerCase(value);
-            EnsureHasDigit(value);
-            EnsureHasSpecialCharacter(value);
+            //EnsureHasUpperCase(value);
+            //EnsureHasLowerCase(value);
+            //EnsureHasDigit(value);
+            //EnsureHasSpecialCharacter(value);
         }
 
         public string GetHash()

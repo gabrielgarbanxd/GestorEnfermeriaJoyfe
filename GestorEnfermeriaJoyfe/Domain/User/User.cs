@@ -5,13 +5,13 @@ namespace GestorEnfermeriaJoyfe.Domain.User
 {
     public class User
     {
-        public UserId? Id { get; private set; }
+        public UserId Id { get; private set; }
         public UserName UserName { get; private set; }
         public UserPassword Password { get; private set; }
         public UserLastName LastName { get; private set; }
         public UserEmail Email { get; private set; }
 
-        public User(UserName userName, UserPassword password, UserLastName lastName, UserEmail email, UserId? userId = null)
+        public User(UserId userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
         {
             Id = userId;
             UserName = userName;
@@ -20,19 +20,19 @@ namespace GestorEnfermeriaJoyfe.Domain.User
             Email = email;
         }
 
-        public static User Create(UserName userName, UserPassword password, UserLastName lastName, UserEmail email, UserId? userId = null)
+        public static User Create(UserId userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
         {
-            return new User(userName, password, lastName, email, userId);
+            return new User(userId, userName, password, lastName, email);
         }
 
         public static User FromPrimitives(int userId, string userName, string password, string lastName, string email)
         {
-            return new User(new UserName(userName), new UserPassword(password), new UserLastName(lastName), new UserEmail(email), new UserId(userId));
+            return new User(new UserId(userId), new UserName(userName), new UserPassword(password), new UserLastName(lastName), new UserEmail(email));
         }
 
         public void SetId(UserId id)
         {
-            if (Id != null)
+            if (Id.Value != 0)
             {
                 throw new InvalidOperationException("El ID ya ha sido establecido.");
             }

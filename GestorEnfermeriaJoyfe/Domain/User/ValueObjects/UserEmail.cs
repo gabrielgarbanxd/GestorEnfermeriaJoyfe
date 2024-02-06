@@ -6,9 +6,13 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
 {
     public class UserEmail : StringValueObject
     {
+        private const int MaxLength = 255;
+
         public UserEmail(string value) : base(value)
         {
+            EnsureValidLength(value);
             EnsureValidEmailFormat(value);
+
         }
 
         private void EnsureValidEmailFormat(string email)
@@ -24,6 +28,14 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
         public string NormalizeEmail()
         {
             return Value.ToLowerInvariant();
+        }
+
+        private void EnsureValidLength(string value)
+        {
+            if (value.Length > MaxLength)
+            {
+                throw new ArgumentException($"El nombre de usuario no puede ser mayor a {MaxLength} caracteres.");
+            }
         }
     }
 }
