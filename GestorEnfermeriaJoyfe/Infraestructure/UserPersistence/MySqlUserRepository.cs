@@ -18,12 +18,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
         }
 
-        public Task AddAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(User user)
+        public Task<List<User>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
@@ -33,17 +28,36 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<User> GetByEmailAsync(UserEmail email)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(User user)
+        public async Task<int> AddAsync(User user)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"@Name", user.UserName},
+                {"@Password", user.Password},
+                {"@LastName", user.LastName},
+                {"@Email", user.Email}
+            };
+            var result = await ExecuteNonQueryAsync("CreateUserProcedure", parameters);
+
+            if (result <= 0)
+            {
+                throw new Exception("No se ha podido insertar el usuario.");
+            }
+
+            return result;
+        }
+
+        public Task<int> UpdateAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync(User user)
         {
             throw new NotImplementedException();
         }

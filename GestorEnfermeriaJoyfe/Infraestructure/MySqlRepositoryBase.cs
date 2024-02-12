@@ -74,9 +74,13 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
                         SetParameters(command, parameters);
                     }
 
+                    // Configurar el parámetro de salida
+                    var resultParameter = command.Parameters.Add("@p_Result", MySqlDbType.Int32);
+                    resultParameter.Direction = ParameterDirection.Output;
+
                     await command.ExecuteNonQueryAsync();
 
-                    var resultParameter = command.Parameters["@Result"];
+                    // Obtener el valor del parámetro de salida
                     int result = (int)resultParameter.Value;
                     return result;
                 }
@@ -87,7 +91,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
         {
             foreach (var parameter in parameters)
             {
-                command.Parameters.AddWithValue("@" + parameter.Key, parameter.Value);
+                command.Parameters.AddWithValue(parameter.Key, parameter.Value);
             }
         }
 

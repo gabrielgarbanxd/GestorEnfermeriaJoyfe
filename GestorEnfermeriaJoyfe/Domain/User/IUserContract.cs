@@ -12,8 +12,8 @@ namespace GestorEnfermeriaJoyfe.Domain.User
         Task<List<User>> GetAllAsync();
         Task<User> FindAsync(UserId userId);
         Task<User> GetByEmailAsync(UserEmail email);
-        Task AddAsync(User user);
-        Task UpdateAsync(User user);
-        Task DeleteAsync(User user);
+        Task<int> AddAsync(User user);
+        Task<int> UpdateAsync(User user);
+        Task<int> DeleteAsync(User user);
     }
 }
