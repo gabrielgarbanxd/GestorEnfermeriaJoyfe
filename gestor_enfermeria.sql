@@ -28,9 +28,11 @@ CREATE TABLE `gestor_enfemeria`.`users` (
 -- *                                                                       *
 -- *************************************************************************
 
--- ========>> USERS <<=========
+-- ==================================
+-- ========>>    USERS    <<=========
+-- ==================================
 
--- Create user procedure
+-- //===>> Create user procedure <<===//
 DROP PROCEDURE IF EXISTS `CreateUserProcedure`;
 
 DELIMITER $$
