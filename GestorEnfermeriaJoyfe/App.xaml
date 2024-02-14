@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="UI/Styles/Palette.xaml"/>
                 <ResourceDictionary Source="UI/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="UI/Styles/CalendarStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

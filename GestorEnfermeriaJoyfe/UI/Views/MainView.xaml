@@ -28,10 +28,10 @@
             <local:Pacientes/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModel:CalendarioViewModel}">
-            <local:Calendario/>
+        <DataTemplate DataType="{x:Type viewModel:CalendarViewModel}">
+            <local:Calendar/>
         </DataTemplate>
-        
+
     </Window.Resources>
 
     <Border BorderThickness="1">

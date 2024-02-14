@@ -110,7 +110,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
         private void ExecuteShowCalendarioViewCommand(object obj)
         {
-            CurrentPageView = new CalendarioViewModel();
+            CurrentPageView = new CalendarViewModel();
             Title = "Calendario";
             Icon = IconChar.CalendarAlt;
         }

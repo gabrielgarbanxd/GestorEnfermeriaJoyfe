@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters
 {
-    internal class FileName
+    internal class PruebaGit
 
 
     {

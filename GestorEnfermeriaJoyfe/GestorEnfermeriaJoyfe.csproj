@@ -43,12 +43,12 @@
 
   <ItemGroup>
     <Folder Include="Application\" />
-    <Folder Include="Adapters\" />
     <Folder Include="UI\Assets\Fonts\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="MySql.Data" Version="8.2.0" />
   </ItemGroup>
 
