@@ -29,7 +29,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
             return _connection;
         }
 
-        protected async Task<IEnumerable<T>> ExecuteQueryAsync<T>(string storedProcedure, IDictionary<string, object>? parameters = null)
+        protected async Task<List<T>> ExecuteQueryAsync<T>(string storedProcedure, IDictionary<string, object>? parameters = null)
         {
             using (var connection = _connection)
             {

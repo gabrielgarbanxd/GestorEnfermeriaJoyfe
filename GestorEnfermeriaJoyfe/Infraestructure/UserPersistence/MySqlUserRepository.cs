@@ -18,19 +18,49 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
         }
 
-        public Task<List<User>> GetAllAsync()
+        public async Task<List<User>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
-            throw new NotImplementedException();
+            if (paginated)
+            {
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@PerPage", perPage},
+                    {"@Page", page}
+                };
+
+                return await ExecuteQueryAsync<User>("GetAllUsersPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync<User>("GetAllUsersProcedure");
         }
 
-        public Task<User> FindAsync(UserId userId)
+        public async Task<User> FindAsync(UserId userId)
         {
-            throw new NotImplementedException();
+            var result = await ExecuteQueryAsync<User>("GetUserByIdProcedure", new Dictionary<string, object> { { "@Id", userId.Value } });
+
+            if (result.Count == 0)
+            {
+                throw new Exception("No se ha encontrado el usuario.");
+            }
+
+            return result[0];
         }
 
-        public Task<User> GetByEmailAsync(UserEmail email)
+        public async Task<User> GetByEmailAsync(UserEmail email)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"@Email", email.Value}
+            };
+
+            var result = await ExecuteQueryAsync<User>("GetUserByEmailProcedure", parameters);
+
+            if (result.Count == 0)
+            {
+                throw new Exception("No se ha encontrado el usuario.");
+            }
+
+            return result[0];
         }
 
         public async Task<int> AddAsync(User user)
@@ -52,14 +82,36 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
             return result;
         }
 
-        public Task<int> UpdateAsync(User user)
+        public async Task<int> UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"@Id", user.Id},
+                {"@Name", user.UserName},
+                {"@Password", user.Password},
+                {"@LastName", user.LastName},
+                {"@Email", user.Email}
+            };
+
+            var result = await ExecuteNonQueryAsync("UpdateUserProcedure", parameters);
+
+            if (result <= 0)
+            {
+                throw new Exception("No se ha podido actualizar el usuario.");
+            }
+
+            return result;
         }
 
-        public Task<int> DeleteAsync(User user)
+        public async Task<int> DeleteAsync(UserId userId)
         {
-            throw new NotImplementedException();
+            var result = await ExecuteNonQueryAsync("DeleteUserProcedure", new Dictionary<string, object> { { "@Id", userId.Value } });
+
+            if (result <= 0)
+            {
+                throw new Exception("No se ha podido eliminar el usuario.");
+            }
+            return result;
         }
     }
 
