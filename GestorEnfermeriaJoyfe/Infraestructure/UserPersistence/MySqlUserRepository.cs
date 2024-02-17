@@ -7,14 +7,14 @@ using GestorEnfermeriaJoyfe.Domain.User.ValueObjects;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
 {
-    public class UserRepository : MySqlRepositoryBase, IUserContract
+    public class MySqlUserRepository : MySqlRepositoryBase, IUserContract
     {
 
-        public UserRepository(UserMapper mapper) : base(mapper)
+        public MySqlUserRepository(UserMapper mapper) : base(mapper)
         {
         }
 
-        public UserRepository()
+        public MySqlUserRepository()
         {
         }
 
