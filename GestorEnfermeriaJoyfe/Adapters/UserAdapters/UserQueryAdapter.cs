@@ -14,12 +14,12 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
         private static readonly UserMapper userMapper = new();
         private static readonly MySqlUserRepository userRepository = new(userMapper);
 
-        public static async Task<Response> AuthUser(IDictionary<string, object> data)
+        public static async Task<Response> AuthUser(dynamic data)
         {
             try
             {
-                string email = (string)data["email"];
-                string password = (string)data["password"];
+                string email = data.Email;
+                string password = data.Password;
 
                 UserAuthenticator userAuthenticator = new(userRepository);
 
@@ -34,12 +34,12 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
            
         }
 
-        public static Task<Response> FindUser(IDictionary<string, object> dictionary)
+        public static Task<Response> FindUser(dynamic data)
         {
             throw new NotImplementedException();
         }
 
-        public static Task<Response> GetAllUsers(IDictionary<string, object> dictionary)
+        public static Task<Response> GetAllUsers(dynamic data)
         {
             throw new NotImplementedException();
         }

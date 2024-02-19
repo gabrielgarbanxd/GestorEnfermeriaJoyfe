@@ -13,14 +13,14 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
     {
         private static readonly IUserContract userRepository = new MySqlUserRepository();
 
-        public static async Task<Response> RegisterUser(IDictionary<string, object> data)
+        public static async Task<Response> RegisterUser(dynamic data)
         {
             try
             {
-                string name = (string)data["name"];
-                string lastName = (string)data["lastName"];
-                string email = (string)data["email"];
-                string password = (string)data["password"];
+                string name = data.Name;
+                string lastName = data.LastName;
+                string email = data.Email;
+                string password = data.Password;
 
                 UserRegister userRegister = new(userRepository);
 
@@ -35,12 +35,12 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             
         }
 
-        public static Task<Response> DeleteUser(IDictionary<string, object> dictionary)
+        public static Task<Response> DeleteUser(dynamic data)
         {
             throw new NotImplementedException();
         }
 
-        public static Task<Response> UpdateUser(IDictionary<string, object> dictionary)
+        public static Task<Response> UpdateUser(dynamic data)
         {
             throw new NotImplementedException();
         }
