@@ -8,6 +8,35 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
     public class UserController
     {
+        public UserController() { }
+
+        /// <summary>
+        /// Obtiene todos los usuarios registrados en el sistema.
+        /// </summary>
+        /// <param name="data">
+        ///     Parámetros de paginación.
+        ///     - "Paginated": Un booleano que indica si se desea paginar la respuesta.
+        ///     - "PerPage": El número de elementos por página.
+        ///     - "Page": El número de página.
+        /// </param>
+        /// <returns>Una respuesta que contiene la lista de usuarios registrados.</returns>
+        public static async Task<Response> GetAll(dynamic data)
+        {
+            return await UserQueryAdapter.GetAllUsers(data);
+        }
+
+        /// <summary>
+        /// Obtiene la información de un usuario en específico.
+        /// </summary>
+        /// <param name="data"
+
+        public static async Task<Response> Get(dynamic data)
+        {
+            return await UserQueryAdapter.FindUser(data);
+        }
+
+
+
         /// <summary>
         /// Intenta autenticar a un usuario con las credenciales proporcionadas.
         /// </summary>
@@ -38,6 +67,16 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
         public static async Task<Response> Register(dynamic data)
         {
             return await UserCommandAdapter.RegisterUser(data);
+        }
+
+        public static async Task<Response> Update(dynamic data)
+        {
+            return await UserCommandAdapter.UpdateUser(data);
+        }
+
+        public static async Task<Response> Delete(dynamic data)
+        {
+            return await UserCommandAdapter.DeleteUser(data);
         }
 
     }

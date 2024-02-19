@@ -252,7 +252,10 @@ PRO : BEGIN
     -- Verificar si la eliminación fue exitosa
     SELECT id INTO p_Result FROM users WHERE id = p_id;
 
-    IF p_Result IS NULL THEN
+    -- Verificar si la eliminación fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = p_id; -- Código de éxito
+    ELSE
         SET p_Result = 0; -- Código de error para eliminación no exitosa
     END IF;
 

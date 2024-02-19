@@ -23,7 +23,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 
                 UserAuthenticator userAuthenticator = new(userRepository);
 
-                bool authenticated = await userAuthenticator.AuthenticateUser(email, password);
+                bool authenticated = await userAuthenticator.Run(email, password);
                 
                 return authenticated ? Response.Ok("Usuario autenticado") : Response.Fail("Usuario no autenticado");
             }
@@ -34,14 +34,37 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
            
         }
 
-        public static Task<Response> FindUser(dynamic data)
+        public static async Task<Response> FindUser(dynamic data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int id = data.Id;
+                UserFinder userFinder = new(userRepository);
+
+                var user = await userFinder.Run(id);
+
+                return user != null ? Response.Ok("Usuario encontrado", user) : Response.Fail("Usuario no encontrado");
+            }
+            catch (Exception e)
+            {
+                return Response.Fail(e.Message);
+            }
         }
 
-        public static Task<Response> GetAllUsers(dynamic data)
+        public static async Task<Response> GetAllUsers(dynamic data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                UserLister userLister = new(userRepository);
+
+                var users = await userLister.Run();
+
+                return users.Count > 0 ? Response.Ok("Usuarios encontrados", users) : Response.Fail("No se encontraron usuarios");
+            }
+            catch (Exception e)
+            {
+                return Response.Fail(e.Message);
+            }
         }
     }
 }

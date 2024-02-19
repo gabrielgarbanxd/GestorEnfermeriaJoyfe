@@ -13,7 +13,7 @@ namespace GestorEnfermeriaJoyfe.Application.UserApp
             _userRepository = userRepository;
         }
 
-        public async Task<bool> AuthenticateUser(string email, string password)
+        public async Task<bool> Run(string email, string password)
         {
             var user = await _userRepository.GetByEmailAsync(new UserEmail(email));
 

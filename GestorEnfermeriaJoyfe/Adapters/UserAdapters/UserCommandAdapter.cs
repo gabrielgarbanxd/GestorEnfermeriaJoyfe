@@ -24,7 +24,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 
                 UserRegister userRegister = new(userRepository);
 
-                int newUserId = await userRegister.RegisterUser(name, lastName, email, password);
+                int newUserId = await userRegister.Run(name, lastName, email, password);
 
                 return Response.Ok("Usuario registrado", newUserId);
             }
@@ -35,14 +35,44 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             
         }
 
-        public static Task<Response> DeleteUser(dynamic data)
+        public static async Task<Response> DeleteUser(dynamic data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int id = data.Id;
+
+                UserDeleter userDeleter = new(userRepository);
+
+                bool deleted = await userDeleter.Run(id);
+
+                return deleted ? Response.Ok("Usuario eliminado") : Response.Fail("Usuario no eliminado");
+            }
+            catch (Exception e)
+            {
+                return Response.Fail(e.Message);
+            }
         }
 
-        public static Task<Response> UpdateUser(dynamic data)
+        public static async Task<Response> UpdateUser(dynamic data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int id = data.Id;
+                string name = data.Name;
+                string lastName = data.LastName;
+                string email = data.Email;
+                string password = data.Password;
+
+                UserUpdater userUpdater = new(userRepository);
+
+                bool updated = await userUpdater.Run(id, name, lastName, email, password);
+
+                return updated ? Response.Ok("Usuario actualizado") : Response.Fail("Usuario no actualizado");
+            }
+            catch (Exception e)
+            {
+                return Response.Fail(e.Message);
+            }
         }
     }
 }
