@@ -38,6 +38,5 @@ namespace GestorEnfermeriaJoyfe.Domain.User
             }
             Id = id;
         }
-
     }
 }

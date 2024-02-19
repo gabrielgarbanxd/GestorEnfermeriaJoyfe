@@ -13,6 +13,7 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
         {
             EnsureIsNotEmpty(value);
             EnsureValidLength(value);
+
             //EnsureHasUpperCase(value);
             //EnsureHasLowerCase(value);
             //EnsureHasDigit(value);
@@ -27,6 +28,7 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
                 return BitConverter.ToString(hashedBytes).Replace("-", string.Empty);
             }
         }
+
 
         public bool VerifyPassword(string plainTextPassword)
         {

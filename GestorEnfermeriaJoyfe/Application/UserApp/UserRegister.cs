@@ -17,6 +17,8 @@ namespace GestorEnfermeriaJoyfe.Application.UserApp
         {
             var user = User.Create(new UserId(0), new UserName(name), new UserPassword(password), new UserLastName(lastName), new UserEmail(email));
 
+            user.Password.Value = user.Password.GetHash();
+
             var newUserId = await _userRepository.AddAsync(user);
 
             user.SetId(new UserId(newUserId));

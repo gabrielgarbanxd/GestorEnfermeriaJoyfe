@@ -4,7 +4,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Shared
 {
     public abstract class ValueObject<T> where T : IComparable
     {
-        public T Value { get; private set; }
+        public T Value { get; set; }
 
         protected ValueObject(T value)
         {
