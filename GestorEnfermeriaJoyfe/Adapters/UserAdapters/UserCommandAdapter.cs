@@ -13,66 +13,52 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
     {
         private static readonly IUserContract userRepository = new MySqlUserRepository();
 
-        public static async Task<Response> RegisterUser(dynamic data)
+        public static async Task<Response<int>> RegisterUser(string name, string lastName, string email, string password)
         {
             try
             {
-                string name = data.Name;
-                string lastName = data.LastName;
-                string email = data.Email;
-                string password = data.Password;
-
                 UserRegister userRegister = new(userRepository);
 
                 int newUserId = await userRegister.Run(name, lastName, email, password);
 
-                return Response.Ok("Usuario registrado", newUserId);
+                return Response<int>.Ok("Usuario registrado", newUserId);
             }
             catch (Exception e)
             {
-                return Response.Fail(e.Message);
+                return Response<int>.Fail(e.Message);
             }
-            
         }
 
-        public static async Task<Response> DeleteUser(dynamic data)
+        public static async Task<Response<bool>> DeleteUser(int id)
         {
             try
             {
-                int id = data.Id;
-
                 UserDeleter userDeleter = new(userRepository);
 
                 bool deleted = await userDeleter.Run(id);
 
-                return deleted ? Response.Ok("Usuario eliminado") : Response.Fail("Usuario no eliminado");
+                return deleted ? Response<bool>.Ok("Usuario eliminado") : Response<bool>.Fail("Usuario no eliminado");
             }
             catch (Exception e)
             {
-                return Response.Fail(e.Message);
+                return Response<bool>.Fail(e.Message);
             }
         }
 
-        public static async Task<Response> UpdateUser(dynamic data)
+        public static async Task<Response<bool>> UpdateUser(User user)
         {
             try
             {
-                int id = data.Id;
-                string name = data.Name;
-                string lastName = data.LastName;
-                string email = data.Email;
-                string password = data.Password;
-
                 UserUpdater userUpdater = new(userRepository);
+                bool updated = await userUpdater.Run(user);
 
-                bool updated = await userUpdater.Run(id, name, lastName, email, password);
-
-                return updated ? Response.Ok("Usuario actualizado") : Response.Fail("Usuario no actualizado");
+                return updated ? Response<bool>.Ok("Usuario actualizado") : Response<bool>.Fail("Usuario no actualizado");
             }
             catch (Exception e)
             {
-                return Response.Fail(e.Message);
+                return Response<bool>.Fail(e.Message);
             }
         }
+
     }
 }

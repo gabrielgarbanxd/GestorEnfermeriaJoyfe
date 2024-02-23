@@ -1,4 +1,5 @@
 ﻿using GestorEnfermeriaJoyfe.Application.UserApp;
+using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Infraestructure.UserPersistence;
 using Google.Protobuf.WellKnownTypes;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -14,44 +15,41 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
         private static readonly UserMapper userMapper = new();
         private static readonly MySqlUserRepository userRepository = new(userMapper);
 
-        public static async Task<Response> AuthUser(dynamic data)
+        public static async Task<Response<bool>> AuthUser(string email, string password)
         {
             try
             {
-                string email = data.Email;
-                string password = data.Password;
-
                 UserAuthenticator userAuthenticator = new(userRepository);
 
                 bool authenticated = await userAuthenticator.Run(email, password);
-                
-                return authenticated ? Response.Ok("Usuario autenticado") : Response.Fail("Usuario no autenticado");
+
+                return authenticated ? Response<bool>.Ok("Usuario autenticado", true) : Response<bool>.Fail("Usuario no autenticado");
             }
             catch (Exception e)
             {
-                return Response.Fail(e.Message);
+                return Response<bool>.Fail(e.Message);
             }
-           
         }
 
-        public static async Task<Response> FindUser(dynamic data)
+
+        public static async Task<Response<User>> FindUser(int id)
         {
             try
             {
-                int id = data.Id;
                 UserFinder userFinder = new(userRepository);
 
                 var user = await userFinder.Run(id);
 
-                return user != null ? Response.Ok("Usuario encontrado", user) : Response.Fail("Usuario no encontrado");
+                return user != null ? Response<User>.Ok("Usuario encontrado", user) : Response<User>.Fail("Usuario no encontrado");
             }
             catch (Exception e)
             {
-                return Response.Fail(e.Message);
+                return Response<User>.Fail(e.Message);
             }
         }
 
-        public static async Task<Response> GetAllUsers(dynamic data)
+
+        public static async Task<Response<List<User>>> GetAllUsers()
         {
             try
             {
@@ -59,12 +57,29 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 
                 var users = await userLister.Run();
 
-                return users.Count > 0 ? Response.Ok("Usuarios encontrados", users) : Response.Fail("No se encontraron usuarios");
+                return users.Count > 0 ? Response<List<User>>.Ok("Usuarios encontrados", users) : Response<List<User>>.Fail("No se encontraron usuarios");
             }
             catch (Exception e)
             {
-                return Response.Fail(e.Message);
+                return Response<List<User>>.Fail(e.Message);
             }
         }
+
+        public static async Task<Response<List<User>>> GetAllUsersPaginated(int perPage, int page)
+        {
+            try
+            {
+                UserLister userLister = new(userRepository);
+
+                var users = await userLister.Run(true, perPage, page);
+
+                return users.Count > 0 ? Response<List<User>>.Ok("Usuarios encontrados", users) : Response<List<User>>.Fail("No se encontraron usuarios");
+            }
+            catch (Exception e)
+            {
+                return Response<List<User>>.Fail(e.Message);
+            }
+        }
+
     }
 }

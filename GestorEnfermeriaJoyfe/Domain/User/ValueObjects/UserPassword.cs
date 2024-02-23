@@ -29,7 +29,6 @@ namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
             }
         }
 
-
         public bool VerifyPassword(string plainTextPassword)
         {
             string hashedInput = GetHashForPlainText(plainTextPassword);

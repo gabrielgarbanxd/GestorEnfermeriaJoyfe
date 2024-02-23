@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GestorEnfermeriaJoyfe.Domain.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
@@ -10,71 +12,32 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
     {
         public UserController() { }
 
-        /// <summary>
-        /// Obtiene todos los usuarios registrados en el sistema.
-        /// </summary>
-        /// <param name="data">
-        ///     Parámetros de paginación.
-        ///     - "Paginated": Un booleano que indica si se desea paginar la respuesta.
-        ///     - "PerPage": El número de elementos por página.
-        ///     - "Page": El número de página.
-        /// </param>
-        /// <returns>Una respuesta que contiene la lista de usuarios registrados.</returns>
-        public static async Task<Response> GetAll(dynamic data)
+        public static async Task<Response<List<User>>> GetAll()
         {
-            return await UserQueryAdapter.GetAllUsers(data);
+            return await UserQueryAdapter.GetAllUsers();
         }
 
-        /// <summary>
-        /// Obtiene la información de un usuario en específico.
-        /// </summary>
-        /// <param name="data"
-
-        public static async Task<Response> Get(dynamic data)
+        public static async Task<Response<User>> Get(int id)
         {
-            return await UserQueryAdapter.FindUser(data);
+            return await UserQueryAdapter.FindUser(id);
         }
 
-
-
-        /// <summary>
-        /// Intenta autenticar a un usuario con las credenciales proporcionadas.
-        /// </summary>
-        /// <param name="data">
-        ///     Un objeto dinámico que contiene los datos necesarios para autenticar al usuario.
-        ///     Se espera que tenga las siguientes propiedades:
-        ///     - "Email": El correo electrónico del usuario.
-        ///     - "Password": La contraseña del usuario.
-        /// </param>
-        /// <returns>Una respuesta que indica si la autenticación fue exitosa o no.</returns>
-        public static async Task<Response> Login(dynamic data)
+        public static async Task<Response<bool>> Login(string email, string password)
         {
-            return await UserQueryAdapter.AuthUser(data);
+            return await UserQueryAdapter.AuthUser(email, password);
         }
 
-        /// <summary>
-        /// Registra un nuevo usuario con la información proporcionada.
-        /// </summary>
-        /// <param name="data">
-        ///     Un objeto dinámico que contiene los datos necesarios para registrar al usuario.
-        ///     Se espera que tenga las siguientes propiedades:
-        ///     - "Name": El nombre del usuario.
-        ///     - "LastName": El apellido del usuario.
-        ///     - "Email": El correo electrónico del usuario.
-        ///     - "Password": La contraseña del usuario.
-        /// </param>
-        /// <returns>Una respuesta que indica si el registro fue exitoso o no.</returns>
-        public static async Task<Response> Register(dynamic data)
+        public static async Task<Response<int>> Register(string name, string lastName, string email, string password)
         {
-            return await UserCommandAdapter.RegisterUser(data);
+            return await UserCommandAdapter.RegisterUser(name, lastName, email, password);
         }
 
-        public static async Task<Response> Update(dynamic data)
+        public static async Task<Response<bool>> Update(User user)
         {
-            return await UserCommandAdapter.UpdateUser(data);
+            return await UserCommandAdapter.UpdateUser(user);
         }
 
-        public static async Task<Response> Delete(dynamic data)
+        public static async Task<Response<bool>> Delete(dynamic data)
         {
             return await UserCommandAdapter.DeleteUser(data);
         }

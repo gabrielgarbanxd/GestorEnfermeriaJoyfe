@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters
 {
-    public class Response
+    public class Response<T>
     {
         public bool Success { get; set; }
         public string? Message { get; set; }
-        public object? Data { get; set; }
+        public T? Data { get; set; }
 
-        public Response(bool success, string? message, object? data)
+        public Response(bool success, string? message, T? data)
         {
             Success = success;
             Message = message;
@@ -29,14 +29,17 @@ namespace GestorEnfermeriaJoyfe.Adapters
         {
         }
 
-        public static Response Ok(string? message = null, object ? data = null)
+        // Método Ok para cuando la operación es exitosa
+        public static Response<T> Ok(string? message = null, T? data = default)
         {
-            return new Response(true, message, data);
+            return new Response<T>(true, message, data);
         }
 
-        public static Response Fail(string? message = null, object? data = null)
+        // Método Fail para cuando la operación falla
+        public static Response<T> Fail(string? message = null)
         {
-            return new Response(false, message, data);
+            return new Response<T>(false, message);
         }
     }
+
 }
