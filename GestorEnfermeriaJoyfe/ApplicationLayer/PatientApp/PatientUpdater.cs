@@ -1,7 +1,7 @@
 ﻿using GestorEnfermeriaJoyfe.Domain.Patient;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.PatientApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
 {
     public class PatientUpdater
     {

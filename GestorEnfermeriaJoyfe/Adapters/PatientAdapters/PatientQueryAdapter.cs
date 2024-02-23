@@ -1,4 +1,4 @@
-﻿using GestorEnfermeriaJoyfe.Application.PatientApp;
+﻿using GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp;
 using GestorEnfermeriaJoyfe.Domain.Patient;
 using GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence;
 using System;

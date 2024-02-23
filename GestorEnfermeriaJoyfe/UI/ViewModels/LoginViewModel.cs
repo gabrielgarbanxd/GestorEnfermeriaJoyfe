@@ -3,10 +3,10 @@ using System.Security;
 using System.Windows.Input;
 using System.Threading;
 using System.Security.Principal;
-using System.Windows;
 using GestorEnfermeriaJoyfe.UI.Views;
 using GestorEnfermeriaJoyfe.Domain;
 using GestorEnfermeriaJoyfe.Infraestructure;
+using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -14,7 +14,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         // Campos privados
-        private string _username;
+        private string _email;
         private SecureString _password;
         private string _errorMessage;
         private bool _isViewVisible = true;
@@ -22,13 +22,13 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private IUserRepository userRepository;
 
         // Propiedades públicas
-        public string Username
+        public string Email
         {
-            get => _username;
+            get => _email;
             set
             {
-                _username = value;
-                OnPropertyChanged(nameof(Username));
+                _email = value;
+                OnPropertyChanged(nameof(Email));
             }
         }
 
@@ -80,7 +80,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private bool CanExecuteLoginCommand(object obj)
         {
             bool validData;
-            if (string.IsNullOrWhiteSpace(Username) || Username.Length < 3 ||
+            if (string.IsNullOrWhiteSpace(Email) || Email.Length < 3 ||
                 Password == null || Password.Length < 3)
                 validData = false;
             else
@@ -89,35 +89,27 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         // Método privado para ejecutar el comando de inicio de sesión
-        private void ExecuteLoginCommand(object obj)
+        private async void ExecuteLoginCommand(object obj)
         {
-            var isValidUser = userRepository.AuthenticateUser(new System.Net.NetworkCredential(Username, Password));
-            if (isValidUser)
+            //var isValidUser = userRepository.AuthenticateUser(new System.Net.NetworkCredential(Username, Password));
+            var response = await UserController.Login(Email, Password);
+
+            if (response.Success)
             {
-                UserModel user = userRepository.GetByUsername(Username); // Obtener el UserModel del usuario autenticado
+                Thread.CurrentPrincipal = new GenericPrincipal(
+                    new GenericIdentity(response.Data.ToString()), null);
+                IsViewVisible = false;
 
-                if (user != null)
-                {
-                    Thread.CurrentPrincipal = new GenericPrincipal(
-                        new GenericIdentity(Username), null);
-                    IsViewVisible = false;
-
-                    string welcomeMessage = $"Bienvenido, {user.Name} {user.LastName}! El usuario ha sido autenticado con éxito.";
-                    MessageBox.Show(welcomeMessage);
-
-                    // Abrir MainWindow
-                    MainView mainView = new MainView();
-                    mainView.Show();
-                }
-                else
-                {
-                    ErrorMessage = "* El nombre de usuario o la contraseña no son válidos";
-                }
+                // Abrir MainWindow
+                MainView mainView = new();
+                mainView.Show();
             }
             else
             {
                 ErrorMessage = "* El nombre de usuario o la contraseña no son válidos";
             }
+
+
         }
 
         // Método privado para ejecutar el comando de recuperar contraseña (no implementado actualmente)

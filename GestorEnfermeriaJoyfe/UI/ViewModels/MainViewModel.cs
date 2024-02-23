@@ -4,7 +4,10 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
-using GestorEnfermeriaJoyfe.Domain;
+using GestorEnfermeriaJoyfe.Adapters.PatientAdapters;
+using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
+using GestorEnfermeriaJoyfe.Domain.Patient;
+using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Infraestructure;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
@@ -12,18 +15,16 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
     class MainViewModel : ViewModelBase
     {
         // //===>> Fields <<====//
-        private UserModel _user;
-        private IUserRepository userRepository;
+        private User _user;
 
-        private IPacienteRepository pacienteRepository;
-        private List<PacienteModel> _pacientes;
+        private List<Patient> _pacientes;
 
         private ViewModelBase _currentPageView;
         private string _title;
         private IconChar _icon;
 
         // //===>> Propertys <<====//
-        public UserModel User
+        public User User
         {
             get => _user;
             set
@@ -73,14 +74,8 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         // //===>> Constructor <<====//
         public MainViewModel()
         {
-            // *** Carga Usuario y Pacientes ***
-            userRepository = new UserRepository();
-            pacienteRepository = new PacienteRepository();
-            User = new UserModel();
-
-
-            loadCurrentUserData();
-            loadPacientes();
+            LoadCurrentUserData();
+            LoadPacientes();
 
             // *** Carga Commands ***
             ShowPrincipalViewCommand = new ViewModelCommand(ExecuteShowPrincipalViewCommand);
@@ -96,7 +91,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         // //===>> Commands Methods <<====//
-        private void ExecuteShowPrincipalViewCommand(object obj)
+        private void ExecuteShowPrincipalViewCommand(object? obj)
         {
             CurrentPageView = new PrincipalViewModel();
             Title = "Estadisticas Principales";
@@ -116,36 +111,39 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         // //===>> Methods <<====//
-        private void loadCurrentUserData()
+        private async void LoadCurrentUserData()
         {
-            // Obtiene el nombre de usuario actual del hilo principal.
-            var userName = Thread.CurrentPrincipal.Identity.Name;
-            //MessageBox.Show($"Nombre de usuario ingresado: {currentUserName}");
+            // Obtiene el email de usuario actual del hilo principal.
+            var userId = Thread.CurrentPrincipal.Identity.Name;
 
-            // Utiliza el repositorio de usuarios para obtener el modelo de usuario asociado al nombre de usuario actual.
-            var user = userRepository.GetByUsername(userName);
+            var response = await UserController.Get(int.Parse(userId));
 
-            // Verifica si se ha encontrado un usuario válido asociado al nombre de usuario actual.
-            if (user != null)
+            if (response.Success)
             {
-
-                User = user;
+                User = response.Data;
             }
             else
             {
-                // Si no se encuentra un usuario válido, muestra un cuadro de mensaje informando al usuario que la sesión no pudo iniciarse correctamente.
                 MessageBox.Show("El Usuario no es válido, no se ha podido iniciar sesión");
-                // Cierra la aplicación.
                 Application.Current.Shutdown();
             }
         }
 
-        private void loadPacientes()
+        private async void LoadPacientes()
         {
-            _pacientes = pacienteRepository.All();
+            var response = await PatientController.GetAll();
+            
+            if (response.Success)
+            {
+                _pacientes = response.Data;
+            }
+            else
+            {
+                MessageBox.Show("No se han podido cargar los pacientes");
+            }
         }
 
-        private void UpdatePaciente(PacienteModel updatedPaciente)
+        private void UpdatePaciente(Patient updatedPaciente)
         {
             // Buscar el paciente en la lista de pacientes
             int index = _pacientes.FindIndex(p => p.Id == updatedPaciente.Id);
@@ -157,7 +155,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
-        private void DeletePaciente(PacienteModel deletedPaciente)
+        private void DeletePaciente(Patient deletedPaciente)
         {
             // Buscar el paciente en la lista de pacientes
             int index = _pacientes.FindIndex(p => p.Id == deletedPaciente.Id);
@@ -170,7 +168,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             _pacientes.Remove(deletedPaciente);
         }
 
-        private void AddPaciente(PacienteModel newPaciente)
+        private void AddPaciente(Patient newPaciente)
         {
             // Añadir el nuevo paciente a la lista
             _pacientes.Add(newPaciente);

@@ -2,7 +2,7 @@
 using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.PatientApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
 {
     public class PatientDeleter
     {

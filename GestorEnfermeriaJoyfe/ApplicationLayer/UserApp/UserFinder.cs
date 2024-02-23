@@ -6,20 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.UserApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
 {
-    public class UserDeleter
+    public class UserFinder
     {
         private readonly IUserContract _userRepository;
 
-        public UserDeleter(IUserContract userRepository)
+        public UserFinder(IUserContract userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<bool> Run(int id)
+        public async Task<User> Run(int id)
         {
-            return await _userRepository.DeleteAsync(new UserId(id)) > 0;
+            return await _userRepository.FindAsync(new UserId(id));
         }
     }
 }

@@ -6,20 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.UserApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
 {
-    public class UserFinder
+    public class UserUpdater
     {
         private readonly IUserContract _userRepository;
 
-        public UserFinder(IUserContract userRepository)
+        public UserUpdater(IUserContract userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<User> Run(int id)
+        public async Task<bool> Run(User user)
         {
-            return await _userRepository.FindAsync(new UserId(id));
+            user.Password = new UserPassword(user.Password.GetHash());
+
+            return await _userRepository.UpdateAsync(user) > 0;
         }
     }
 }

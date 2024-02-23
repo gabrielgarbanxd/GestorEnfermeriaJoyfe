@@ -1,28 +1,28 @@
-﻿using GestorEnfermeriaJoyfe.Domain;
+﻿using GestorEnfermeriaJoyfe.Domain.Patient;
 using System;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
     public class PacientesMediator
     {
-        public static readonly PacientesMediator Instance = new PacientesMediator();
+        public static readonly PacientesMediator Instance = new();
         private PacientesMediator() { }
 
-        public event Action<PacienteModel> PacienteUpdated;
-        public event Action<PacienteModel> PacienteDeleted;
-        public event Action<PacienteModel> PacienteCreated;
+        public event Action<Patient> PacienteUpdated;
+        public event Action<Patient> PacienteDeleted;
+        public event Action<Patient> PacienteCreated;
 
-        public void OnPacienteUpdated(PacienteModel updatedPaciente)
+        public void OnPacienteUpdated(Patient updatedPaciente)
         {
             PacienteUpdated?.Invoke(updatedPaciente);
         }
 
-        public void OnPacienteDeleted(PacienteModel deletedPaciente)
+        public void OnPacienteDeleted(Patient deletedPaciente)
         {
             PacienteDeleted?.Invoke(deletedPaciente);
         }
 
-        public void OnPacienteCreated(PacienteModel newPaciente)
+        public void OnPacienteCreated(Patient newPaciente)
         {
             PacienteCreated?.Invoke(newPaciente);
         }

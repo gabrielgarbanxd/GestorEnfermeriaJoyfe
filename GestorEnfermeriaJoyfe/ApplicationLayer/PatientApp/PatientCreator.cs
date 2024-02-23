@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.PatientApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
 {
     public class PatientCreator
     {

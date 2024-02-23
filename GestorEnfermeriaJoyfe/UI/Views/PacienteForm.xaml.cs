@@ -1,4 +1,4 @@
-﻿using GestorEnfermeriaJoyfe.Domain;
+﻿using GestorEnfermeriaJoyfe.Domain.Patient;
 using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.UI.Views
@@ -12,15 +12,15 @@ namespace GestorEnfermeriaJoyfe.UI.Views
         {
             InitializeComponent();
         }
-        public PacienteForm(PacienteModel paciente)
+        public PacienteForm(Patient paciente)
         {
             InitializeComponent();
 
             // Inicializa los campos de texto con los datos del paciente
-            txtNombre.Text = paciente.Nombre;
-            txtApellido1.Text = paciente.Apellido1;
-            txtApellido2.Text = paciente.Apellido2;
-            txtCurso.Text = paciente.Curso;
+            txtNombre.Text = paciente.Name.Value;
+            txtApellido1.Text = paciente.LastName.Value;
+            txtApellido2.Text = paciente.LastName2.Value;
+            txtCurso.Text = paciente.Course.Value;
         }
 
         private void AceptarButton_Click(object sender, RoutedEventArgs e) => this.DialogResult = true;

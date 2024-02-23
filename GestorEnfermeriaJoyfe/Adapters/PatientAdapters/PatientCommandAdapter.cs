@@ -1,10 +1,7 @@
-﻿using GestorEnfermeriaJoyfe.Application.PatientApp;
+﻿using GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp;
 using GestorEnfermeriaJoyfe.Domain.Patient;
 using GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters

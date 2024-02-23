@@ -1,27 +1,28 @@
 ﻿using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Domain.User.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.UserApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
 {
-    public class UserUpdater
+    public class UserRegister
     {
         private readonly IUserContract _userRepository;
 
-        public UserUpdater(IUserContract userRepository)
+        public UserRegister(IUserContract userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<bool> Run(User user)
+        public async Task<int> Run(User user)
         {
             user.Password = new UserPassword(user.Password.GetHash());
 
-            return await _userRepository.UpdateAsync(user) > 0;
+            var newUserId = await _userRepository.AddAsync(user);
+
+            user.SetId(new UserId(newUserId));
+
+            return user.Id.Value;
         }
+
     }
 }

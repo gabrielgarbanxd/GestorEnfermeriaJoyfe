@@ -1,8 +1,9 @@
-﻿using GestorEnfermeriaJoyfe.Application.UserApp;
+﻿using GestorEnfermeriaJoyfe.ApplicationLayer.UserApp;
 using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Infraestructure.UserPersistence;
 using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
@@ -12,19 +13,19 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
         private static readonly UserMapper userMapper = new();
         private static readonly MySqlUserRepository userRepository = new(userMapper);
 
-        public static async Task<Response<bool>> AuthUser(string email, string password)
+        public static async Task<Response<int>> AuthUser(string email, SecureString securePassword)
         {
             try
             {
                 UserAuthenticator userAuthenticator = new(userRepository);
 
-                bool authenticated = await userAuthenticator.Run(email, password);
+                int authenticatedId = await userAuthenticator.Run(email, securePassword);
 
-                return authenticated ? Response<bool>.Ok("Usuario autenticado", true) : Response<bool>.Fail("Usuario no autenticado");
+                return authenticatedId > 0 ? Response<int>.Ok("Usuario autenticado", authenticatedId) : Response<int>.Fail("Usuario no autenticado");
             }
             catch (Exception e)
             {
-                return Response<bool>.Fail(e.Message);
+                return Response<int>.Fail(e.Message);
             }
         }
 

@@ -1,4 +1,4 @@
-create database if not exists gestor_enfemeria;
+gescreate database if not exists gestor_enfemeria;
 use gestor_enfemeria;
 
 -- *************************************************************************
@@ -11,26 +11,26 @@ use gestor_enfemeria;
 DROP TABLE IF EXISTS `gestor_enfemeria`.`users`;
 
 CREATE TABLE `gestor_enfemeria`.`users` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `last_name` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
-  
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `last_name` VARCHAR(50) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+    UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
+
 -- Patients table
 DROP TABLE IF EXISTS `gestor_enfemeria`.`patients`;
-  
+
 CREATE TABLE `gestor_enfemeria`.`patients` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL,
-  `last_name` VARCHAR(50) NOT NULL,
-  `last_name2` VARCHAR(50) NOT NULL,
-  `course` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `last_name` VARCHAR(50) NOT NULL,
+    `last_name2` VARCHAR(50) NOT NULL,
+    `course` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
 

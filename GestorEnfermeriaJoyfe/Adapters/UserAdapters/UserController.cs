@@ -1,10 +1,7 @@
 ﻿using GestorEnfermeriaJoyfe.Domain.User;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Security;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
@@ -27,9 +24,9 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             return await UserQueryAdapter.FindUser(id);
         }
 
-        public static async Task<Response<bool>> Login(string email, string password)
+        public static async Task<Response<int>> Login(string email, SecureString securePassword)
         {
-            return await UserQueryAdapter.AuthUser(email, password);
+            return await UserQueryAdapter.AuthUser(email, securePassword);
         }
 
         public static async Task<Response<int>> Register(User user)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Application.UserApp
+namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
 {
     public class UserLister
     {

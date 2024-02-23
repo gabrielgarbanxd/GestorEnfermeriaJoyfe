@@ -1,10 +1,12 @@
-﻿using GestorEnfermeriaJoyfe.Domain;
-using GestorEnfermeriaJoyfe.UI.Views;
+﻿using GestorEnfermeriaJoyfe.UI.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using GestorEnfermeriaJoyfe.Infraestructure;
+using GestorEnfermeriaJoyfe.Domain.Patient;
+using GestorEnfermeriaJoyfe.Adapters.PatientAdapters;
+using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
+using System;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -12,13 +14,12 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
     {
 
         // //===>> Fields <<====//
-        private ObservableCollection<PacienteModel> _pacientes;
-        private IPacienteRepository pacienteRepository;
+        private ObservableCollection<Patient> _pacientes;
 
-        private PacienteModel _selectedPaciente;
+        private Patient _selectedPaciente;
 
         // //===>> Propertys <<====//
-        public ObservableCollection<PacienteModel> Pacientes
+        public ObservableCollection<Patient> Pacientes
         {
             get => _pacientes;
             set
@@ -27,7 +28,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 OnPropertyChanged(nameof(Pacientes));
             }
         }
-        public PacienteModel SelectedPaciente
+        public Patient SelectedPaciente
         {
             get => _selectedPaciente;
             set
@@ -44,10 +45,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
 
         //===>> Constructor <<====//
-        public PacientesViewModel(List<PacienteModel> pacientes)
+        public PacientesViewModel(List<Patient> pacientes)
         {
-            pacienteRepository = new PacienteRepository();
-            Pacientes = new ObservableCollection<PacienteModel>(pacientes);
+            Pacientes = new ObservableCollection<Patient>(pacientes);
 
             // *** Carga Commands ***
             CreatePacienteCommand = new ViewModelCommand(ExecuteCreatePacienteCommand);
@@ -56,40 +56,50 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         //===>> Commands Methods <<====//
-        private void ExecuteCreatePacienteCommand(object obj)
+        private async void ExecuteCreatePacienteCommand(object obj)
         {
-            PacienteForm dialog = new PacienteForm();
+            PacienteForm dialog = new();
             bool? result = dialog.ShowDialog();
 
-            // Si el usuario hizo clic en el botón Aceptar, crear el nuevo paciente
-            if (result == true)
+              
+            if (result == false)
             {
-                PacienteModel nuevoPaciente = new PacienteModel()
-                {
-                    Nombre = dialog.txtNombre.Text,
-                    Apellido1 = dialog.txtApellido1.Text,
-                    Apellido2 = dialog.txtApellido2.Text,
-                    Curso = dialog.txtCurso.Text,
-                };
+                return;
+            }
 
-                PacienteModel pacienteCreado = pacienteRepository.Create(nuevoPaciente);
+            Patient newPatient;
+            try
+            {
+                newPatient = Patient.FromPrimitives(0, dialog.txtNombre.Text, dialog.txtApellido1.Text, dialog.txtApellido2.Text, dialog.txtCurso.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Datos de paciente no validos");
+                ExecuteCreatePacienteCommand(null);
+                return;
+            }
 
-                if (pacienteCreado != null)
-                {
-                    MessageBox.Show("Paciente creado con éxito");
-                    Pacientes.Add(pacienteCreado);
-                    // Notificar al mediador que se ha creado un nuevo paciente
-                    PacientesMediator.Instance.OnPacienteCreated(pacienteCreado);
-                }
-                else
-                {
-                    MessageBox.Show("Error al crear el paciente");
-                }
+
+            var response = await PatientController.Register(newPatient);
+
+            if (response.Success)
+            {
+                MessageBox.Show("Paciente creado con éxito");
+
+                newPatient.SetId(new PatientId(response.Data));
+
+                Pacientes.Add(newPatient);
+                // Notificar al mediador que se ha creado un nuevo paciente
+                PacientesMediator.Instance.OnPacienteCreated(newPatient);
+            }
+            else
+            {
+                MessageBox.Show("Error al crear el paciente");
             }
         }
 
 
-        private void ExecuteEditPacienteCommand(object obj)
+        private async void ExecuteEditPacienteCommand(object obj)
         {
             if (SelectedPaciente == null)
             {
@@ -97,50 +107,57 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 return;
             }
 
-            int idPaciente = SelectedPaciente.Id;
+            int idPaciente = SelectedPaciente.Id.Value;
             int index = Pacientes.IndexOf(SelectedPaciente);
 
             // Crear una nueva instancia de la ventana de diálogo
-            PacienteForm dialog = new PacienteForm(SelectedPaciente);
+            PacienteForm dialog = new(SelectedPaciente);
 
             // Mostrar la ventana de diálogo
             bool? result = dialog.ShowDialog();
 
-            // Si el usuario hizo clic en el botón Aceptar, actualizar el paciente
-            if (result == true)
+            if (result == false)
             {
-                PacienteModel updatedPaciente = new PacienteModel()
+                return;
+            }
+
+
+            Patient updatedPaciente;
+
+            try
+            {
+                updatedPaciente = Patient.FromPrimitives(0, dialog.txtNombre.Text, dialog.txtApellido1.Text, dialog.txtApellido2.Text, dialog.txtCurso.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Datos de paciente no validos");
+                ExecuteEditPacienteCommand(null);
+                return;
+            }
+
+
+            var response = await PatientController.Update(updatedPaciente);
+
+            if (response.Success)
+            {
+                MessageBox.Show("Paciente actualizado con éxito");
+
+                if (index != -1)
                 {
-                    Id = idPaciente,
-                    Nombre = dialog.txtNombre.Text,
-                    Apellido1 = dialog.txtApellido1.Text,
-                    Apellido2 = dialog.txtApellido2.Text,
-                    Curso = dialog.txtCurso.Text
-                };
+                    Pacientes[index] = updatedPaciente;
 
-                bool resultado = pacienteRepository.Update(updatedPaciente);
-
-                if (resultado)
-                {
-                    MessageBox.Show("Paciente actualizado con éxito");
-
-                    if (index != -1)
-                    {
-                        Pacientes[index] = updatedPaciente;
-
-                        // Notificar al mediador que se ha eliminado un paciente
-                        PacientesMediator.Instance.OnPacienteUpdated(updatedPaciente);
-                    }
-
+                    // Notificar al mediador que se ha eliminado un paciente
+                    PacientesMediator.Instance.OnPacienteUpdated(updatedPaciente);
                 }
-                else
-                {
-                    MessageBox.Show("Error al actualizar el paciente");
-                }
+
+            }
+            else
+            {
+                MessageBox.Show("Error al actualizar el paciente");
             }
         }
 
-        private void ExecuteDeletePacienteCommand(object obj)
+        private async void ExecuteDeletePacienteCommand(object obj)
         {
             if (SelectedPaciente == null)
             {
@@ -148,11 +165,11 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 return;
             }
 
-            PacienteModel pacienteAEliminar = SelectedPaciente;
+            var pacienteAEliminar = SelectedPaciente;
 
-            bool resultado = pacienteRepository.Delete(pacienteAEliminar.Id);
+            var response = await PatientController.Delete(pacienteAEliminar.Id.Value);
 
-            if (resultado)
+            if (response.Success)
             {
                 MessageBox.Show("Paciente eliminado con éxito");
                 Pacientes.Remove(pacienteAEliminar);
