@@ -13,10 +13,8 @@ namespace GestorEnfermeriaJoyfe.Application.UserApp
             _userRepository = userRepository;
         }
 
-        public async Task<int> Run(string name, string lastName, string email, string password)
+        public async Task<int> Run(User user)
         {
-            var user = User.Create(new UserId(0), new UserName(name), new UserPassword(password), new UserLastName(lastName), new UserEmail(email));
-
             user.Password = new UserPassword(user.Password.GetHash());
 
             var newUserId = await _userRepository.AddAsync(user);

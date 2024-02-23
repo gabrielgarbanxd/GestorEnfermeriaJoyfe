@@ -17,6 +17,11 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             return await UserQueryAdapter.GetAllUsers();
         }
 
+        public static async Task<Response<List<User>>> GetAllPaginated(int perPage, int page)
+        {
+            return await UserQueryAdapter.GetAllUsersPaginated(perPage, page);
+        }
+
         public static async Task<Response<User>> Get(int id)
         {
             return await UserQueryAdapter.FindUser(id);
@@ -27,9 +32,9 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             return await UserQueryAdapter.AuthUser(email, password);
         }
 
-        public static async Task<Response<int>> Register(string name, string lastName, string email, string password)
+        public static async Task<Response<int>> Register(User user)
         {
-            return await UserCommandAdapter.RegisterUser(name, lastName, email, password);
+            return await UserCommandAdapter.RegisterUser(user);
         }
 
         public static async Task<Response<bool>> Update(User user)

@@ -17,7 +17,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
         {
         }
 
-        public Task<List<Patient>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<List<Patient>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {
@@ -27,15 +27,15 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
                     {"@Page", page}
                 };
 
-                return ExecuteQueryAsync("GetAllPatientsPaginatedProcedure", parameters);
+                return await ExecuteQueryAsync("GetAllPatientsPaginatedProcedure", parameters);
             }
 
-            return ExecuteQueryAsync("GetAllPatientsProcedure");
+            return await ExecuteQueryAsync("GetAllPatientsProcedure");
         }
 
-        public Task<Patient> FindAsync(PatientId patientId)
+        public async Task<Patient> FindAsync(PatientId patientId)
         {
-            var result = ExecuteQueryAsync("GetPatientByIdProcedure", new Dictionary<string, object> { { "@Id", patientId.Value } });
+            var result = await ExecuteQueryAsync("GetPatientByIdProcedure", new Dictionary<string, object> { { "@Id", patientId.Value } });
 
             if (result.Count == 0)
             {
@@ -45,19 +45,55 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
             return result[0];
         }
 
-        public Task<int> AddAsync(Patient patient)
+        public async Task<int> AddAsync(Patient patient)
         {
-            throw new System.NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"@Name", patient.Name.Value},
+                {"@LastName", patient.LastName.Value},
+                {"@LastName2", patient.LastName2.Value},
+                {"@Course", patient.Course.Value}
+            };
+            var result = await ExecuteNonQueryAsync("CreatePatientProcedure", parameters);
+
+            if (result <= 0)
+            {
+                throw new System.Exception("No se ha podido crear el paciente.");
+            }
+
+            return result;
         }
 
-        public Task<int> UpdateAsync(Patient patient)
+        public async Task<int> UpdateAsync(Patient patient)
         {
-            throw new System.NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"@Id", patient.Id.Value},
+                {"@Name", patient.Name.Value},
+                {"@LastName", patient.LastName.Value},
+                {"@LastName2", patient.LastName2.Value},
+                {"@Course", patient.Course.Value}
+            };
+            var result = await ExecuteNonQueryAsync("UpdatePatientProcedure", parameters);
+
+            if (result <= 0)
+            {
+                throw new System.Exception("No se ha podido actualizar el paciente.");
+            }
+
+            return result;
         }
 
-        public Task<int> DeleteAsync(PatientId patientId)
+        public async Task<int> DeleteAsync(PatientId patientId)
         {
-            throw new System.NotImplementedException();
+            var result = await ExecuteNonQueryAsync("DeletePatientProcedure", new Dictionary<string, object> { { "@Id", patientId.Value } });
+
+            if (result <= 0)
+            {
+                throw new System.Exception("No se ha podido eliminar el paciente.");
+            }
+
+            return result;
         }
     }
 }

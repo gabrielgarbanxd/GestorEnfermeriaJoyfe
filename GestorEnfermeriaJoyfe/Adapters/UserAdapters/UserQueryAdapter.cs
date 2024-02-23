@@ -1,10 +1,7 @@
 ﻿using GestorEnfermeriaJoyfe.Application.UserApp;
 using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Infraestructure.UserPersistence;
-using Google.Protobuf.WellKnownTypes;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

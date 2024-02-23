@@ -19,6 +19,18 @@ CREATE TABLE `gestor_enfemeria`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
+  
+-- Patients table
+DROP TABLE IF EXISTS `gestor_enfemeria`.`patients`;
+  
+CREATE TABLE `gestor_enfemeria`.`patients` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `last_name` VARCHAR(50) NOT NULL,
+  `last_name2` VARCHAR(50) NOT NULL,
+  `course` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
 
@@ -52,10 +64,12 @@ DELIMITER $$
 
 CREATE PROCEDURE `GetAllUsersPaginatedProcedure`(
     In p_per_page INT,
-    In p_page INT
+    In p_page INT,
     OUT p_Result INT
 )
 PRO : BEGIN
+
+	DECLARE p_offset INT;
 
     -- Verificar que el número de página sea mayor a 0
     IF p_page < 1 THEN
@@ -70,19 +84,19 @@ PRO : BEGIN
     END IF;
 
     -- Calcular el número de registros a omitir
-    SET @offset = (p_page - 1) * p_per_page;
+    SET p_offset = (p_page - 1) * p_per_page;
 
     -- Obtener el número total de registros
     SELECT COUNT(*) INTO @total_records FROM users;
 
     -- Verificar que el número de registros a omitir sea menor al número total de registros
-    IF @offset >= @total_records THEN
+    IF p_offset >= @total_records THEN
         SET p_Result = -3; -- Código de error para número de página inválido
         LEAVE PRO; -- Salir del procedimiento almacenado
     END IF;
 
     -- Obtener los registros de la página actual
-    SELECT * FROM users LIMIT p_per_page OFFSET @offset;
+    SELECT * FROM users LIMIT p_per_page OFFSET p_offset;
 
     -- Devolver el número total de registros
     SET p_Result = @total_records;

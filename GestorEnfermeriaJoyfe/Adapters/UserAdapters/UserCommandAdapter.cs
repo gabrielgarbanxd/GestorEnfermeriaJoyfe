@@ -2,9 +2,6 @@
 using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Infraestructure.UserPersistence;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
@@ -13,13 +10,13 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
     {
         private static readonly IUserContract userRepository = new MySqlUserRepository();
 
-        public static async Task<Response<int>> RegisterUser(string name, string lastName, string email, string password)
+        public static async Task<Response<int>> RegisterUser(User user)
         {
             try
             {
                 UserRegister userRegister = new(userRepository);
 
-                int newUserId = await userRegister.Run(name, lastName, email, password);
+                int newUserId = await userRegister.Run(user);
 
                 return Response<int>.Ok("Usuario registrado", newUserId);
             }
