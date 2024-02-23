@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Infraestructure
+namespace GestorEnfermeriaJoyfe.Infraestructure.Shared
 {
-    public abstract class MySqlRepositoryBase
+    public abstract class MySqlRepositoryBase<T> where T : class
     {
         private readonly MySqlConnection _connection;
-        private readonly IObjectMapper? _mapper;
+        private readonly IObjectMapper<T>? _mapper;
         private readonly string _connectionString = "Server=localhost;Port=3309;Database=login;User=root;Password=joyfe;";
 
-        public MySqlRepositoryBase(IObjectMapper mapper)
+        public MySqlRepositoryBase(IObjectMapper<T> mapper)
         {
             _connection = new MySqlConnection(_connectionString);
             _mapper = mapper;
@@ -29,7 +29,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
             return _connection;
         }
 
-        protected async Task<List<T>> ExecuteQueryAsync<T>(string storedProcedure, IDictionary<string, object>? parameters = null)
+        protected async Task<List<T>> ExecuteQueryAsync(string storedProcedure, IDictionary<string, object>? parameters = null)
         {
             using (var connection = _connection)
             {
@@ -50,7 +50,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
 
                         while (await reader.ReadAsync())
                         {
-                            result.Add(MapToEntity<T>(reader));
+                            result.Add(MapToEntity(reader));
                         }
 
                         return result;
@@ -96,13 +96,13 @@ namespace GestorEnfermeriaJoyfe.Infraestructure
         }
 
 
-        protected T MapToEntity<T>(IDataReader reader)
+        protected T MapToEntity(IDataReader reader)
         {
             if (_mapper == null)
             {
                 throw new InvalidOperationException("No mapper provided");
             }
-            return _mapper.Map<T>(reader);
+            return _mapper.Map(reader);
         }
     }
 }

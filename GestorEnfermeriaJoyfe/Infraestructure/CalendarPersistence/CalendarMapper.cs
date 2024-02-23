@@ -2,29 +2,25 @@
 using System.Data;
 using GestorEnfermeriaJoyfe.Domain.Calendar;
 using GestorEnfermeriaJoyfe.Domain.Calendar.ValueObjects;
+using GestorEnfermeriaJoyfe.Infraestructure.Shared;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
 {
-    public class CalendarMapper : IObjectMapper
+    public class CalendarMapper : IObjectMapper<Calendar>
     {
-        public T Map<T>(IDataReader reader)
+        public Calendar Map(IDataReader reader)
         {
-            if (typeof(T) == typeof(Calendar))
-            {
-                int id = reader.GetInt32(reader.GetOrdinal("id"));
-                DateTime fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
-                string tarea = reader.GetString(reader.GetOrdinal("tarea"));
+            int id = reader.GetInt32(reader.GetOrdinal("id"));
+            DateTime fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
+            string tarea = reader.GetString(reader.GetOrdinal("tarea"));
 
-                Calendar calendar = new Calendar(
-                   id,
-                   new CalendarFecha(fecha),
-                   tarea
-               );
+            Calendar calendar = new(
+                new CalendarId(id),
+                new CalendarFecha(fecha),
+                new CalendarTarea(tarea)
+            );
 
-                return (T)(object)calendar;
-            }
-
-            throw new ArgumentException($"No mapper available for type {typeof(T)}");
+            return calendar;
         }
     }
 }

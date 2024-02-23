@@ -6,10 +6,10 @@ namespace GestorEnfermeriaJoyfe.Domain.User
     public class User
     {
         public UserId Id { get; private set; }
-        public UserName UserName { get; private set; }
-        public UserPassword Password { get; private set; }
-        public UserLastName LastName { get; private set; }
-        public UserEmail Email { get; private set; }
+        public UserName UserName { get; set; }
+        public UserPassword Password { get; set; }
+        public UserLastName LastName { get; set; }
+        public UserEmail Email { get; set; }
 
         public User(UserId userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
         {

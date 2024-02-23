@@ -4,10 +4,11 @@ using System.Data;
 using System.Threading.Tasks;
 using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Domain.User.ValueObjects;
+using GestorEnfermeriaJoyfe.Infraestructure.Shared;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
 {
-    public class MySqlUserRepository : MySqlRepositoryBase, IUserContract
+    public class MySqlUserRepository : MySqlRepositoryBase<User>, IUserContract
     {
 
         public MySqlUserRepository(UserMapper mapper) : base(mapper)
@@ -28,15 +29,15 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
                     {"@Page", page}
                 };
 
-                return await ExecuteQueryAsync<User>("GetAllUsersPaginatedProcedure", parameters);
+                return await ExecuteQueryAsync("GetAllUsersPaginatedProcedure", parameters);
             }
 
-            return await ExecuteQueryAsync<User>("GetAllUsersProcedure");
+            return await ExecuteQueryAsync("GetAllUsersProcedure");
         }
 
         public async Task<User> FindAsync(UserId userId)
         {
-            var result = await ExecuteQueryAsync<User>("GetUserByIdProcedure", new Dictionary<string, object> { { "@Id", userId.Value } });
+            var result = await ExecuteQueryAsync("GetUserByIdProcedure", new Dictionary<string, object> { { "@Id", userId.Value } });
 
             if (result.Count == 0)
             {
@@ -53,7 +54,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
                 {"@Email", email.Value}
             };
 
-            var result = await ExecuteQueryAsync<User>("GetUserByEmailProcedure", parameters);
+            var result = await ExecuteQueryAsync("GetUserByEmailProcedure", parameters);
 
             if (result.Count == 0)
             {

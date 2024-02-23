@@ -19,7 +19,7 @@ namespace GestorEnfermeriaJoyfe.Application.UserApp
 
         public async Task<bool> Run(User user)
         {
-            user.Password.Value = user.Password.GetHash();
+            user.Password = new UserPassword(user.Password.GetHash());
 
             return await _userRepository.UpdateAsync(user) > 0;
         }

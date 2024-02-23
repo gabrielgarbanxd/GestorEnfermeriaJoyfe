@@ -4,10 +4,11 @@ using System.Data;
 using System.Threading.Tasks;
 using GestorEnfermeriaJoyfe.Domain.Calendar;
 using GestorEnfermeriaJoyfe.Domain.Calendar.ValueObjects;
+using GestorEnfermeriaJoyfe.Infraestructure.Shared;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
 {
-    public class MySqlCalendarRepository : MySqlRepositoryBase, ICalendarContract
+    public class MySqlCalendarRepository : MySqlRepositoryBase<Calendar>, ICalendarContract
     {
         public MySqlCalendarRepository(CalendarMapper mapper) : base(mapper)
         {
