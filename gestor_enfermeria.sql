@@ -281,6 +281,241 @@ DELIMITER ;
 
 
 
+-- ==================================
+-- ========>>  PATIENTS   <<=========
+-- ==================================
+
+-- //===>> GetAllPatientsProcedure patients procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllPatientsProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetAllPatientsProcedure`()
+PRO : BEGIN
+
+    -- Obtener todos los pacientes
+    SELECT * FROM patients;
+
+END$$
+
+-- //===>> GetAllPatientsPaginatedProcedure patients procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllPatientsPaginatedProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetAllPatientsPaginatedProcedure`(
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM patients;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM patients LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetPatientByIdProcedure patients procedure <<===//
+DROP PROCEDURE IF EXISTS `GetPatientByIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetPatientByIdProcedure`(
+    IN p_id INT
+)
+PRO : BEGIN
+
+    -- Obtener el paciente por ID
+    SELECT * FROM patients WHERE id = p_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Create patient procedure <<===//
+DROP PROCEDURE IF EXISTS `CreatePatientProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `CreatePatientProcedure`(
+    IN p_name VARCHAR(100),
+    IN p_last_name VARCHAR(50),
+    IN p_last_name2 VARCHAR(50),
+    IN p_course VARCHAR(100),
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar que el nombre no sea nulo
+    IF p_name IS NULL THEN 
+        SET p_Result = -1; -- Código de error para nombre nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el apellido no sea nulo
+    IF p_last_name IS NULL THEN
+        SET p_Result = -2; -- Código de error para apellido nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el segundo apellido no sea nulo
+    IF p_last_name2 IS NULL THEN
+        SET p_Result = -3; -- Código de error para segundo apellido nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el curso no sea nulo
+    IF p_course IS NULL THEN
+        SET p_Result = -4; -- Código de error para curso nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Insertar nuevo paciente
+    INSERT INTO patients(name, last_name, last_name2, course)
+    VALUES(p_name, p_last_name, p_last_name2, p_course);
+
+    -- Verificar si la inserción fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = LAST_INSERT_ID(); -- Devolver el ID del paciente insertado
+    ELSE
+        SET p_Result = 0; -- Código de error para inserción no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Update patient procedure <<===//
+DROP PROCEDURE IF EXISTS `UpdatePatientProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `UpdatePatientProcedure`(
+    IN p_id INT,
+    IN p_name VARCHAR(100),
+    IN p_last_name VARCHAR(50),
+    IN p_last_name2 VARCHAR(50),
+    IN p_course VARCHAR(100),
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si el paciente existe
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el nombre no sea nulo
+    IF p_name IS NULL THEN 
+        SET p_Result = -2; -- Código de error para nombre nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el apellido no sea nulo
+    IF p_last_name IS NULL THEN
+        SET p_Result = -3; -- Código de error para apellido nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el segundo apellido no sea nulo
+    IF p_last_name2 IS NULL THEN
+        SET p_Result = -4; -- Código de error para segundo apellido nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el curso no sea nulo
+    IF p_course IS NULL THEN
+        SET p_Result = -5; -- Código de error para curso nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Actualizar paciente
+    UPDATE patients
+    SET name = p_name, last_name = p_last_name, last_name2 = p_last_name2, course = p_course
+    WHERE id = p_id;
+
+    -- Verificar si la actualización fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = 1; -- Código de éxito
+    ELSE
+        SET p_Result = 0; -- Código de error para actualización no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Delete patient procedure <<===//
+DROP PROCEDURE IF EXISTS `DeletePatientProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `DeletePatientProcedure`(
+    IN p_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si el paciente existe
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Eliminar paciente
+    DELETE FROM patients WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    SELECT id INTO p_Result FROM patients WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = p_id; -- Código de éxito
+    ELSE
+        SET p_Result = 0; -- Código de error para eliminación no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+
+
+
+
 -- *************************************************************************
 -- *                                                                       *
 -- *                                 VIEWS                               *
