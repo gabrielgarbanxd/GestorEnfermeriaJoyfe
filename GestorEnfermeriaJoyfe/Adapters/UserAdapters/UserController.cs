@@ -1,4 +1,5 @@
 ﻿using GestorEnfermeriaJoyfe.Domain.User;
+using GestorEnfermeriaJoyfe.Infraestructure.UserPersistence;
 using System.Collections.Generic;
 using System.Security;
 using System.Threading.Tasks;
@@ -7,42 +8,34 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
     public class UserController
     {
-        public UserController() { }
+        private readonly UserMapper userMapper;
+        private readonly MySqlUserRepository userRepository;
 
-        public static async Task<Response<List<User>>> GetAll()
+        private readonly UserQueryAdapter UserQueryAdapter;
+        private readonly UserCommandAdapter UserCommandAdapter;
+
+        public UserController() 
         {
-            return await UserQueryAdapter.GetAllUsers();
+            userMapper = new();
+            userRepository = new(userMapper);
+            UserQueryAdapter = new(userRepository);
+            UserCommandAdapter = new(userRepository);
         }
 
-        public static async Task<Response<List<User>>> GetAllPaginated(int perPage, int page)
-        {
-            return await UserQueryAdapter.GetAllUsersPaginated(perPage, page);
-        }
+        public async Task<Response<List<User>>> GetAll() => await UserQueryAdapter.GetAllUsers();
 
-        public static async Task<Response<User>> Get(int id)
-        {
-            return await UserQueryAdapter.FindUser(id);
-        }
+        public async Task<Response<List<User>>> GetAllPaginated(int perPage, int page) => await UserQueryAdapter.GetAllUsersPaginated(perPage, page);
 
-        public static async Task<Response<int>> Login(string email, SecureString securePassword)
-        {
-            return await UserQueryAdapter.AuthUser(email, securePassword);
-        }
+        public async Task<Response<User>> Get(int id) => await UserQueryAdapter.FindUser(id);
 
-        public static async Task<Response<int>> Register(User user)
-        {
-            return await UserCommandAdapter.RegisterUser(user);
-        }
+        public async Task<Response<int>> Login(string email, SecureString securePassword) => await UserQueryAdapter.AuthUser(email, securePassword);
 
-        public static async Task<Response<bool>> Update(User user)
-        {
-            return await UserCommandAdapter.UpdateUser(user);
-        }
+        public async Task<Response<int>> Register(User user) => await UserCommandAdapter.RegisterUser(user);
 
-        public static async Task<Response<bool>> Delete(dynamic data)
-        {
-            return await UserCommandAdapter.DeleteUser(data);
-        }
+        public async Task<Response<bool>> Update(User user) => await UserCommandAdapter.UpdateUser(user);
+
+        public async Task<Response<bool>> Delete(dynamic data) => await UserCommandAdapter.DeleteUser(data);
+
 
     }
 

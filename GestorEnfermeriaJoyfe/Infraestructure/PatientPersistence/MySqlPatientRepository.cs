@@ -23,8 +23,8 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
             {
                 var parameters = new Dictionary<string, object>
                 {
-                    {"@PerPage", perPage},
-                    {"@Page", page}
+                    {"p_per_page", perPage},
+                    {"p_page", page}
                 };
 
                 return await ExecuteQueryAsync("GetAllPatientsPaginatedProcedure", parameters);
@@ -35,7 +35,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
 
         public async Task<Patient> FindAsync(PatientId patientId)
         {
-            var result = await ExecuteQueryAsync("GetPatientByIdProcedure", new Dictionary<string, object> { { "@Id", patientId.Value } });
+            var result = await ExecuteQueryAsync("GetPatientByIdProcedure", new Dictionary<string, object> { { "p_id", patientId.Value } });
 
             if (result.Count == 0)
             {
@@ -49,10 +49,10 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
         {
             var parameters = new Dictionary<string, object>
             {
-                {"@Name", patient.Name.Value},
-                {"@LastName", patient.LastName.Value},
-                {"@LastName2", patient.LastName2.Value},
-                {"@Course", patient.Course.Value}
+                {"p_name", patient.Name.Value},
+                {"p_last_name", patient.LastName.Value},
+                {"p_last_name2", patient.LastName2.Value},
+                {"p_course", patient.Course.Value}
             };
             var result = await ExecuteNonQueryAsync("CreatePatientProcedure", parameters);
 
@@ -68,11 +68,11 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
         {
             var parameters = new Dictionary<string, object>
             {
-                {"@Id", patient.Id.Value},
-                {"@Name", patient.Name.Value},
-                {"@LastName", patient.LastName.Value},
-                {"@LastName2", patient.LastName2.Value},
-                {"@Course", patient.Course.Value}
+                {"p_id", patient.Id.Value},
+                {"p_name", patient.Name.Value},
+                {"p_last_name", patient.LastName.Value},
+                {"p_last_name2", patient.LastName2.Value},
+                {"p_course", patient.Course.Value}
             };
             var result = await ExecuteNonQueryAsync("UpdatePatientProcedure", parameters);
 
@@ -86,7 +86,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
 
         public async Task<int> DeleteAsync(PatientId patientId)
         {
-            var result = await ExecuteNonQueryAsync("DeletePatientProcedure", new Dictionary<string, object> { { "@Id", patientId.Value } });
+            var result = await ExecuteNonQueryAsync("DeletePatientProcedure", new Dictionary<string, object> { { "p_id", patientId.Value } });
 
             if (result <= 0)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
@@ -22,6 +23,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private ViewModelBase _currentPageView;
         private string _title;
         private IconChar _icon;
+
+        private readonly UserController UserController = new();
+        private readonly PatientController PatientController = new();
 
         // //===>> Propertys <<====//
         public User User
@@ -74,9 +78,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         // //===>> Constructor <<====//
         public MainViewModel()
         {
-            LoadCurrentUserData();
-            LoadPacientes();
-
             // *** Carga Commands ***
             ShowPrincipalViewCommand = new ViewModelCommand(ExecuteShowPrincipalViewCommand);
             ShowPacientesViewCommand = new ViewModelCommand(ExecuteShowPacientesViewCommand);
@@ -88,6 +89,12 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             PacientesMediator.Instance.PacienteUpdated += UpdatePaciente;
             PacientesMediator.Instance.PacienteDeleted += DeletePaciente;
             PacientesMediator.Instance.PacienteCreated += AddPaciente;
+        }
+
+        public override async void OnMounted()
+        {
+            await LoadCurrentUserData();
+            await LoadPacientes();
         }
 
         // //===>> Commands Methods <<====//
@@ -111,7 +118,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         // //===>> Methods <<====//
-        private async void LoadCurrentUserData()
+        private async Task LoadCurrentUserData()
         {
             // Obtiene el email de usuario actual del hilo principal.
             var userId = Thread.CurrentPrincipal.Identity.Name;
@@ -129,7 +136,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
-        private async void LoadPacientes()
+        private async Task LoadPacientes()
         {
             var response = await PatientController.GetAll();
             
@@ -173,7 +180,5 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             // Añadir el nuevo paciente a la lista
             _pacientes.Add(newPaciente);
         }
-
-
     }
 }

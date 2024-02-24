@@ -1,12 +1,13 @@
 ﻿using GestorEnfermeriaJoyfe.Domain.Shared;
 using System;
+using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects
 {
     public class PatientName : StringValueObject
     {
         private const int MaxPatientNameLength = 100;
-        private const int MinPatientNameLength = 3;
+        private const int MinPatientNameLength = 1;
 
         public PatientName(string value) : base(value)
         {
@@ -31,6 +32,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects
 
             if (value.Length > MaxPatientNameLength)
             {
+                MessageBox.Show(value);
                 throw new ArgumentException($"El nombre del paciente no puede ser mayor a {MaxPatientNameLength} caracteres.");
             }
         }  

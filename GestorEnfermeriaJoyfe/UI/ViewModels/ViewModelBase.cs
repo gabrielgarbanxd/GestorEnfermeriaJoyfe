@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -20,6 +21,13 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));  
 
 
+        }
+
+        public virtual void OnMounted() { }
+
+        public ViewModelBase()
+        {
+            OnMounted();
         }
 
 

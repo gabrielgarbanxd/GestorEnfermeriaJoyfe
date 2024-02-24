@@ -5,15 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Security;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
-    public static class UserQueryAdapter
+    public class UserQueryAdapter
     {
-        private static readonly UserMapper userMapper = new();
-        private static readonly MySqlUserRepository userRepository = new(userMapper);
+        private readonly IUserContract userRepository;
 
-        public static async Task<Response<int>> AuthUser(string email, SecureString securePassword)
+        public UserQueryAdapter(IUserContract userRepository)
+        {
+            this.userRepository = userRepository;
+        }
+
+
+        public async Task<Response<int>> AuthUser(string email, SecureString securePassword)
         {
             try
             {
@@ -25,12 +31,13 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             }
             catch (Exception e)
             {
+
                 return Response<int>.Fail(e.Message);
             }
         }
 
 
-        public static async Task<Response<User>> FindUser(int id)
+        public async Task<Response<User>> FindUser(int id)
         {
             try
             {
@@ -47,7 +54,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
         }
 
 
-        public static async Task<Response<List<User>>> GetAllUsers()
+        public async Task<Response<List<User>>> GetAllUsers()
         {
             try
             {
@@ -63,7 +70,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             }
         }
 
-        public static async Task<Response<List<User>>> GetAllUsersPaginated(int perPage, int page)
+        public async Task<Response<List<User>>> GetAllUsersPaginated(int perPage, int page)
         {
             try
             {

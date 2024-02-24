@@ -7,6 +7,7 @@ using GestorEnfermeriaJoyfe.UI.Views;
 using GestorEnfermeriaJoyfe.Domain;
 using GestorEnfermeriaJoyfe.Infraestructure;
 using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
+using GestorEnfermeriaJoyfe.Domain.User;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -14,12 +15,10 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         // Campos privados
-        private string _email;
+        private string _email = "admin@joyfe.com";
         private SecureString _password;
         private string _errorMessage;
         private bool _isViewVisible = true;
-
-        private IUserRepository userRepository;
 
         // Propiedades públicas
         public string Email
@@ -71,7 +70,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         // Constructor
         public LoginViewModel()
         {
-            userRepository = new UserRepository();
             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
             RecoverPasswordCommand = new ViewModelCommand(p => ExecuteRecoverPasswordCommand("", ""));
         }
@@ -91,8 +89,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         // Método privado para ejecutar el comando de inicio de sesión
         private async void ExecuteLoginCommand(object obj)
         {
+            var userController = new UserController();
             //var isValidUser = userRepository.AuthenticateUser(new System.Net.NetworkCredential(Username, Password));
-            var response = await UserController.Login(Email, Password);
+            var response = await userController.Login(Email, Password);
 
             if (response.Success)
             {
@@ -106,10 +105,8 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
             else
             {
-                ErrorMessage = "* El nombre de usuario o la contraseña no son válidos";
+                ErrorMessage = "* El email o la contraseña no son válidos";
             }
-
-
         }
 
         // Método privado para ejecutar el comando de recuperar contraseña (no implementado actualmente)

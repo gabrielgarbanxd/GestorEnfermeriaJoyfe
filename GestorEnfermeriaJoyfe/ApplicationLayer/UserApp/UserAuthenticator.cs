@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
 {
@@ -26,7 +27,6 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
             {
                 unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(securePassword);
                 var password = Marshal.PtrToStringUni(unmanagedString) ?? string.Empty;
-
 
                 // Verificar la contraseña
                 if (user.Password.VerifyPassword(password))

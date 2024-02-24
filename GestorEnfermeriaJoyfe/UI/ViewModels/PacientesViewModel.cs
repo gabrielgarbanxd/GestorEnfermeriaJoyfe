@@ -12,6 +12,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
     public class PacientesViewModel : ViewModelBase
     {
+        private readonly PatientController PatientController = new();
 
         // //===>> Fields <<====//
         private ObservableCollection<Patient> _pacientes;

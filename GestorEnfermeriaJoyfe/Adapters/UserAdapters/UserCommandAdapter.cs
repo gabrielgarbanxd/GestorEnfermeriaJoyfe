@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
-    public static class UserCommandAdapter
+    public class UserCommandAdapter
     {
-        private static readonly IUserContract userRepository = new MySqlUserRepository();
+        private readonly IUserContract userRepository;
 
-        public static async Task<Response<int>> RegisterUser(User user)
+        public UserCommandAdapter(IUserContract userRepository)
+        {
+            this.userRepository = userRepository;
+        }
+
+        public async Task<Response<int>> RegisterUser(User user)
         {
             try
             {
@@ -26,7 +31,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             }
         }
 
-        public static async Task<Response<bool>> DeleteUser(int id)
+        public async Task<Response<bool>> DeleteUser(int id)
         {
             try
             {
@@ -42,7 +47,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
             }
         }
 
-        public static async Task<Response<bool>> UpdateUser(User user)
+        public async Task<Response<bool>> UpdateUser(User user)
         {
             try
             {

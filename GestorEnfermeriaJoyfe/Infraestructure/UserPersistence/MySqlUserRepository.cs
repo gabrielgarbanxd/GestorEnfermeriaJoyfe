@@ -25,8 +25,8 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
             {
                 var parameters = new Dictionary<string, object>
                 {
-                    {"@PerPage", perPage},
-                    {"@Page", page}
+                    {"p_per_page", perPage},
+                    {"p_page", page}
                 };
 
                 return await ExecuteQueryAsync("GetAllUsersPaginatedProcedure", parameters);
@@ -37,7 +37,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
 
         public async Task<User> FindAsync(UserId userId)
         {
-            var result = await ExecuteQueryAsync("GetUserByIdProcedure", new Dictionary<string, object> { { "@Id", userId.Value } });
+            var result = await ExecuteQueryAsync("GetUserByIdProcedure", new Dictionary<string, object> { { "p_id", userId.Value } });
 
             if (result.Count == 0)
             {
@@ -51,7 +51,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
             var parameters = new Dictionary<string, object>
             {
-                {"@Email", email.Value}
+                {"p_email", email.Value}
             };
 
             var result = await ExecuteQueryAsync("GetUserByEmailProcedure", parameters);
@@ -68,10 +68,10 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
             var parameters = new Dictionary<string, object>
             {
-                {"@Name", user.UserName},
-                {"@Password", user.Password},
-                {"@LastName", user.LastName},
-                {"@Email", user.Email}
+                {"p_name", user.UserName},
+                {"p_password", user.Password},
+                {"p_last_name", user.LastName},
+                {"p_email", user.Email}
             };
             var result = await ExecuteNonQueryAsync("CreateUserProcedure", parameters);
 
@@ -87,11 +87,11 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
             var parameters = new Dictionary<string, object>
             {
-                {"@Id", user.Id},
-                {"@Name", user.UserName},
-                {"@Password", user.Password},
-                {"@LastName", user.LastName},
-                {"@Email", user.Email}
+                {"p_id", user.Id},
+                {"p_name", user.UserName},
+                {"p_password", user.Password},
+                {"p_last_name", user.LastName},
+                {"p_email", user.Email}
             };
 
             var result = await ExecuteNonQueryAsync("UpdateUserProcedure", parameters);
@@ -106,7 +106,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
 
         public async Task<int> DeleteAsync(UserId userId)
         {
-            var result = await ExecuteNonQueryAsync("DeleteUserProcedure", new Dictionary<string, object> { { "@Id", userId.Value } });
+            var result = await ExecuteNonQueryAsync("DeleteUserProcedure", new Dictionary<string, object> { { "p_id", userId.Value } });
 
             if (result <= 0)
             {

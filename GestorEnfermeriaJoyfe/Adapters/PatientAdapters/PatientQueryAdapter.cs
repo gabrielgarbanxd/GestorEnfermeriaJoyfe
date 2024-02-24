@@ -11,10 +11,14 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 {
     public class PatientQueryAdapter
     {
-        private static readonly PatientMapper patientMapper = new();
-        private static readonly MySqlPatientRepository patientRepository = new(patientMapper);
+        private readonly IPatientContract patientRepository;
 
-        public static async Task<Response<Patient>> FindPatient(int id)
+        public PatientQueryAdapter(IPatientContract patientRepository)
+        {
+            this.patientRepository = patientRepository;
+        }
+
+        public async Task<Response<Patient>> FindPatient(int id)
         {
             try
             {
@@ -30,23 +34,23 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
             }
         }
 
-        public static async Task<Response<List<Patient>>> GetAllPatients()
+        public async Task<Response<List<Patient>>> GetAllPatients()
         {
-            try
-            {
+            //try
+            //{
                 PatientLister patientLister = new(patientRepository);
 
                 var patients = await patientLister.Run();
 
                 return patients.Count > 0 ? Response<List<Patient>>.Ok("Pacientes encontrados", patients) : Response<List<Patient>>.Fail("No se encontraron pacientes");
-            }
-            catch (Exception e)
-            {
-                return Response<List<Patient>>.Fail(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<List<Patient>>.Fail(e.Message);
+            //}
         }
 
-        public static async Task<Response<List<Patient>>> GetAllPatientsPaginated(int perPage, int page)
+        public async Task<Response<List<Patient>>> GetAllPatientsPaginated(int perPage, int page)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using GestorEnfermeriaJoyfe.Domain.Patient;
+using GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,36 +7,33 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 {
     public class PatientController
     {
-        public PatientController() { }
+        private readonly PatientMapper patientMapper;
+        private readonly MySqlPatientRepository patientRepository;
 
-        public static async Task<Response<List<Patient>>> GetAll()
+
+        private readonly PatientQueryAdapter PatientQueryAdapter;
+        private readonly PatientCommandAdapter PatientCommandAdapter;
+
+        public PatientController()
         {
-            return await PatientQueryAdapter.GetAllPatients();
+            patientMapper = new();
+            patientRepository = new(patientMapper);
+
+            PatientQueryAdapter = new(patientRepository);
+            PatientCommandAdapter = new(patientRepository);
         }
 
-        public static async Task<Response<List<Patient>>> GetAllPaginated(int perPage, int page)
-        {
-            return await PatientQueryAdapter.GetAllPatientsPaginated(perPage, page);
-        }
+        public async Task<Response<List<Patient>>> GetAll() => await PatientQueryAdapter.GetAllPatients();
 
-        public static async Task<Response<Patient>> Get(int id)
-        {
-            return await PatientQueryAdapter.FindPatient(id);
-        }
+        public async Task<Response<List<Patient>>> GetAllPaginated(int perPage, int page) => await PatientQueryAdapter.GetAllPatientsPaginated(perPage, page);
 
-        public static async Task<Response<int>> Register(Patient patient)
-        {
-            return await PatientCommandAdapter.CreatePatient(patient);
-        }
+        public async Task<Response<Patient>> Get(int id) => await PatientQueryAdapter.FindPatient(id);
 
-        public static async Task<Response<bool>> Update(Patient patient)
-        {
-            return await PatientCommandAdapter.UpdatePatient(patient);
-        }
+        public async Task<Response<int>> Register(Patient patient) => await PatientCommandAdapter.CreatePatient(patient);
 
-        public static async Task<Response<bool>> Delete(dynamic data)
-        {
-            return await PatientCommandAdapter.DeletePatient(data);
-        }
+        public async Task<Response<bool>> Update(Patient patient) => await PatientCommandAdapter.UpdatePatient(patient);
+
+        public async Task<Response<bool>> Delete(dynamic data) => await PatientCommandAdapter.DeletePatient(data);
+
     }
 }

@@ -8,9 +8,14 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 {
     public class PatientCommandAdapter
     {
-        private static readonly MySqlPatientRepository patientRepository = new();
+        private readonly IPatientContract patientRepository;
 
-        public static async Task<Response<int>> CreatePatient(Patient patient)
+        public PatientCommandAdapter(IPatientContract patientRepository)
+        {
+            this.patientRepository = patientRepository;
+        }
+
+        public async Task<Response<int>> CreatePatient(Patient patient)
         {
             try
             {
@@ -26,7 +31,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
             }
         }
 
-        public static async Task<Response<bool>> DeletePatient(int id)
+        public async Task<Response<bool>> DeletePatient(int id)
         {
             try
             {
@@ -42,7 +47,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
             }
         }
 
-        public static async Task<Response<bool>> UpdatePatient(Patient patient)
+        public async Task<Response<bool>> UpdatePatient(Patient patient)
         {
             try
             {
