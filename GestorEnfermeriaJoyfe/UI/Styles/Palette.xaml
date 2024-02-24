@@ -47,6 +47,7 @@
 
     <!-- *** General Text *** -->
     <SolidColorBrush x:Key="text">#000B14</SolidColorBrush>
+    <SolidColorBrush x:Key="placeholder">#A0A0A0</SolidColorBrush>
 
 
 

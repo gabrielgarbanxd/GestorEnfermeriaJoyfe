@@ -552,7 +552,7 @@ DELIMITER ;
 -- ========>>    USERS    <<=========
 -- ==================================
 INSERT INTO users (name, password, last_name, email) 
-VALUES ('admin', 'admin', 'AdminLastName', 'admin@joyfe.com');
+VALUES ('admin', 'AC9689E2272427085E35B9D3E3E8BED88CB3434828B43B86FC0596CAD4C6E270', 'AdminLastName', 'admin@joyfe.com');
 
 -- ==================================
 -- ========>>  PATIENTS   <<=========

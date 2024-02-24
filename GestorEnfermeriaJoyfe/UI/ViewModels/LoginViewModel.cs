@@ -4,8 +4,6 @@ using System.Windows.Input;
 using System.Threading;
 using System.Security.Principal;
 using GestorEnfermeriaJoyfe.UI.Views;
-using GestorEnfermeriaJoyfe.Domain;
-using GestorEnfermeriaJoyfe.Infraestructure;
 using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
 using GestorEnfermeriaJoyfe.Domain.User;
 

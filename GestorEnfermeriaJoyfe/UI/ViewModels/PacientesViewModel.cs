@@ -7,6 +7,10 @@ using GestorEnfermeriaJoyfe.Domain.Patient;
 using GestorEnfermeriaJoyfe.Adapters.PatientAdapters;
 using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -16,10 +20,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
         // //===>> Fields <<====//
         private ObservableCollection<Patient> _pacientes;
-
-        private Patient _selectedPaciente;
-
-        // //===>> Propertys <<====//
         public ObservableCollection<Patient> Pacientes
         {
             get => _pacientes;
@@ -29,6 +29,15 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 OnPropertyChanged(nameof(Pacientes));
             }
         }
+
+
+        private readonly ICollectionView _filteredPacientesView;
+        public ICollectionView FilteredPacientesView
+        {
+            get { return _filteredPacientesView; }
+        }
+
+        private Patient _selectedPaciente;
         public Patient SelectedPaciente
         {
             get => _selectedPaciente;
@@ -36,6 +45,22 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             {
                 _selectedPaciente = value;
                 OnPropertyChanged(nameof(SelectedPaciente));
+            }
+        }
+
+        private string _searchText = "";
+        public string SearchText 
+        { 
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    OnPropertyChanged(nameof(SearchText));
+                    FilterPacientes();
+                }
+
             }
         }
 
@@ -49,6 +74,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         public PacientesViewModel(List<Patient> pacientes)
         {
             Pacientes = new ObservableCollection<Patient>(pacientes);
+
+            _filteredPacientesView = CollectionViewSource.GetDefaultView(Pacientes);
+            _filteredPacientesView.Filter = PatientFilter;
 
             // *** Carga Commands ***
             CreatePacienteCommand = new ViewModelCommand(ExecuteCreatePacienteCommand);
@@ -184,5 +212,28 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
 
+        //===>> Private Methods <<====//
+        private bool PatientFilter(object item)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                return true;
+            }
+
+            string lowerCaseSearchText = SearchText.ToLower();
+
+            Patient? paciente = item as Patient;
+
+            return
+                Regex.IsMatch(paciente.Name.Value, lowerCaseSearchText, RegexOptions.IgnoreCase) ||
+                Regex.IsMatch(paciente.LastName.Value, lowerCaseSearchText, RegexOptions.IgnoreCase) ||
+                Regex.IsMatch(paciente.LastName2.Value, lowerCaseSearchText, RegexOptions.IgnoreCase) ||
+                Regex.IsMatch(paciente.Course.Value, lowerCaseSearchText, RegexOptions.IgnoreCase);
+        }
+
+        public void FilterPacientes()
+        {
+            _filteredPacientesView.Refresh();
+        }
     }
 }

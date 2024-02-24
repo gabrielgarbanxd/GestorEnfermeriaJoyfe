@@ -26,19 +26,44 @@
                         VerticalAlignment="Top"
                         Grid.Column="0">
                 <fIcons:IconImage Icon="Search" Height="20" Width="20" Foreground="{StaticResource text}"/>
-                <TextBox Text="Search..."   
-                    FontSize="13"
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="13"
                          Height="24"
-                           Width="300"
-                           Background="Transparent"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"                            
-                             Foreground="{StaticResource text}"
-                             CaretBrush="{StaticResource text}"
-                             BorderBrush="{StaticResource text}"
-                             BorderThickness="0,0,0,1"                             
-                             VerticalContentAlignment="Center"
-                             Margin="5,5,0,0"></TextBox>
+                         Width="300"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="{StaticResource text}"
+                         CaretBrush="{StaticResource text}"
+                         BorderBrush="{StaticResource text}"
+                         BorderThickness="0,0,0,1"                             
+                         VerticalContentAlignment="Center"
+                         Margin="10,5,0,0">
+
+                    <TextBox.Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <VisualBrush Stretch="None">
+                                                <VisualBrush.Visual>
+                                                    <Label 
+                                                        Content="Buscar..." 
+                                                        Padding="0,0,250,0"
+                                                        Foreground="{StaticResource placeholder}"
+                                                        FontSize="13"
+                                                        FontWeight="Medium"
+                                                        FontFamily="Montserrat"/>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </StackPanel>
 
             <Grid Grid.Column="1">
@@ -96,7 +121,7 @@
                 BorderBrush="{StaticResource white}"
                 BorderThickness="2">
 
-            <DataGrid ItemsSource="{Binding Pacientes}"
+            <DataGrid ItemsSource="{Binding FilteredPacientesView}"
                       SelectedItem="{Binding SelectedPaciente}"
                 AutoGenerateColumns="False"
                 ColumnWidth="*"
@@ -147,7 +172,7 @@
 
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{StaticResource color1}"/>
+                                <Setter Property="Background" Value="{StaticResource color2}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource color1}"/>
