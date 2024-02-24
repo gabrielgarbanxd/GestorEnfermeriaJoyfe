@@ -165,10 +165,10 @@
                 </DataGrid.RowHeaderStyle>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Nombre}" Header="Nombre" HeaderStringFormat=""/>
-                    <DataGridTextColumn Binding="{Binding Apellido1}" Header="Apellido 1"/>
-                    <DataGridTextColumn Binding="{Binding Apellido2}" Header="Apellido 2"/>
-                    <DataGridTextColumn Binding="{Binding Curso}" Header="Curso"/>
+                    <DataGridTextColumn Binding="{Binding Name.Value}" Header="Nombre" HeaderStringFormat=""/>
+                    <DataGridTextColumn Binding="{Binding LastName.Value}" Header="Apellido 1"/>
+                    <DataGridTextColumn Binding="{Binding LastName2.Value}" Header="Apellido 2"/>
+                    <DataGridTextColumn Binding="{Binding Course.Value}" Header="Curso"/>
                 </DataGrid.Columns>
 
             </DataGrid>

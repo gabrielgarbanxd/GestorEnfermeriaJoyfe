@@ -271,10 +271,10 @@ PRO : BEGIN
     SELECT id INTO p_Result FROM users WHERE id = p_id;
 
     -- Verificar si la eliminación fue exitosa
-    IF ROW_COUNT() > 0 THEN
-        SET p_Result = p_id; -- Código de éxito
-    ELSE
+    IF p_Result > 0 THEN
         SET p_Result = 0; -- Código de error para eliminación no exitosa
+    ELSE
+        SET p_Result = p_id; -- Código de éxito
     END IF;
 
 END$$
@@ -509,10 +509,10 @@ PRO : BEGIN
     SELECT id INTO p_Result FROM patients WHERE id = p_id;
 
     -- Verificar si la eliminación fue exitosa
-    IF ROW_COUNT() > 0 THEN
-        SET p_Result = p_id; -- Código de éxito
-    ELSE
+    IF p_Result > 0 THEN
         SET p_Result = 0; -- Código de error para eliminación no exitosa
+    ELSE
+        SET p_Result = p_id; -- Código de éxito
     END IF;
 
 END$$

@@ -33,7 +33,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 
         public async Task<Response<bool>> Update(Patient patient) => await PatientCommandAdapter.UpdatePatient(patient);
 
-        public async Task<Response<bool>> Delete(dynamic data) => await PatientCommandAdapter.DeletePatient(data);
+        public async Task<Response<bool>> Delete(int id) => await PatientCommandAdapter.DeletePatient(id);
 
     }
 }

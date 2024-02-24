@@ -21,9 +21,7 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
         {
             var newPatientId = await _patientRepository.AddAsync(patient);
 
-            patient.SetId(new PatientId(newPatientId));
-
-            return patient.Id.Value;
+            return newPatientId;
         }
     }
 }

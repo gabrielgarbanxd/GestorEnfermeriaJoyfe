@@ -127,7 +127,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
             try
             {
-                updatedPaciente = Patient.FromPrimitives(0, dialog.txtNombre.Text, dialog.txtApellido1.Text, dialog.txtApellido2.Text, dialog.txtCurso.Text);
+                updatedPaciente = Patient.FromPrimitives(idPaciente, dialog.txtNombre.Text, dialog.txtApellido1.Text, dialog.txtApellido2.Text, dialog.txtCurso.Text);
             }
             catch (Exception)
             {
@@ -168,7 +168,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
             var pacienteAEliminar = SelectedPaciente;
 
-            var response = await PatientController.Delete(pacienteAEliminar.Id.Value);
+            var response = await PatientController.Delete(SelectedPaciente.Id.Value);
 
             if (response.Success)
             {
