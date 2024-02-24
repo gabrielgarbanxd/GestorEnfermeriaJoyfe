@@ -23,13 +23,20 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
         }
 
-        public virtual void OnMounted() { }
+        public virtual async Task OnMountedAsync()
+        {
+            await Task.CompletedTask;
+        }
 
         public ViewModelBase()
         {
-            OnMounted();
+            InitializeAsync();
         }
 
+        private async void InitializeAsync()
+        {
+            await OnMountedAsync();
+        }
 
     }
 }

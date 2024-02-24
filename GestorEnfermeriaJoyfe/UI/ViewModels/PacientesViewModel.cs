@@ -228,12 +228,20 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 Regex.IsMatch(paciente.Name.Value, lowerCaseSearchText, RegexOptions.IgnoreCase) ||
                 Regex.IsMatch(paciente.LastName.Value, lowerCaseSearchText, RegexOptions.IgnoreCase) ||
                 Regex.IsMatch(paciente.LastName2.Value, lowerCaseSearchText, RegexOptions.IgnoreCase) ||
-                Regex.IsMatch(paciente.Course.Value, lowerCaseSearchText, RegexOptions.IgnoreCase);
+                Regex.IsMatch(paciente.Course.Value.Replace("º", ""), lowerCaseSearchText, RegexOptions.IgnoreCase);
         }
 
         public void FilterPacientes()
         {
-            _filteredPacientesView.Refresh();
+            try
+            {
+                _filteredPacientesView.Refresh();
+            }
+            catch (Exception)
+            {
+                SearchText = "";
+                MessageBox.Show("Error al filtrar pacientes");
+            }
         }
     }
 }

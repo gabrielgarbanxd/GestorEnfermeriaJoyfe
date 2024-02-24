@@ -16,8 +16,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
     class MainViewModel : ViewModelBase
     {
         // //===>> Fields <<====//
-        private User _user;
-
         private List<Patient> _pacientes;
 
         private ViewModelBase _currentPageView;
@@ -28,16 +26,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private readonly PatientController PatientController = new();
 
         // //===>> Propertys <<====//
-        public User User
-        {
-            get => _user;
-            set
-            {
-                _user = value;
-                OnPropertyChanged(nameof(User));
-            }
-        }
-
         public ViewModelBase CurrentPageView 
         {   
             get => _currentPageView;
@@ -91,9 +79,8 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             PacientesMediator.Instance.PacienteCreated += AddPaciente;
         }
 
-        public override async void OnMounted()
+        public override async Task OnMountedAsync()
         {
-            await LoadCurrentUserData();
             await LoadPacientes();
         }
 
@@ -115,25 +102,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             CurrentPageView = new CalendarViewModel();
             Title = "Calendario";
             Icon = IconChar.CalendarAlt;
-        }
-
-        // //===>> Methods <<====//
-        private async Task LoadCurrentUserData()
-        {
-            // Obtiene el email de usuario actual del hilo principal.
-            var userId = Thread.CurrentPrincipal.Identity.Name;
-
-            var response = await UserController.Get(int.Parse(userId));
-
-            if (response.Success)
-            {
-                User = response.Data;
-            }
-            else
-            {
-                MessageBox.Show("El Usuario no es válido, no se ha podido iniciar sesión");
-                Application.Current.Shutdown();
-            }
         }
 
         private async Task LoadPacientes()

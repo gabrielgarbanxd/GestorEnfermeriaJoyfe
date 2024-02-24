@@ -93,9 +93,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
             if (response.Success)
             {
-                Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(response.Data.ToString()), null);
-                IsViewVisible = false;
+                //Thread.CurrentPrincipal = new GenericPrincipal(
+                //    new GenericIdentity(response.Data.ToString()), null);
+                //IsViewVisible = false;
 
                 // Abrir MainWindow
                 MainView mainView = new();
