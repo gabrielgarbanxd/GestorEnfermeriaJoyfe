@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GestorEnfermeriaJoyfe.Domain.Shared
 {
     public abstract class EnumValueObject<T>
     {
         public T Value { get; private set; }
-        public List<T> ValidValues { get; private set; }
+        public abstract HashSet<T> ValidValues { get; }
 
-        protected EnumValueObject(T value, List<T> validValues)
+        protected EnumValueObject(T value)
         {
-            ValidValues = validValues;
+
             if (!CheckValueIsValid(value))
             {
                 throw new ArgumentException("Invalid value");

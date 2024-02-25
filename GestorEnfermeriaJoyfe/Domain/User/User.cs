@@ -11,23 +11,23 @@ namespace GestorEnfermeriaJoyfe.Domain.User
         public UserLastName LastName { get; set; }
         public UserEmail Email { get; set; }
 
-        public User(UserId userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
+        public User(UserId? userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
         {
-            Id = userId;
+            Id = userId ?? new UserId(0);
             UserName = userName;
             Password = password;
             LastName = lastName;
             Email = email;
         }
 
-        public static User Create(UserId userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
+        public static User Create(UserId? userId, UserName userName, UserPassword password, UserLastName lastName, UserEmail email)
         {
             return new User(userId, userName, password, lastName, email);
         }
 
-        public static User FromPrimitives(int userId, string userName, string password, string lastName, string email)
+        public static User FromPrimitives(int? userId, string userName, string password, string lastName, string email)
         {
-            return new User(new UserId(userId), new UserName(userName), new UserPassword(password), new UserLastName(lastName), new UserEmail(email));
+            return new User(new UserId(userId ?? 0), new UserName(userName), new UserPassword(password), new UserLastName(lastName), new UserEmail(email));
         }
 
         public void SetId(UserId id)

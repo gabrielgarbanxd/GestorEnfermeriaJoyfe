@@ -25,9 +25,6 @@ namespace GestorEnfermeriaJoyfe.Domain.Shared
             return other.GetType() == GetType() && other.Value.CompareTo(Value) == 0;
         }
 
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        public override string ToString() => Value.ToString();
     }
 }
