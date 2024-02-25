@@ -12,6 +12,7 @@ use gestor_enfermeria;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`users`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`visits`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`patients`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`calendar`;
 
 -- Users table
 CREATE TABLE `gestor_enfermeria`.`users` (
@@ -60,16 +61,16 @@ ENGINE = InnoDB;
 
 
 -- Calendar table
-CREATE TABLE `gestor_enfermeria`.`Calendar` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `date` DATE NOT NULL,
-  `year` YEAR AS (YEAR(`date`)),
-  `quarter` TINYINT AS (QUARTER(`date`)),
-  `month` TINYINT AS (MONTH(`date`)),
-  `day` TINYINT AS (DAY(`date`)),
-  `task` TEXT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
+CREATE TABLE `gestor_enfermeria`.`calendar` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `date` DATE NOT NULL,
+    `year` YEAR AS (YEAR(`date`)),
+    `quarter` TINYINT AS (QUARTER(`date`)),
+    `month` TINYINT AS (MONTH(`date`)),
+    `day` TINYINT AS (DAY(`date`)),
+    `task` TEXT NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
 );
 
 
@@ -558,6 +559,10 @@ END$$
 
 DELIMITER ;
 
+
+-- =====================================
+-- ========>>    VISSIT    <<=========
+-- =====================================
 
 
 
