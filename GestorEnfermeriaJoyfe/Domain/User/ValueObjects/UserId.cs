@@ -3,16 +3,8 @@ using System;
 
 namespace GestorEnfermeriaJoyfe.Domain.User.ValueObjects
 {
-    public class UserId : NumberValueObject
+    public class UserId : IdValueObject
     {
-        private const int MinUserIdValue = 0;
-
-        public UserId(int value) : base(value)
-        {
-            if (value < MinUserIdValue)
-            {
-                throw new ArgumentException("El identificador del usuario no puede ser menor o igual a 0.");
-            }
-        }
+        public UserId(int value) : base(value) { }
     }
 }

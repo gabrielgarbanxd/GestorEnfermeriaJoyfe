@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects
+namespace GestorEnfermeriaJoyfe.Domain.Visit.ValueObjects
 {
-    public class PatientId : IdValueObject
+    public sealed class VisitId : IdValueObject
     {
-        public PatientId(int value) : base(value){}
+        public VisitId(int value) : base(value) { }
     }
 }
