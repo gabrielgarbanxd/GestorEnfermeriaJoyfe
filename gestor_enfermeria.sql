@@ -42,8 +42,8 @@ CREATE TABLE `gestor_enfermeria`.`visits` (
     `type` ENUM('Agudo', 'Crónico') NOT NULL,
     `classification` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
-    `comunicated` INT UNSIGNED NOT NULL,
-    `derived` INT UNSIGNED NOT NULL,
+    `is_comunicated` INT UNSIGNED NOT NULL,
+    `is_derived` INT UNSIGNED NOT NULL,
     `trauma_type` ENUM('BUCODENTAL/MAXILOFACIAL', 'CUERPO EXTRAÑO (INGESTA/OTROS)', 'BRECHAS', 'TEC', 'CARA', 'ROTURA DE GAFAS', 'TRAUMATOLOGÍA MIEMBRO INFERIOR', 'TRAUMATOLOGÍA MIEMBRO SUPERIOR', 'OTROS ACCIDENTES') NULL,
     `place` ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS') NULL,
     `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -563,6 +563,645 @@ DELIMITER ;
 -- =====================================
 -- ========>>    VISSIT    <<=========
 -- =====================================
+
+-- //===>> GetAllVisitsProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllVisitsProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetAllVisitsProcedure`()
+PRO : BEGIN
+
+    -- Obtener todas las visitas
+    SELECT * FROM visits;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetAllVisitsPaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllVisitsPaginatedProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetAllVisitsPaginatedProcedure`(
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitByIdProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitByIdProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitByIdProcedure`(
+    IN p_id INT
+)
+PRO : BEGIN
+
+    -- Obtener la visita por ID
+    SELECT * FROM visits WHERE id = p_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Create visit procedure <<===//
+DROP PROCEDURE IF EXISTS `CreateVisitProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `CreateVisitProcedure`(
+    IN p_type ENUM('Agudo', 'Crónico'),
+    IN p_classification VARCHAR(255),
+    IN p_description TEXT,
+    IN p_is_comunicated INT,
+    IN p_is_derived INT,
+    IN p_trauma_type ENUM('BUCODENTAL/MAXILOFACIAL', 'CUERPO EXTRAÑO (INGESTA/OTROS)', 'BRECHAS', 'TEC', 'CARA', 'ROTURA DE GAFAS', 'TRAUMATOLOGÍA MIEMBRO INFERIOR', 'TRAUMATOLOGÍA MIEMBRO SUPERIOR', 'OTROS ACCIDENTES'),
+    IN p_place ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS'),
+    IN p_date DATETIME,
+    IN p_patient_id INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    -- Verificar que el tipo no sea nulo
+    IF p_type IS NULL THEN 
+        SET p_Result = -1; -- Código de error para tipo nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la clasificación no sea nula
+    IF p_classification IS NULL THEN
+        SET p_Result = -2; -- Código de error para clasificación nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la descripción no sea nula
+    IF p_description IS NULL THEN
+        SET p_Result = -3; -- Código de error para descripción nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo is_comunicated no sea nulo
+    IF p_is_comunicated IS NULL THEN
+        SET p_Result = -4; -- Código de error para is_comunicated nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo is_derived no sea nulo
+    IF p_is_derived IS NULL THEN
+        SET p_Result = -5; -- Código de error para is_derived nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar si p_is_derived es falso que el campo trauma_type y place no sean nulos
+    IF p_is_derived = 0 THEN
+        IF p_trauma_type IS NULL THEN
+            SET p_Result = -6; -- Código de error para trauma_type nulo
+            LEAVE PRO;
+        END IF;
+
+        IF p_place IS NULL THEN
+            SET p_Result = -7; -- Código de error para place nulo
+            LEAVE PRO;
+        END IF;
+    END IF;
+
+    -- Verificar que el campo date no sea nulo
+    IF p_date IS NULL THEN
+        SET p_Result = -8; -- Código de error para date nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -9; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Insertar nueva visita
+    INSERT INTO visits(type, classification, description, is_comunicated, is_derived, trauma_type, place, date, patient_id)
+    VALUES(p_type, p_classification, p_description, p_is_comunicated, p_is_derived, p_trauma_type, p_place, p_date, p_patient_id);
+
+    -- Verificar si la inserción fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = LAST_INSERT_ID(); -- Devolver el ID de la visita insertada
+    ELSE
+        SET p_Result = 0; -- Código de error para inserción no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Update visit procedure <<===//
+DROP PROCEDURE IF EXISTS `UpdateVisitProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `UpdateVisitProcedure`(
+    IN p_id INT,
+    IN p_type ENUM('Agudo', 'Crónico'),
+    IN p_classification VARCHAR(255),
+    IN p_description TEXT,
+    IN p_is_comunicated INT,
+    IN p_is_derived INT,
+    IN p_trauma_type ENUM('BUCODENTAL/MAXILOFACIAL', 'CUERPO EXTRAÑO (INGESTA/OTROS)', 'BRECHAS', 'TEC', 'CARA', 'ROTURA DE GAFAS', 'TRAUMATOLOGÍA MIEMBRO INFERIOR', 'TRAUMATOLOGÍA MIEMBRO SUPERIOR', 'OTROS ACCIDENTES'),
+    IN p_place ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS'),
+    IN p_date DATETIME,
+    IN p_patient_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la visita existe
+    IF NOT EXISTS (SELECT * FROM visits WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para visita no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el tipo no sea nulo
+    IF p_type IS NULL THEN 
+        SET p_Result = -2; -- Código de error para tipo nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la clasificación no sea nula
+    IF p_classification IS NULL THEN
+        SET p_Result = -3; -- Código de error para clasificación nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la descripción no sea nula
+    IF p_description IS NULL THEN
+        SET p_Result = -4; -- Código de error para descripción nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo is_comunicated no sea nulo
+    IF p_is_comunicated IS NULL THEN
+        SET p_Result = -5; -- Código de error para is_comunicated nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo is_derived no sea nulo
+    IF p_is_derived IS NULL THEN
+        SET p_Result = -6; -- Código de error para is_derived nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar si p_is_derived es falso que el campo trauma_type y place no sean nulos
+    IF p_is_derived = 0 THEN
+        IF p_trauma_type IS NULL THEN
+            SET p_Result = -7; -- Código de error para trauma_type nulo
+            LEAVE PRO;
+        END IF;
+
+        IF p_place IS NULL THEN
+            SET p_Result = -8; -- Código de error para place nulo
+            LEAVE PRO;
+        END IF;
+    END IF;
+
+    -- Verificar que el campo date no sea nulo
+    IF p_date IS NULL THEN
+        SET p_Result = -9; -- Código de error para date nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -10; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Actualizar visita
+    UPDATE visits
+    SET type = p_type, classification = p_classification, description = p_description, is_comunicated = p_is_comunicated, is_derived = p_is_derived, trauma_type = p_trauma_type, place = p_place, date = p_date, patient_id = p_patient_id
+    WHERE id = p_id;
+
+    -- Verificar si la actualización fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = 1; -- Código de éxito
+    ELSE
+        SET p_Result = 0; -- Código de error para actualización no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Delete visit procedure <<===//
+DROP PROCEDURE IF EXISTS `DeleteVisitProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `DeleteVisitProcedure`(
+    IN p_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la visita existe
+    IF NOT EXISTS (SELECT * FROM visits WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para visita no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Eliminar visita
+    DELETE FROM visits WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    SELECT id INTO p_Result FROM visits WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    IF p_Result > 0 THEN
+        SET p_Result = 0; -- Código de error para eliminación no exitosa
+    ELSE
+        SET p_Result = p_id; -- Código de éxito
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByPatientIdProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetVisitsByPatientIdProcedure`(
+    IN p_patient_id INT
+)
+PRO : BEGIN
+
+    -- Obtener las visitas por ID de paciente
+    SELECT * FROM visits WHERE patient_id = p_patient_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByPatientIdPaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetVisitsByPatientIdPaginatedProcedure`(
+    IN p_patient_id INT,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits WHERE patient_id = p_patient_id LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByDateProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByDateProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetVisitsByDateProcedure`(
+    IN p_date DATE
+)
+PRO : BEGIN
+
+    -- Obtener las visitas por fecha
+    SELECT * FROM visits WHERE DATE(date) = p_date;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByDatePaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByDatePaginatedProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsByDatePaginatedProcedure`(
+    IN p_date DATETIME,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE date = p_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits WHERE DATE(date) = p_date LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByDateRangeProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByDateRangeProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsByDateRangeProcedure`(
+    IN p_start_date DATETIME,
+    IN p_end_date DATETIME
+)
+
+PRO : BEGIN
+
+    -- Obtener las visitas por rango de fechas
+    SELECT * FROM visits WHERE date BETWEEN p_start_date AND p_end_date;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByDateRangePaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByDateRangePaginatedProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsByDateRangePaginatedProcedure`(
+    IN p_start_date DATETIME,
+    IN p_end_date DATETIME,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE date BETWEEN p_start_date AND p_end_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits WHERE date BETWEEN p_start_date AND p_end_date LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByPatientIdAndDateRangeProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdAndDateRangeProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsByPatientIdAndDateRangeProcedure`(
+    IN p_patient_id INT,
+    IN p_start_date DATETIME,
+    IN p_end_date DATETIME
+)
+
+PRO : BEGIN
+
+    -- Obtener las visitas por ID de paciente y rango de fechas
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND date BETWEEN p_start_date AND p_end_date;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByPatientIdAndDateRangePaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdAndDateRangePaginatedProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsByPatientIdAndDateRangePaginatedProcedure`(
+    IN p_patient_id INT,
+    IN p_start_date DATETIME,
+    IN p_end_date DATETIME,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id AND date BETWEEN p_start_date AND p_end_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND date BETWEEN p_start_date AND p_end_date LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByPatientIdAndDateProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdAndDateProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsByPatientIdAndDateProcedure`(
+    IN p_patient_id INT,
+    IN p_date DATETIME
+)
+
+PRO : BEGIN
+
+    -- Obtener las visitas por ID de paciente y fecha
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND date = p_date;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByPatientIdAndDatePaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdAndDatePaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetVisitsByPatientIdAndDatePaginatedProcedure`(
+    IN p_patient_id INT,
+    IN p_date DATETIME,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id AND date = p_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND date = p_date LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
 
 
 

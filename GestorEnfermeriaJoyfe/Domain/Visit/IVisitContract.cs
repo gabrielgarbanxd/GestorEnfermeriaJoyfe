@@ -15,7 +15,10 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
         Task<int> CreateAsync(Visit visit);
         Task<int> UpdateAsync(Visit visit);
         Task<int> DeleteAsync(VisitId visitId);
-        Task<List<Visit>> SearchAsyncByPatientId(PatientId patientId, bool paginated = false, int perPage = 10, int page = 1);
-        Task<List<Visit>> SearchAsyncByDate(DateTime date, bool paginated = false, int perPage = 10, int page = 1);
+        Task<List<Visit>> SearchByPatientIdAsync(PatientId patientId, bool paginated = false, int perPage = 10, int page = 1);
+        Task<List<Visit>> SearchByDateAsync(DateTime date, bool paginated = false, int perPage = 10, int page = 1);
+        Task<List<Visit>> SearchByDateRangeAsync(DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1);
+        Task<List<Visit>> SearchByPatientIdAndDateRangeAsync(PatientId patientId, DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1);
+        Task<List<Visit>> SearchByPatientIdAndDateAsync(PatientId patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1);
     }
 }
