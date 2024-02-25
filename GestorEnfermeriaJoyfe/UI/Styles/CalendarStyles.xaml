@@ -64,7 +64,7 @@
 
 
     <Style x:Key="textHint" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="Transparent"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Grid.Column" Value="1"/>
         <Setter Property="Panel.ZIndex" Value="1"/>
@@ -76,7 +76,7 @@
 
     <Style x:Key="textBox" TargetType="TextBox">
         <Setter Property="Background" Value="White"/>
-        <Setter Property="Foreground" Value="Beige"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Grid.Column" Value="1"/>
         <Setter Property="Margin" Value="10 0 0 0"/>

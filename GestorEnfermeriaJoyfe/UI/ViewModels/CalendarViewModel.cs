@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
-    //public class CalendarViewModel : INotifyPropertyChanged
     public class CalendarViewModel : ViewModelBase
     {
         private DateTime _selectedDate = DateTime.Now;

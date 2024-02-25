@@ -7,6 +7,7 @@ use gestor_enfermeria;
 -- *                                                                       *
 -- *************************************************************************
 
+
 -- Drop tables if they exist
 DROP TABLE IF EXISTS `gestor_enfermeria`.`users`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`visits`;
@@ -56,6 +57,21 @@ CREATE TABLE `gestor_enfermeria`.`visits` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+
+-- Calendar table
+CREATE TABLE `gestor_enfermeria`.`Calendar` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `year` YEAR AS (YEAR(`date`)),
+  `quarter` TINYINT AS (QUARTER(`date`)),
+  `month` TINYINT AS (MONTH(`date`)),
+  `day` TINYINT AS (DAY(`date`)),
+  `task` TEXT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
+);
 
 
 -- *************************************************************************
@@ -542,6 +558,20 @@ PRO : BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+
+
+-- =====================================
+-- ========>>    CALENDAR    <<=========
+-- =====================================
+
+
+
+
+
+
 
 
 

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GestorEnfermeriaJoyfe.UI.Views
 {
@@ -89,25 +91,69 @@ namespace GestorEnfermeriaJoyfe.UI.Views
             txtMonth.Text = newDate.ToString("MMMM");
             txtMonth1.Text = newDate.ToString("MMMM");
             txtMonth2.Text = newDate.ToString("MMMM");
+
+
         }
 
+
+
+
+        Button lastClickedYearButton = null;
 
         private void YearButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            if (button != null && int.TryParse(button.Content.ToString(), out selectedYear))
+            if (button != null && int.TryParse(button.Content.ToString(), out int selectedYear))
             {
+                if (lastClickedYearButton != null)
+                {
+                    lastClickedYearButton.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#bababa"));
+                }
+
+                button.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#87CEEB"));
+
+                lastClickedYearButton = button;
+
                 MyCalendar.DisplayDate = new DateTime(selectedYear, MyCalendar.DisplayDate.Month, 1);
             }
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Obtiene el año actual
+            int currentYear = DateTime.Now.Year;
 
+            // Recorre todos los botones de año
+            foreach (Button button in YearButtonsPanel.Children.OfType<Button>())
+            {
+                if (button != null && int.TryParse(button.Content.ToString(), out int year) && year == currentYear)
+                {
+                    button.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#87CEEB"));
+
+                    lastClickedYearButton = button;
+                }
+            }
+        }
+
+
+
+        Button lastClickedButton = null;
 
         private void MonthButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             if (button != null && int.TryParse(button.Content.ToString(), out int month))
             {
+                if (lastClickedButton != null)
+                {
+                    lastClickedButton.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#bababa"));
+                }
+
+                button.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#87CEEB"));
+
+                // Guarda una referencia al botón que fue clickeado
+                lastClickedButton = button;
+
                 ChangeCalendarMonth(month);
             }
         }
