@@ -22,7 +22,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private string _title;
         private IconChar _icon;
 
-        private readonly UserController UserController = new();
         private readonly PatientController PatientController = new();
 
         // //===>> Propertys <<====//

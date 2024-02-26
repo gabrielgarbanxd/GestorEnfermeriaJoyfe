@@ -36,18 +36,18 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 
         public async Task<Response<List<Patient>>> GetAllPatients()
         {
-            //try
-            //{
+            try
+            {
                 PatientLister patientLister = new(patientRepository);
 
                 var patients = await patientLister.Run();
 
                 return patients.Count > 0 ? Response<List<Patient>>.Ok("Pacientes encontrados", patients) : Response<List<Patient>>.Fail("No se encontraron pacientes");
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<List<Patient>>.Fail(e.Message);
-            //}
+            }
+            catch (Exception e)
+            {
+                return Response<List<Patient>>.Fail(e.Message);
+            }
         }
 
         public async Task<Response<List<Patient>>> GetAllPatientsPaginated(int perPage, int page)

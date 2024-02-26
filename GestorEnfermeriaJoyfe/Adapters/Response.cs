@@ -40,6 +40,17 @@ namespace GestorEnfermeriaJoyfe.Adapters
         {
             return new Response<T>(false, message);
         }
+
+        public virtual Response<T> Ok2(string? message = null, T? data = default)
+        {
+            return new Response<T>(true, message, data);
+        }
+
+        // Método Fail para cuando la operación falla
+        public virtual Response<T> Fail2(string? message = null)
+        {
+            return new Response<T>(false, message);
+        }
     }
 
 }

@@ -17,11 +17,7 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
         {
             user.Password = new UserPassword(user.Password.GetHash());
 
-            var newUserId = await _userRepository.AddAsync(user);
-
-            user.SetId(new UserId(newUserId));
-
-            return user.Id.Value;
+            return await _userRepository.AddAsync(user);
         }
 
     }
