@@ -12,9 +12,9 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
             _patientRepository = patientRepository;
         }
 
-        public async Task<bool> Run(Patient patient)
+        public async Task<int> Run(Patient patient)
         {
-            return await _patientRepository.UpdateAsync(patient) > 0;
+            return await _patientRepository.UpdateAsync(patient);
         }
     }
 }

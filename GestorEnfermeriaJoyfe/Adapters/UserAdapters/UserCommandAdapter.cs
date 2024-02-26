@@ -6,61 +6,35 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
 {
-    public class UserCommandAdapter
+    public class UserCommandAdapter : CommandAdapterBase
     {
         private readonly IUserContract userRepository;
 
-        public UserCommandAdapter(IUserContract userRepository)
+        public UserCommandAdapter(IUserContract userRepository) => this.userRepository = userRepository;
+
+
+        public async Task<CommandResponse> Register(User user)
         {
-            this.userRepository = userRepository;
+            return await RunCommand(async () =>
+            {
+                return await new UserRegister(userRepository).Run(user);
+            });
         }
 
-        public async Task<Response<int>> RegisterUser(User user)
+        public async Task<CommandResponse> Update(User user)
         {
-            try
+            return await RunCommand(async () =>
             {
-                UserRegister userRegister = new(userRepository);
-
-                int newUserId = await userRegister.Run(user);
-
-                return Response<int>.Ok("Usuario registrado", newUserId);
-            }
-            catch (Exception e)
-            {
-                return Response<int>.Fail(e.Message);
-            }
+                return await new UserUpdater(userRepository).Run(user);
+            });
         }
 
-        public async Task<Response<bool>> DeleteUser(int id)
+        public async Task<CommandResponse> Delete(int id)
         {
-            try
+            return await RunCommand(async () =>
             {
-                UserDeleter userDeleter = new(userRepository);
-
-                bool deleted = await userDeleter.Run(id);
-
-                return deleted ? Response<bool>.Ok("Usuario eliminado") : Response<bool>.Fail("Usuario no eliminado");
-            }
-            catch (Exception e)
-            {
-                return Response<bool>.Fail(e.Message);
-            }
+                return await new UserDeleter(userRepository).Run(id);
+            });
         }
-
-        public async Task<Response<bool>> UpdateUser(User user)
-        {
-            try
-            {
-                UserUpdater userUpdater = new(userRepository);
-                bool updated = await userUpdater.Run(user);
-
-                return updated ? Response<bool>.Ok("Usuario actualizado") : Response<bool>.Fail("Usuario no actualizado");
-            }
-            catch (Exception e)
-            {
-                return Response<bool>.Fail(e.Message);
-            }
-        }
-
     }
 }

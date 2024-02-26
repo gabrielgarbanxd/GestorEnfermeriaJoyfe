@@ -8,220 +8,117 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.VisitAdapters
 {
-    public class VisitQueryAdapter
+    public class VisitQueryAdapter : QueryAdapterBase<VisitResponse, IEnumerable<Visit>>
     {
         private readonly IVisitContract visitRepository;
 
-        public VisitQueryAdapter(IVisitContract visitRepository) => this.visitRepository = visitRepository;
-
-        public async Task<Response<Visit>> FindVisit(int id)
+        public VisitQueryAdapter(IVisitContract visitRepository, VisitResponse response) : base(response)
         {
-            try
-            {
-                VisitFinder visitFinder = new(visitRepository);
-
-                var visit = await visitFinder.Run(id);
-
-                return Response<Visit>.Ok("Visita encontrada", visit);
-            }
-            catch (Exception e)
-            {
-                return Response<Visit>.Fail(e.Message);
-            }
+            this.visitRepository = visitRepository;
         }
 
-        public async Task<Response<IEnumerable<Visit>>> GetAllVisits()
+        public async Task<VisitResponse> FindVisit(int id)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitLister visitLister = new(visitRepository);
-
-                var visits = await visitLister.Run();
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return new List<Visit> { await new VisitFinder(visitRepository).Run(id) };
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> GetAllVisitsPaginated(int perPage, int page)
+        public async Task<VisitResponse> GetAllVisits()
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitLister visitLister = new(visitRepository);
-
-                var visits = await visitLister.Run(true, perPage, page);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitLister(visitRepository).Run();
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByPatientId (int patientId)
+        public async Task<VisitResponse> GetAllVisitsPaginated(int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByPatientIdSearcher visitsByPatientIdSearcher = new(visitRepository);
-
-                var visits = await visitsByPatientIdSearcher.Run(patientId);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitLister(visitRepository).Run(true, perPage, page);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByPatientIdPaginated(int patientId, int perPage, int page)
+        public async Task<VisitResponse> SearchByPatientId(int patientId)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByPatientIdSearcher visitsByPatientIdSearcher = new(visitRepository);
-
-                var visits = await visitsByPatientIdSearcher.Run(patientId, true, perPage, page);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByPatientIdSearcher(visitRepository).Run(patientId);
+            });
         }
 
-
-        public async Task<Response<IEnumerable<Visit>>> SearchByDate(DateTime date)
+        public async Task<VisitResponse> SearchByPatientIdPaginated(int patientId, int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByDateSearcher visitsByDateSearcher = new(visitRepository);
-
-                var visits = await visitsByDateSearcher.Run(date);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByPatientIdSearcher(visitRepository).Run(patientId, true, perPage, page);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByDatePaginated(DateTime date, int perPage, int page)
+        public async Task<VisitResponse> SearchByDate(DateTime date)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByDateSearcher visitsByDateSearcher = new(visitRepository);
-
-                var visits = await visitsByDateSearcher.Run(date, true, perPage, page);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByDateSearcher(visitRepository).Run(date);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByDateRange(DateTime startDate, DateTime endDate)
+        public async Task<VisitResponse> SearchByDatePaginated(DateTime date, int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByDateRangeSearcher visitsByDateRangeSearcher = new(visitRepository);
-
-                var visits = await visitsByDateRangeSearcher.Run(startDate, endDate);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
+                return await new VisitsByDateSearcher(visitRepository).Run(date, true, perPage, page);
+            });
+        }
+        
+        public async Task<VisitResponse> SearchByDateRange(DateTime startDate, DateTime endDate)
+        {
+            return await RunQuery(async () =>
             {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByDateRangeSearcher(visitRepository).Run(startDate, endDate);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByDateRangePaginated(DateTime startDate, DateTime endDate, int perPage, int page)
+        public async Task<VisitResponse> SearchByDateRangePaginated(DateTime startDate, DateTime endDate, int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByDateRangeSearcher visitsByDateRangeSearcher = new(visitRepository);
-
-                var visits = await visitsByDateRangeSearcher.Run(startDate, endDate, true, perPage, page);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByDateRangeSearcher(visitRepository).Run(startDate, endDate, true, perPage, page);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByPatientIdAndDate(int patientId, DateTime date)
+        public async Task<VisitResponse> SearchByPatientIdAndDate(int patientId, DateTime date)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByPatientIdAndDateSearcher visitsByPatientIdAndDateSearcher = new(visitRepository);
-
-                var visits = await visitsByPatientIdAndDateSearcher.Run(patientId, date);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByPatientIdAndDateSearcher(visitRepository).Run(patientId, date);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByPatientIdAndDatePaginated(int patientId, DateTime date, int perPage, int page)
+        public async Task<VisitResponse> SearchByPatientIdAndDatePaginated(int patientId, DateTime date, int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByPatientIdAndDateSearcher visitsByPatientIdAndDateSearcher = new(visitRepository);
-
-                var visits = await visitsByPatientIdAndDateSearcher.Run(patientId, date, true, perPage, page);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByPatientIdAndDateSearcher(visitRepository).Run(patientId, date, true, perPage, page);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByPatientIdAndDateRange(int patientId, DateTime startDate, DateTime endDate)
+        public async Task<VisitResponse> SearchByPatientIdAndDateRange(int patientId, DateTime startDate, DateTime endDate)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByPatientIdAndDateRangeSearcher visitsByPatientIdAndDateRangeSearcher = new(visitRepository);
-
-                var visits = await visitsByPatientIdAndDateRangeSearcher.Run(patientId, startDate, endDate);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByPatientIdAndDateRangeSearcher(visitRepository).Run(patientId, startDate, endDate);
+            });
         }
 
-        public async Task<Response<IEnumerable<Visit>>> SearchByPatientIdAndDateRangePaginated(int patientId, DateTime startDate, DateTime endDate, int perPage, int page)
+        public async Task<VisitResponse> SearchByPatientIdAndDateRangePaginated(int patientId, DateTime startDate, DateTime endDate, int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                VisitsByPatientIdAndDateRangeSearcher visitsByPatientIdAndDateRangeSearcher = new(visitRepository);
-
-                var visits = await visitsByPatientIdAndDateRangeSearcher.Run(patientId, startDate, endDate, true, perPage, page);
-
-                return Response<IEnumerable<Visit>>.Ok("Visitas encontradas", visits);
-            }
-            catch (Exception e)
-            {
-                return Response<IEnumerable<Visit>>.Fail(e.Message);
-            }
+                return await new VisitsByPatientIdAndDateRangeSearcher(visitRepository).Run(patientId, startDate, endDate, true, perPage, page);
+            });
         }
-
     }
 }

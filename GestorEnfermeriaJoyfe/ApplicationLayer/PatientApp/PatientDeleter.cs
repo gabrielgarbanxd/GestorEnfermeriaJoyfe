@@ -13,9 +13,9 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
             _patientRepository = patientRepository;
         }
 
-        public async Task<bool> Run(int id)
+        public async Task<int> Run(int id)
         {
-            return await _patientRepository.DeleteAsync(new PatientId(id)) > 0;
+            return await _patientRepository.DeleteAsync(new PatientId(id));
         }
     }
 }

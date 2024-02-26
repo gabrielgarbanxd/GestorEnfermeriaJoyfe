@@ -1,65 +1,38 @@
 ﻿using GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp;
 using GestorEnfermeriaJoyfe.Domain.Patient;
-using GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence;
-using System;
 using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 {
-    public class PatientCommandAdapter
+    public class PatientCommandAdapter : CommandAdapterBase
     {
         private readonly IPatientContract patientRepository;
 
-        public PatientCommandAdapter(IPatientContract patientRepository)
+        public PatientCommandAdapter(IPatientContract patientRepository) => this.patientRepository = patientRepository;
+
+        public async Task<CommandResponse> CreatePatient(Patient patient)
         {
-            this.patientRepository = patientRepository;
+            return await RunCommand(async () =>
+            {
+                return await new PatientCreator(patientRepository).Run(patient);
+            });
         }
 
-        public async Task<Response<int>> CreatePatient(Patient patient)
+        public async Task<CommandResponse> UpdatePatient(Patient patient)
         {
-            try
+            return await RunCommand(async () =>
             {
-                PatientCreator patientRegister = new(patientRepository);
-
-                int newPatientId = await patientRegister.Run(patient);
-
-                return Response<int>.Ok("Paciente registrado", newPatientId);
-            }
-            catch (Exception e)
-            {
-                return Response<int>.Fail(e.Message);
-            }
+                return await new PatientUpdater(patientRepository).Run(patient);
+            });
         }
 
-        public async Task<Response<bool>> DeletePatient(int id)
+        public async Task<CommandResponse> DeletePatient(int id)
         {
-            try
+            return await RunCommand(async () =>
             {
-                PatientDeleter patientDeleter = new(patientRepository);
-
-                bool deleted = await patientDeleter.Run(id);
-
-                return deleted ? Response<bool>.Ok("Paciente eliminado") : Response<bool>.Fail("Paciente no eliminado");
-            }
-            catch (Exception e)
-            {
-                return Response<bool>.Fail(e.Message);
-            }
+                return await new PatientDeleter(patientRepository).Run(id);
+            });
         }
 
-        public async Task<Response<bool>> UpdatePatient(Patient patient)
-        {
-            try
-            {
-                PatientUpdater patientUpdater = new(patientRepository);
-                bool updated = await patientUpdater.Run(patient);
-
-                return updated ? Response<bool>.Ok("Paciente actualizado") : Response<bool>.Fail("Paciente no actualizado");
-            }
-            catch (Exception e)
-            {
-                return Response<bool>.Fail(e.Message);
-            }
-        }
     }
 }

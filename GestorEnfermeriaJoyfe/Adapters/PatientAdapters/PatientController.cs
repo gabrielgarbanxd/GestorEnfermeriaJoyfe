@@ -19,21 +19,20 @@ namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
             patientMapper = new();
             patientRepository = new(patientMapper);
 
-            PatientQueryAdapter = new(patientRepository);
+            PatientQueryAdapter = new(patientRepository, new());
             PatientCommandAdapter = new(patientRepository);
         }
 
-        public async Task<Response<List<Patient>>> GetAll() => await PatientQueryAdapter.GetAllPatients();
+        // ================== QUERYS ==================
 
-        public async Task<Response<List<Patient>>> GetAllPaginated(int perPage, int page) => await PatientQueryAdapter.GetAllPatientsPaginated(perPage, page);
+        public async Task<PatientResponse> GetAll() => await PatientQueryAdapter.GetAllPatients();
+        public async Task<PatientResponse> GetAllPaginated(int perPage, int page) => await PatientQueryAdapter.GetAllPatientsPaginated(perPage, page);
+        public async Task<PatientResponse> Get(int id) => await PatientQueryAdapter.FindPatient(id);
 
-        public async Task<Response<Patient>> Get(int id) => await PatientQueryAdapter.FindPatient(id);
-
-        public async Task<Response<int>> Register(Patient patient) => await PatientCommandAdapter.CreatePatient(patient);
-
-        public async Task<Response<bool>> Update(Patient patient) => await PatientCommandAdapter.UpdatePatient(patient);
-
-        public async Task<Response<bool>> Delete(int id) => await PatientCommandAdapter.DeletePatient(id);
+        // ================== COMMANDS ==================
+        public async Task<CommandResponse> Register(Patient patient) => await PatientCommandAdapter.CreatePatient(patient);
+        public async Task<CommandResponse> Update(Patient patient) => await PatientCommandAdapter.UpdatePatient(patient);
+        public async Task<CommandResponse> Delete(int id) => await PatientCommandAdapter.DeletePatient(id);
 
     }
 }

@@ -17,7 +17,7 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
             _userRepository = userRepository;
         }
 
-        public async Task<int> Run(string email, SecureString securePassword)
+        public async Task<User> Run(string email, SecureString securePassword)
         {
             var user = await _userRepository.GetByEmailAsync(new UserEmail(email));
 
@@ -31,15 +31,17 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
                 // Verificar la contraseña
                 if (user.Password.VerifyPassword(password))
                 {
-                    return user.Id.Value;
+                    return user;
                 }
+
+                throw new Exception("Usuario no autenticado");
             }
             finally
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
 
-            return -1;
+            throw new Exception("Usuario no autenticado");
         }
     }
 

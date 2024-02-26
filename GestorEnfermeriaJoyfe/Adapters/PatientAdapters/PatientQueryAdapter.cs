@@ -9,62 +9,37 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.PatientAdapters
 {
-    public class PatientQueryAdapter
+    public class PatientQueryAdapter : QueryAdapterBase<PatientResponse, IEnumerable<Patient>>
     {
         private readonly IPatientContract patientRepository;
 
-        public PatientQueryAdapter(IPatientContract patientRepository)
+        public PatientQueryAdapter(IPatientContract patientRepository, PatientResponse response) : base(response)
         {
             this.patientRepository = patientRepository;
         }
 
-        public async Task<Response<Patient>> FindPatient(int id)
+        public async Task<PatientResponse> FindPatient(int id)
         {
-            try
+            return await RunQuery(async () =>
             {
-                PatientFinder patientFinder = new(patientRepository);
-
-                var patient = await patientFinder.Run(id);
-
-                return patient != null ? Response<Patient>.Ok("Paciente encontrado", patient) : Response<Patient>.Fail("Paciente no encontrado");
-            }
-            catch (Exception e)
-            {
-                return Response<Patient>.Fail(e.Message);
-            }
+                return new List<Patient> { await new PatientFinder(patientRepository).Run(id) };
+            });
         }
 
-        public async Task<Response<List<Patient>>> GetAllPatients()
+        public async Task<PatientResponse> GetAllPatients()
         {
-            try
+            return await RunQuery(async () =>
             {
-                PatientLister patientLister = new(patientRepository);
-
-                var patients = await patientLister.Run();
-
-                return patients.Count > 0 ? Response<List<Patient>>.Ok("Pacientes encontrados", patients) : Response<List<Patient>>.Fail("No se encontraron pacientes");
-            }
-            catch (Exception e)
-            {
-                return Response<List<Patient>>.Fail(e.Message);
-            }
+                return await new PatientLister(patientRepository).Run();
+            });
         }
 
-        public async Task<Response<List<Patient>>> GetAllPatientsPaginated(int perPage, int page)
+        public async Task<PatientResponse> GetAllPatientsPaginated(int perPage, int page)
         {
-            try
+            return await RunQuery(async () =>
             {
-                PatientLister patientLister = new(patientRepository);
-
-                var patients = await patientLister.Run(true, perPage, page);
-
-                return patients.Count > 0 ? Response<List<Patient>>.Ok("Pacientes encontrados", patients) : Response<List<Patient>>.Fail("No se encontraron pacientes");
-            }
-            catch (Exception e)
-            {
-                return Response<List<Patient>>.Fail(e.Message);
-            }
-
+                return await new PatientLister(patientRepository).Run(true, perPage, page);
+            });
         }
     }
 }

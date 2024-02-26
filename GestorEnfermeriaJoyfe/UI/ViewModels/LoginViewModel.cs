@@ -93,17 +93,6 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             //var isValidUser = userRepository.AuthenticateUser(new System.Net.NetworkCredential(Username, Password));
             var response = await userController.Login(Email, Password);
 
-            PatientController2 patientController2 = new();
-            var response2 = await patientController2.GetAll();
-            if ( response2.Success)
-            {
-                MessageBox.Show("Pacientes cargados 2 ");
-            }
-            else
-            {
-                MessageBox.Show("Error al cargar pacientes 2 ");
-            }
-
             if (response.Success)
             {
                 //Thread.CurrentPrincipal = new GenericPrincipal(

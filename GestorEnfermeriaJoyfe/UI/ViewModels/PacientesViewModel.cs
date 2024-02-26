@@ -115,7 +115,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             {
                 MessageBox.Show("Paciente creado con éxito");
 
-                newPatient.SetId(new PatientId(response.Data));
+                newPatient.SetId(new PatientId(response.Id));
 
                 Pacientes.Add(newPatient);
                 // Notificar al mediador que se ha creado un nuevo paciente

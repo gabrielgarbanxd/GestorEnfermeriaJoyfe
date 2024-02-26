@@ -18,25 +18,21 @@ namespace GestorEnfermeriaJoyfe.Adapters.UserAdapters
         {
             userMapper = new();
             userRepository = new(userMapper);
-            UserQueryAdapter = new(userRepository);
+            UserQueryAdapter = new(userRepository, new());
             UserCommandAdapter = new(userRepository);
         }
 
-        public async Task<Response<List<User>>> GetAll() => await UserQueryAdapter.GetAllUsers();
+        // ================== QUERYS ==================
 
-        public async Task<Response<List<User>>> GetAllPaginated(int perPage, int page) => await UserQueryAdapter.GetAllUsersPaginated(perPage, page);
+        public async Task<UserResponse> GetAll() => await UserQueryAdapter.GetAllUsers();
+        public async Task<UserResponse> GetAllPaginated(int perPage, int page) => await UserQueryAdapter.GetAllUsersPaginated(perPage, page);
+        public async Task<UserResponse> Get(int id) => await UserQueryAdapter.FindUser(id);
+        public async Task<UserResponse> Login(string email, SecureString securePassword) => await UserQueryAdapter.AuthUser(email, securePassword);
 
-        public async Task<Response<User>> Get(int id) => await UserQueryAdapter.FindUser(id);
-
-        public async Task<Response<int>> Login(string email, SecureString securePassword) => await UserQueryAdapter.AuthUser(email, securePassword);
-
-        public async Task<Response<int>> Register(User user) => await UserCommandAdapter.RegisterUser(user);
-
-        public async Task<Response<bool>> Update(User user) => await UserCommandAdapter.UpdateUser(user);
-
-        public async Task<Response<bool>> Delete(dynamic data) => await UserCommandAdapter.DeleteUser(data);
-
-
+        // ================== COMMANDS ==================
+        public async Task<CommandResponse> Register(User user) => await UserCommandAdapter.Register(user);
+        public async Task<CommandResponse> Update(User user) => await UserCommandAdapter.Update(user);
+        public async Task<CommandResponse> Delete(int id) => await UserCommandAdapter.Delete(id);
     }
 
 }

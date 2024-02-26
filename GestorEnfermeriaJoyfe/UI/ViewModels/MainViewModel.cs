@@ -110,7 +110,8 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             
             if (response.Success)
             {
-                _pacientes = response.Data;
+                //_pacientes = new List<Patient>(response.Data);
+                _pacientes = new List<Patient>(response.Data);
             }
             else
             {
