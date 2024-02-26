@@ -9,7 +9,7 @@ namespace GestorEnfermeriaJoyfe.Domain.User
 {
     public interface IUserContract
     {
-        Task<List<User>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1);
+        Task<IEnumerable<User>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1);
         Task<User> FindAsync(UserId userId);
         Task<User> GetByEmailAsync(UserEmail email);
         Task<int> AddAsync(User user);

@@ -6,7 +6,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Patient
 {
     public interface IPatientContract
     {
-        Task<List<Patient>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1);
+        Task<IEnumerable<Patient>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1);
         Task<Patient> FindAsync(PatientId patientId);
         Task<int> AddAsync(Patient patient);
         Task<int> UpdateAsync(Patient patient);

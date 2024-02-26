@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using GestorEnfermeriaJoyfe.Domain.User;
 using GestorEnfermeriaJoyfe.Domain.User.ValueObjects;
@@ -19,7 +20,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
         }
 
-        public async Task<List<User>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<User>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {
@@ -39,12 +40,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
         {
             var result = await ExecuteQueryAsync("GetUserByIdProcedure", new Dictionary<string, object> { { "p_id", userId.Value } });
 
-            if (result.Count == 0)
+            if (!result.Any())
             {
                 throw new Exception("No se ha encontrado el usuario.");
             }
 
-            return result[0];
+            return result.First();
         }
 
         public async Task<User> GetByEmailAsync(UserEmail email)
@@ -56,12 +57,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
 
             var result = await ExecuteQueryAsync("GetUserByEmailProcedure", parameters);
 
-            if (result.Count == 0)
+            if (!result.Any())
             {
                 throw new Exception("No se ha encontrado el usuario.");
             }
 
-            return result[0];
+            return result.First();
         }
 
         public async Task<int> AddAsync(User user)

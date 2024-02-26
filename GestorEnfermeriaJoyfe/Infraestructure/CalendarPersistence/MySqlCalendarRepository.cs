@@ -18,23 +18,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
         {
         }
 
-        public async Task<List<Calendar>> GetAllAsync()
+        public Task<IEnumerable<Calendar>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
-            try
-            {
-                // Aquí iría la lógica para obtener todos los eventos del calendario desde la base de datos
-                // Por ahora, simplemente devolvemos una lista vacía como ejemplo
-                return new List<Calendar>();
-            }
-            catch (Exception ex)
-            {
-                // Aquí maneja cualquier excepción que pueda ocurrir durante la obtención de los eventos del calendario
-                // Por ahora, simplemente lanzamos la excepción nuevamente
-                throw ex;
-            }
+            throw new NotImplementedException();
         }
 
-        public Task<Calendar> FindAsync(int eventId)
+        public Task<Calendar> FindAsync(CalendarId id)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +38,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(int eventId)
+        public Task<int> DeleteAsync(CalendarId id)
         {
             throw new NotImplementedException();
         }

@@ -14,13 +14,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
             DateTime fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
             string tarea = reader.GetString(reader.GetOrdinal("tarea"));
 
-            Calendar calendar = new(
-                new CalendarId(id),
-                new CalendarFecha(fecha),
-                new CalendarTarea(tarea)
-            );
-
-            return calendar;
+            return Calendar.FromPrimitives(id, fecha, tarea);
         }
     }
 }

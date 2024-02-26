@@ -6,41 +6,46 @@ using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Adapters.CalendarAdapters
 {
-    public class CalendarQueryAdapter
+    public class CalendarQueryAdapter : QueryAdapterBase<CalendarResponse, IEnumerable<Calendar>>
     {
         private readonly ICalendarContract calendarRepository;
 
-        public CalendarQueryAdapter(ICalendarContract calendarRepository)
+        public CalendarQueryAdapter(ICalendarContract calendarRepository, CalendarResponse response) : base(response)
         {
             this.calendarRepository = calendarRepository;
         }
 
-        public async Task<Response<Calendar>> FindCalendarEntry(int id)
-        {
-            try
-            {
-                var calendarEntry = await calendarRepository.FindAsync(id);
+        //public CalendarQueryAdapter(ICalendarContract calendarRepository)
+        //{
+        //    this.calendarRepository = calendarRepository;
+        //}
 
-                return calendarEntry != null ? Response<Calendar>.Ok("Entrada de calendario encontrada", calendarEntry) : Response<Calendar>.Fail("Entrada de calendario no encontrada");
-            }
-            catch (Exception e)
-            {
-                return Response<Calendar>.Fail(e.Message);
-            }
-        }
+        //public async Task<Response<Calendar>> FindCalendarEntry(int id)
+        //{
+        //    try
+        //    {
+        //        var calendarEntry = await calendarRepository.FindAsync(id);
 
-        public async Task<Response<List<Calendar>>> GetAllCalendarEntries()
-        {
-            try
-            {
-                var calendarEntries = await calendarRepository.GetAllAsync();
+        //        return calendarEntry != null ? Response<Calendar>.Ok("Entrada de calendario encontrada", calendarEntry) : Response<Calendar>.Fail("Entrada de calendario no encontrada");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Response<Calendar>.Fail(e.Message);
+        //    }
+        //}
 
-                return calendarEntries.Count > 0 ? Response<List<Calendar>>.Ok("Entradas de calendario encontradas", calendarEntries) : Response<List<Calendar>>.Fail("No se encontraron entradas de calendario");
-            }
-            catch (Exception e)
-            {
-                return Response<List<Calendar>>.Fail(e.Message);
-            }
-        }
+        //public async Task<Response<List<Calendar>>> GetAllCalendarEntries()
+        //{
+        //    try
+        //    {
+        //        var calendarEntries = await calendarRepository.GetAllAsync();
+
+        //        return calendarEntries.Count > 0 ? Response<List<Calendar>>.Ok("Entradas de calendario encontradas", calendarEntries) : Response<List<Calendar>>.Fail("No se encontraron entradas de calendario");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Response<List<Calendar>>.Fail(e.Message);
+        //    }
+        //}
     }
 }

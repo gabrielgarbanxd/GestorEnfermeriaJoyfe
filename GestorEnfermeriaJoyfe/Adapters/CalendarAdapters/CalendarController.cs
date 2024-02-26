@@ -18,16 +18,16 @@ namespace GestorEnfermeriaJoyfe.Adapters.CalendarAdapters
             calendarMapper = new CalendarMapper();
             calendarRepository = new MySqlCalendarRepository(calendarMapper);
 
-            calendarQueryAdapter = new CalendarQueryAdapter(calendarRepository);
+            calendarQueryAdapter = new CalendarQueryAdapter(calendarRepository, new());
             calendarCommandAdapter = new CalendarCommandAdapter(calendarRepository);
         }
 
-        public async Task<Response<List<Calendar>>> GetAll() => await calendarQueryAdapter.GetAllCalendarEntries();
+        //public async Task<Response<List<Calendar>>> GetAll() => await calendarQueryAdapter.GetAllCalendarEntries();
 
-        public async Task<Response<int>> Register(Calendar calendarEntry) => await calendarCommandAdapter.CreateCalendarEntry(calendarEntry);
+        //public async Task<Response<int>> Register(Calendar calendarEntry) => await calendarCommandAdapter.CreateCalendarEntry(calendarEntry);
 
-        public async Task<Response<bool>> Update(Calendar calendarEntry) => await calendarCommandAdapter.UpdateCalendarEntry(calendarEntry);
+        //public async Task<Response<bool>> Update(Calendar calendarEntry) => await calendarCommandAdapter.UpdateCalendarEntry(calendarEntry);
 
-        public async Task<Response<bool>> Delete(int id) => await calendarCommandAdapter.DeleteCalendarEntry(id);
+        //public async Task<Response<bool>> Delete(int id) => await calendarCommandAdapter.DeleteCalendarEntry(id);
     }
 }

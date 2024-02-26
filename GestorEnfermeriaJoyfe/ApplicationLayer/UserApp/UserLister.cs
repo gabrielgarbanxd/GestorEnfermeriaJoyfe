@@ -11,12 +11,8 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
     {
         private readonly IUserContract _userRepository;
 
-        public UserLister(IUserContract userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
-        public async Task<List<User>> Run(bool paginated = false, int perPage = 10, int page = 1)
+        public UserLister(IUserContract userRepository) => _userRepository = userRepository;
+        public async Task<IEnumerable<User>> Run(bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {

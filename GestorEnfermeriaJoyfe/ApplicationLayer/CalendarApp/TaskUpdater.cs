@@ -11,14 +11,8 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.CalendarApp
     {
         private readonly ICalendarContract _calendarRepository;
 
-        public TaskUpdater(ICalendarContract calendarRepository)
-        {
-            _calendarRepository = calendarRepository;
-        }
+        public TaskUpdater(ICalendarContract calendarRepository) => _calendarRepository = calendarRepository;
 
-        public async Task<bool> Run(Calendar calendarEntry)
-        {
-            return await _calendarRepository.UpdateAsync(calendarEntry) > 0;
-        }
+        public async Task<int> Run(Calendar calendarEntry) => await _calendarRepository.UpdateAsync(calendarEntry);
     }
 }

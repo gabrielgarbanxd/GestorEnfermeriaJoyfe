@@ -2,6 +2,7 @@
 using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
 using GestorEnfermeriaJoyfe.Infraestructure.Shared;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
@@ -17,7 +18,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
         {
         }
 
-        public async Task<List<Patient>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Patient>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {
@@ -37,12 +38,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
         {
             var result = await ExecuteQueryAsync("GetPatientByIdProcedure", new Dictionary<string, object> { { "p_id", patientId.Value } });
 
-            if (result.Count == 0)
+            if (!result.Any())
             {
                 throw new System.Exception("No se ha encontrado el paciente.");
             }
 
-            return result[0];
+            return result.First();
         }
 
         public async Task<int> AddAsync(Patient patient)

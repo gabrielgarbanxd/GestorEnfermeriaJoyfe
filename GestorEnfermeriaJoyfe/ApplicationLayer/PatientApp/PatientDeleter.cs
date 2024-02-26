@@ -8,14 +8,8 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
     {
         private readonly IPatientContract _patientRepository;
 
-        public PatientDeleter(IPatientContract patientRepository)
-        {
-            _patientRepository = patientRepository;
-        }
+        public PatientDeleter(IPatientContract patientRepository) => _patientRepository = patientRepository;
 
-        public async Task<int> Run(int id)
-        {
-            return await _patientRepository.DeleteAsync(new PatientId(id));
-        }
+        public async Task<int> Run(int id) => await _patientRepository.DeleteAsync(new PatientId(id));
     }
 }

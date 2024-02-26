@@ -8,12 +8,9 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp
     {
         private readonly IPatientContract _patientRepository;
 
-        public PatientLister(IPatientContract patientRepository)
-        {
-            _patientRepository = patientRepository;
-        }
+        public PatientLister(IPatientContract patientRepository) => _patientRepository = patientRepository;
 
-        public async Task<List<Patient>> Run(bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Patient>> Run(bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {

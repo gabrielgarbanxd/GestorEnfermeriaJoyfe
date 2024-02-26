@@ -9,14 +9,8 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.CalendarApp
     {
         private readonly ICalendarContract _calendarRepository;
 
-        public TaskDeleter(ICalendarContract calendarRepository)
-        {
-            _calendarRepository = calendarRepository;
-        }
+        public TaskDeleter(ICalendarContract calendarRepository) => _calendarRepository = calendarRepository;
 
-        public async Task<bool> Run(int id)
-        {
-            return await _calendarRepository.DeleteAsync(id) > 0;
-        }
+        public async Task<int> Run(int id) => await _calendarRepository.DeleteAsync(new CalendarId(id));
     }
 }

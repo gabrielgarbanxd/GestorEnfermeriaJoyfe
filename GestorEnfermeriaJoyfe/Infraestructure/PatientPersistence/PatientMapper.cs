@@ -15,15 +15,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence
             string lastName2 = reader.GetString(reader.GetOrdinal("last_name2"));
             string course = reader.GetString(reader.GetOrdinal("course"));
 
-            Patient patient = new(
-                new PatientId(id),
-                new PatientName(name),
-                new PatientLastName(lastName),
-                new PatientLastName(lastName2),
-                new PatientCourse(course)
-            );
-
-            return patient;
+            return Patient.FromPrimitives(id, name, lastName, lastName2, course);
         }
     }
 }

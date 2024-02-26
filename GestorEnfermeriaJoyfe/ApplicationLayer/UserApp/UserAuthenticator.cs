@@ -12,10 +12,7 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
     {
         private readonly IUserContract _userRepository;
 
-        public UserAuthenticator(IUserContract userRepository)
-        {
-            _userRepository = userRepository;
-        }
+        public UserAuthenticator(IUserContract userRepository) => _userRepository = userRepository;
 
         public async Task<User> Run(string email, SecureString securePassword)
         {

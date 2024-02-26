@@ -12,7 +12,7 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.VisitApp.SearchBy.Mixed
 
         public VisitsByPatientIdAndDateSearcher(IVisitContract visitRepository) => _visitRepository = visitRepository;
 
-        public async Task<List<Visit>> Run(int patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Visit>> Run(int patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {

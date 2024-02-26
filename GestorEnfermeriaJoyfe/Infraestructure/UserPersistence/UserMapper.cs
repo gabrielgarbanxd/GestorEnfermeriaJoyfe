@@ -16,15 +16,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.UserPersistence
             string lastName = reader.GetString(reader.GetOrdinal("last_name"));
             string email = reader.GetString(reader.GetOrdinal("email"));
 
-            User user = new(
-               new UserId(id),
-               new UserName(name),
-               new UserPassword(password),
-               new UserLastName(lastName),
-               new UserEmail(email)
-           );
-
-            return user;
+           return User.FromPrimitives(id, name, password, lastName, email);
         }
     }
 

@@ -8,14 +8,7 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.UserApp
     {
         private readonly IUserContract _userRepository;
 
-        public UserDeleter(IUserContract userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
-        public async Task<int> Run(int id)
-        {
-            return await _userRepository.DeleteAsync(new UserId(id));
-        }
+        public UserDeleter(IUserContract userRepository) => _userRepository = userRepository;
+        public async Task<int> Run(int id) => await _userRepository.DeleteAsync(new UserId(id));
     }
 }

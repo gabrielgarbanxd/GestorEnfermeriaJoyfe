@@ -20,7 +20,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
         {
         }
 
-        public  async Task<List<Visit>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
+        public  async Task<IEnumerable<Visit>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
             if (paginated)
             {
@@ -40,12 +40,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
         {
             var result = await ExecuteQueryAsync("GetVisitByIdProcedure", new Dictionary<string, object> { { "p_id", visitId.Value } });
 
-            if (result.Count == 0)
+            if (!result.Any())
             {
                 throw new System.Exception("No se ha encontrado la visita.");
             }
 
-            return result[0];
+            return result.First();
         }
 
         public async Task<int> CreateAsync(Visit visit)
@@ -93,7 +93,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             return result <= 0 ? throw new Exception("No se ha podido eliminar la visita.") : result;
         }
 
-        public async Task<List<Visit>> SearchByPatientIdAsync(PatientId patientId, bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Visit>> SearchByPatientIdAsync(PatientId patientId, bool paginated = false, int perPage = 10, int page = 1)
         {
             var parameters = new Dictionary<string, object> { { "p_patient_id", patientId.Value } };
 
@@ -108,7 +108,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             return await ExecuteQueryAsync("GetVisitsByPatientIdProcedure", parameters);
         }
 
-        public async Task<List<Visit>> SearchByDateAsync(DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Visit>> SearchByDateAsync(DateTime date, bool paginated = false, int perPage = 10, int page = 1)
         {
             var parameters = new Dictionary<string, object> { { "p_date", date } };
 
@@ -123,7 +123,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             return await ExecuteQueryAsync("GetVisitsByDateProcedure", parameters);
         }
 
-        public async Task<List<Visit>> SearchByDateRangeAsync(DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Visit>> SearchByDateRangeAsync(DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
         {
             var parameters = new Dictionary<string, object>
             {
@@ -142,7 +142,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             return await ExecuteQueryAsync("GetVisitsByDateRangeProcedure", parameters);
         }
 
-        public async Task<List<Visit>> SearchByPatientIdAndDateRangeAsync(PatientId patientId, DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Visit>> SearchByPatientIdAndDateRangeAsync(PatientId patientId, DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
         {
             var parameters = new Dictionary<string, object>
             {
@@ -162,7 +162,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             return await ExecuteQueryAsync("GetVisitsByPatientIdAndDateRangeProcedure", parameters);
         }
 
-        public async Task<List<Visit>> SearchByPatientIdAndDateAsync(PatientId patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<IEnumerable<Visit>> SearchByPatientIdAndDateAsync(PatientId patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
         {
             var parameters = new Dictionary<string, object>
             {
