@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
+        
         xmlns:viewModel="clr-namespace:GestorEnfermeriaJoyfe.UI.ViewModels"
+        
         xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
         Title="MainView" Height="600" Width="1200"

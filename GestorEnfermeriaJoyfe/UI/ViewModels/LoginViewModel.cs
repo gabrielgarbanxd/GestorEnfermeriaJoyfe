@@ -6,6 +6,8 @@ using System.Security.Principal;
 using GestorEnfermeriaJoyfe.UI.Views;
 using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
 using GestorEnfermeriaJoyfe.Domain.User;
+using GestorEnfermeriaJoyfe.Adapters;
+using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -90,6 +92,17 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             var userController = new UserController();
             //var isValidUser = userRepository.AuthenticateUser(new System.Net.NetworkCredential(Username, Password));
             var response = await userController.Login(Email, Password);
+
+            PatientController2 patientController2 = new();
+            var response2 = await patientController2.GetAll();
+            if ( response2.Success)
+            {
+                MessageBox.Show("Pacientes cargados 2 ");
+            }
+            else
+            {
+                MessageBox.Show("Error al cargar pacientes 2 ");
+            }
 
             if (response.Success)
             {

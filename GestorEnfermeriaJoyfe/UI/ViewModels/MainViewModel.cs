@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
+using GestorEnfermeriaJoyfe.Adapters;
 using GestorEnfermeriaJoyfe.Adapters.PatientAdapters;
 using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
 using GestorEnfermeriaJoyfe.Domain.Patient;

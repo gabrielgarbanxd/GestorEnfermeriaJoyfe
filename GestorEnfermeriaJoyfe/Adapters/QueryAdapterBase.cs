@@ -2,10 +2,12 @@
 using GestorEnfermeriaJoyfe.ApplicationLayer.PatientApp;
 using GestorEnfermeriaJoyfe.Domain.Patient;
 using GestorEnfermeriaJoyfe.Domain.Visit;
+using GestorEnfermeriaJoyfe.Infraestructure.PatientPersistence;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.Adapters
 {
@@ -26,6 +28,7 @@ namespace GestorEnfermeriaJoyfe.Adapters
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 return (TResponse)QueryResponse.Fail(ex.Message);
             }
         }
@@ -45,12 +48,12 @@ namespace GestorEnfermeriaJoyfe.Adapters
         {
         }
 
-        public static new PatientResponse Ok(string? message = null, IEnumerable<Patient>? data = default)
+        public override PatientResponse Ok(string? message = null, IEnumerable<Patient>? data = default)
         {
             return new PatientResponse(true, message, data);
         }
 
-        public static new PatientResponse Fail(string? message = null)
+        public override PatientResponse Fail(string? message = null)
         {
             return new PatientResponse(false, message);
         }
@@ -73,5 +76,24 @@ namespace GestorEnfermeriaJoyfe.Adapters
             });
 
         }
+    }
+
+    public class PatientController2
+    {
+        private readonly PatientMapper patientMapper;
+        private readonly MySqlPatientRepository patientRepository;
+
+        private readonly QueryAdapter queryAdapter;
+
+        public PatientController2()
+        {
+            patientMapper = new();
+            patientRepository = new(patientMapper);
+
+            queryAdapter = new(new PatientResponse(), patientRepository);
+        }
+
+        public async Task<PatientResponse> GetAll() => await queryAdapter.GetAll();
+    }
 
 }

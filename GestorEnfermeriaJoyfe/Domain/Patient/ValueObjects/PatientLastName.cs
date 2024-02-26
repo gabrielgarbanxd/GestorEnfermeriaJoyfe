@@ -9,7 +9,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects
 {
     public class PatientLastName : StringValueObject
     {
-        private const int MinLength = 3;
+        private const int MinLength = 1;
         private const int MaxLength = 50;
 
         public PatientLastName(string value) : base(value)

@@ -9,7 +9,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit.ValueObjects
 {
     public sealed class VisitType : EnumValueObject<string>
     {
-        public override HashSet<string> ValidValues { get; set; } = new(){ "Agudo", "Crónico" };
+        public override HashSet<string> ValidValues { get; } = new() { "Agudo", "Crónico" };
 
         public VisitType(string value) : base(value) { }
     }
