@@ -13,6 +13,30 @@ namespace GestorEnfermeriaJoyfe.Adapters.CalendarAdapters
 
         public CalendarCommandAdapter(ICalendarContract calendarRepository) => this.calendarRepository = calendarRepository;
 
+        public async Task<CommandResponse> CreateCalendarEntry(Calendar calendarEntry)
+        {
+            return await RunCommand(async () =>
+            {
+                return await new TaskCreator(calendarRepository).Run(calendarEntry);
+            });
+        }
+
+        public async Task<CommandResponse> UpdateCalendarEntry(Calendar calendarEntry)
+        {
+            return await RunCommand(async () =>
+            {
+                return await new TaskUpdater(calendarRepository).Run(calendarEntry);
+            });
+        }
+
+        public async Task<CommandResponse> DeleteCalendarEntry(int id)
+        {
+            return await RunCommand(async () =>
+            {
+                return await new TaskDeleter(calendarRepository).Run(id);
+            });
+        }
+
 
 
         //public async Task<Response<int>> CreateCalendarEntry(Calendar calendarEntry)

@@ -22,12 +22,16 @@ namespace GestorEnfermeriaJoyfe.Adapters.CalendarAdapters
             calendarCommandAdapter = new CalendarCommandAdapter(calendarRepository);
         }
 
+        // ================== QUERYS ==================
+
         //public async Task<Response<List<Calendar>>> GetAll() => await calendarQueryAdapter.GetAllCalendarEntries();
 
-        //public async Task<Response<int>> Register(Calendar calendarEntry) => await calendarCommandAdapter.CreateCalendarEntry(calendarEntry);
+        // ================== COMMANDS ==================
 
-        //public async Task<Response<bool>> Update(Calendar calendarEntry) => await calendarCommandAdapter.UpdateCalendarEntry(calendarEntry);
+        public async Task<CommandResponse> Register(Calendar calendarEntry) => await calendarCommandAdapter.CreateCalendarEntry(calendarEntry);
 
-        //public async Task<Response<bool>> Delete(int id) => await calendarCommandAdapter.DeleteCalendarEntry(id);
+        public async Task<CommandResponse> Update(Calendar calendarEntry) => await calendarCommandAdapter.UpdateCalendarEntry(calendarEntry);
+
+        public async Task<CommandResponse> Delete(int id) => await calendarCommandAdapter.DeleteCalendarEntry(id);
     }
 }
