@@ -6,14 +6,14 @@ namespace GestorEnfermeriaJoyfe.Domain.Calendar
     public class Calendar
     {
         public CalendarId Id { get; private set; }
-        public CalendarFecha Fecha { get; private set; }
-        public CalendarTarea Tarea { get; private set; }
+        public CalendarFecha Date { get; private set; }
+        public CalendarTarea Task { get; private set; }
 
         public Calendar(CalendarId? id, CalendarFecha fecha, CalendarTarea tarea)
         {
             Id = id ?? new CalendarId(0);
-            Fecha = fecha;
-            Tarea = tarea;
+            Date = fecha;
+            Task = tarea;
         }
 
         public static Calendar Create(CalendarId? id, CalendarFecha fecha, CalendarTarea tarea)

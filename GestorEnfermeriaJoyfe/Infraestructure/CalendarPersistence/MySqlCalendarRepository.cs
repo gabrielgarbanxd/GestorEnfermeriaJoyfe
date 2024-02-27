@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using GestorEnfermeriaJoyfe.Domain.Calendar;
 using GestorEnfermeriaJoyfe.Domain.Calendar.ValueObjects;
@@ -18,29 +18,62 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
         {
         }
 
-        public Task<IEnumerable<Calendar>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
+        public async Task<int> AddAsync(Calendar calendarEvent)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_date", calendarEvent.Date},
+                {"p_task", calendarEvent.Task}
+            };
+            return await ExecuteNonQueryAsync("CreateCalendarEventProcedure", parameters);
         }
 
-        public Task<Calendar> FindAsync(CalendarId id)
+        public async Task<int> UpdateAsync(Calendar calendarEvent)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_id", calendarEvent.Id.Value},
+                {"p_date", calendarEvent.Date},
+                {"p_task", calendarEvent.Task}
+            };
+            return await ExecuteNonQueryAsync("UpdateCalendarEventProcedure", parameters);
         }
 
-        public Task<int> AddAsync(Calendar calendarEvent)
+        public async Task<int> DeleteAsync(CalendarId id)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_id", id.Value}
+            };
+            return await ExecuteNonQueryAsync("DeleteCalendarEventProcedure", parameters);
         }
 
-        public Task<int> UpdateAsync(Calendar calendarEvent)
+        public async Task<Calendar> FindAsync(CalendarId id)
         {
-            throw new NotImplementedException();
+            var result = await ExecuteQueryAsync("GetCalendarEventByIdProcedure", new Dictionary<string, object> { { "p_id", id.Value } });
+
+            if (!result.Any())
+            {
+                throw new Exception("No se ha encontrado el evento del calendario.");
+            }
+
+            return result.First();
         }
 
-        public Task<int> DeleteAsync(CalendarId id)
+        public async Task<IEnumerable<Calendar>> GetAllAsync(bool paginated = false, int perPage = 10, int page = 1)
         {
-            throw new NotImplementedException();
+            if (paginated)
+            {
+                var parameters = new Dictionary<string, object>
+                {
+                    {"p_per_page", perPage},
+                    {"p_page", page}
+                };
+
+                return await ExecuteQueryAsync("GetAllCalendarEventsPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetAllCalendarEventsProcedure");
         }
     }
 }

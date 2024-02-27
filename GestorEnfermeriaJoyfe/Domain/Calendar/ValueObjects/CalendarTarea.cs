@@ -20,5 +20,23 @@ namespace GestorEnfermeriaJoyfe.Domain.Calendar.ValueObjects
                 throw new ArgumentException($"La tarea del calendario no puede ser mayor a {MaxLength} caracteres.");
             }
         }
+
+
+        private void EnsureNotEmpty(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("La tarea del calendario no puede estar vacía.");
+            }
+        }
+
+
+
+
+
+
+
+
+
     }
 }

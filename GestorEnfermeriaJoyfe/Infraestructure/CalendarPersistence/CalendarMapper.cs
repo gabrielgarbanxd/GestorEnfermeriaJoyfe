@@ -10,11 +10,11 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CalendarPersistence
     {
         public Calendar Map(IDataReader reader)
         {
-            int id = reader.GetInt32(reader.GetOrdinal("id"));
-            DateTime fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
-            string tarea = reader.GetString(reader.GetOrdinal("tarea"));
+            int Id = reader.GetInt32(reader.GetOrdinal("id"));
+            DateTime Date = reader.GetDateTime(reader.GetOrdinal("date"));
+            string Task = reader.GetString(reader.GetOrdinal("task"));
 
-            return Calendar.FromPrimitives(id, fecha, tarea);
+            return Calendar.FromPrimitives(Id, Date, Task);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.Shared
     {
         private readonly MySqlConnection _connection;
         private readonly IObjectMapper<T>? _mapper;
-        private readonly string _connectionString = "Server=localhost;Port=3309;Database=gestor_enfermeria;User=root;Password=joyfe;";
+        private readonly string _connectionString = "Server=localhost;Port=3306;Database=gestor_enfermeria;User=root;Password=1234;";
 
         public MySqlRepositoryBase(IObjectMapper<T> mapper)
         {
