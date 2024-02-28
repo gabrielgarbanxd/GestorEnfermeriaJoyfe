@@ -75,6 +75,24 @@ CREATE TABLE `gestor_enfermeria`.`calendar` (
 );
 
 
+
+-- -- Calendar table
+-- CREATE TABLE `gestor_enfermeria`.`calendar` (
+--     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--     `date` DATE NOT NULL,
+--     `year` YEAR AS (YEAR(`date`)),
+--     `quarter` TINYINT AS (QUARTER(`date`)),
+--     `month` TINYINT AS (MONTH(`date`)),
+--     `day` TINYINT AS (DAY(`date`)),
+--     `task` TEXT NOT NULL,
+--     `visit` DATETIME, -- Para programar las visitas
+--     `visit_id` INT UNSIGNED, -- Agregamos esta línea para el id de la visita
+--     PRIMARY KEY (`id`),
+--     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
+-- );
+
+
+
 -- *************************************************************************
 -- *                                                                       *
 -- *                           STORED PROCEDURES                          *
