@@ -146,9 +146,10 @@
                         </StackPanel>
 
 
-                        <Button Grid.Column="1" Style="{StaticResource button}">
+                        <Button Grid.Column="1" Style="{StaticResource button}" Command="{Binding CreateCalendarEntryCommand}" CommandParameter="AgregarNota">
                             <fa:ImageAwesome x:Name="añadir" Icon="PlusCircle" Width="28" Foreground="White"/>
                         </Button>
+
 
 
                     </Grid>
