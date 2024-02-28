@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.Shared
 {
@@ -10,7 +11,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.Shared
     {
         private readonly MySqlConnection _connection;
         private readonly IObjectMapper<T>? _mapper;
-        private readonly string _connectionString = "Server=localhost;Port=3306;Database=gestor_enfermeria;User=root;Password=1234;";
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["GestorEnfermeria"].ConnectionString;
 
         public MySqlRepositoryBase(IObjectMapper<T> mapper)
         {
