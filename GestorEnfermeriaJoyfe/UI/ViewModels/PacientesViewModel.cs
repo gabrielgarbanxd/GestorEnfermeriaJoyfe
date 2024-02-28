@@ -68,6 +68,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         public ICommand CreatePacienteCommand { get; }
         public ICommand EditPacienteCommand { get; }
         public ICommand DeletePacienteCommand { get; }
+        public ICommand DoubleClickPacienteCommand { get; }
 
 
         //===>> Constructor <<====//
@@ -82,6 +83,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             CreatePacienteCommand = new ViewModelCommand(ExecuteCreatePacienteCommand);
             EditPacienteCommand = new ViewModelCommand(ExecuteEditPacienteCommand);
             DeletePacienteCommand = new ViewModelCommand(ExecuteDeletePacienteCommand);
+            DoubleClickPacienteCommand = new ViewModelCommand(ExecuteDoubleClickPacienteCommand);
         }
 
         //===>> Commands Methods <<====//
@@ -211,6 +213,18 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
+
+        private void ExecuteDoubleClickPacienteCommand(object obj)
+        {
+            if (SelectedPaciente == null)
+            {
+                MessageBox.Show("Debe seleccionar un paciente");
+                return;
+            }
+
+            //MainViewModelRouter.Instance.OnShowPacienteVisitsView(SelectedPaciente.Id.Value);
+            MainViewModelRouter.Instance.OnShowCalendarView("");
+        }
 
         //===>> Private Methods <<====//
         private bool PatientFilter(object item)

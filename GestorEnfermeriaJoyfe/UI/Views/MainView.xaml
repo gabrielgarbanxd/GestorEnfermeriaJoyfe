@@ -4,12 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
-        
         xmlns:viewModel="clr-namespace:GestorEnfermeriaJoyfe.UI.ViewModels"
-        
+        xmlns:converters="clr-namespace:GestorEnfermeriaJoyfe.UI.Converters"
         xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="MainView" Height="600" Width="1200"
+        Title="MainView" Height="800" Width="1400"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="Transparent"
@@ -33,6 +32,8 @@
         <DataTemplate DataType="{x:Type viewModel:CalendarViewModel}">
             <local:Calendar/>
         </DataTemplate>
+
+        <converters:RadioButtonIndexToBooleanConverter x:Key="RadioButtonIndexToBooleanConverter" />
 
     </Window.Resources>
 
@@ -77,8 +78,8 @@
                     <!-- *** Menu Options *** -->
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource text}"
-                                 IsChecked="True"
-                                 Command="{Binding ShowPrincipalViewCommand}">
+                                 Command="{Binding ShowPrincipalViewCommand}"
+                                 IsChecked="{Binding SelectedRadioButtonIndex, Mode=TwoWay, Converter={StaticResource RadioButtonIndexToBooleanConverter}, ConverterParameter=0}">
                         <StackPanel Orientation="Horizontal">
                             <fIcons:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Principal" Style="{StaticResource menuButtonText}"/>
@@ -87,7 +88,8 @@
 
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource text}"
-                                 Command="{Binding ShowPacientesViewCommand}">
+                                 Command="{Binding ShowPacientesViewCommand}"
+                                 IsChecked="{Binding SelectedRadioButtonIndex, Mode=TwoWay, Converter={StaticResource RadioButtonIndexToBooleanConverter}, ConverterParameter=1}">
                         <StackPanel Orientation="Horizontal">
                             <fIcons:IconImage Icon="HospitalUser" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Pacientes" Style="{StaticResource menuButtonText}"/>
@@ -96,7 +98,8 @@
 
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource text}"
-                                 Command="{Binding ShowCalendarioViewCommand}">
+                                 Command="{Binding ShowCalendarioViewCommand}"
+                                 IsChecked="{Binding SelectedRadioButtonIndex, Mode=TwoWay, Converter={StaticResource RadioButtonIndexToBooleanConverter}, ConverterParameter=2}">
                         <StackPanel Orientation="Horizontal">
                             <fIcons:IconImage Icon="CalendarAlt" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Calendario" Style="{StaticResource menuButtonText}"/>

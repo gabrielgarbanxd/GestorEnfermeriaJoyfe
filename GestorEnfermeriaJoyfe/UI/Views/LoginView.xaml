@@ -13,7 +13,9 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        MouseDown="Window_MouseDown">
+        MouseDown="Window_MouseDown"
+        FocusManager.FocusedElement="{Binding ElementName=txtUser}"
+        >
 
     <Window.DataContext>
         viewModel:LoginViewModel/>
@@ -26,9 +28,13 @@
     <Window.Visibility>
         <Binding Path="IsViewVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
     </Window.Visibility>
-    
-    
-    
+
+    <Window.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+    </Window.InputBindings>
+
+
+
 
     <Border CornerRadius="0">
         <Border.Background>
@@ -53,6 +59,7 @@
 
 
             <Grid>
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition/>
@@ -128,10 +135,13 @@
                              Margin="0,5,0,0"
                              Padding="20,0,0,0">
 
+                        
                         <TextBox.Background>
                             <ImageBrush ImageSource="/UI/Assets/Images/user-icon.png" Stretch="None"
                                         AlignmentX="Left"/>
                         </TextBox.Background>
+
+                        
                     </TextBox>
                     
                     <!--contraseña-->

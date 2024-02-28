@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
-using GestorEnfermeriaJoyfe.Adapters;
 using GestorEnfermeriaJoyfe.Adapters.PatientAdapters;
-using GestorEnfermeriaJoyfe.Adapters.UserAdapters;
 using GestorEnfermeriaJoyfe.Domain.Patient;
-using GestorEnfermeriaJoyfe.Domain.User;
-using GestorEnfermeriaJoyfe.Infraestructure;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -18,12 +12,13 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
     {
         // //===>> Fields <<====//
         private List<Patient> _pacientes;
-
+        private readonly PatientController PatientController = new();
+        
         private ViewModelBase _currentPageView;
         private string _title;
         private IconChar _icon;
+        private int _selectedRadioButtonIndex = 0; // Índice del RadioButton "Pacientes"
 
-        private readonly PatientController PatientController = new();
 
         // //===>> Propertys <<====//
         public ViewModelBase CurrentPageView 
@@ -56,6 +51,20 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
+        public int SelectedRadioButtonIndex
+        {
+            get { return _selectedRadioButtonIndex; }
+            set
+            {
+                if (_selectedRadioButtonIndex != value)
+                {
+                    _selectedRadioButtonIndex = value;
+                    OnPropertyChanged(nameof(SelectedRadioButtonIndex));
+                }
+            }
+        }
+
+
         // //===>> Commands <<====//
         public ICommand ShowPrincipalViewCommand { get; }
         public ICommand ShowPacientesViewCommand { get; }
@@ -73,10 +82,16 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
             ExecuteShowPrincipalViewCommand(null);
 
-            // Suscripcion a los eventos del mediador
+            // Suscripcion a los eventos del paciente mediador
             PacientesMediator.Instance.PacienteUpdated += UpdatePaciente;
             PacientesMediator.Instance.PacienteDeleted += DeletePaciente;
             PacientesMediator.Instance.PacienteCreated += AddPaciente;
+
+            // Suscripcion a los eventos del router
+            MainViewModelRouter.Instance.ShowPrincipalView += ExecuteShowPrincipalViewCommand;
+            MainViewModelRouter.Instance.ShowPacientesView += ExecuteShowPacientesViewCommand;
+            //MainViewModelRouter.Instance.ShowPacienteVisitsView += OnShowPacienteVisitsView;
+            MainViewModelRouter.Instance.ShowCalendarView += ExecuteShowCalendarioViewCommand;
         }
 
         public override async Task OnMountedAsync()
@@ -87,23 +102,28 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         // //===>> Commands Methods <<====//
         private void ExecuteShowPrincipalViewCommand(object? obj)
         {
+            SelectedRadioButtonIndex = 0;
             CurrentPageView = new PrincipalViewModel();
             Title = "Estadisticas Principales";
             Icon = IconChar.Home;
         }
         private void ExecuteShowPacientesViewCommand(object obj)
         {
+            SelectedRadioButtonIndex = 1;
             CurrentPageView = new PacientesViewModel(_pacientes);
             Title = "Pacientes";
             Icon = IconChar.HospitalUser;
         }
         private void ExecuteShowCalendarioViewCommand(object obj)
         {
+            SelectedRadioButtonIndex = 2;
             CurrentPageView = new CalendarViewModel();
             Title = "Calendario";
             Icon = IconChar.CalendarAlt;
         }
 
+
+        // //===>> Private Methods <<====//
         private async Task LoadPacientes()
         {
             var response = await PatientController.GetAll();
