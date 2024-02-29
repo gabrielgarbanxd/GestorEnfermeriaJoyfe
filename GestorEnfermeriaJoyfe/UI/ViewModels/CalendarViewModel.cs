@@ -65,11 +65,15 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         public ICommand EditCalendarEntryCommand { get; }
         public ICommand DeleteCalendarEntryCommand { get; }
 
+        public ICommand CalendarDateChangedCommand { get; }
+
         public CalendarViewModel()
         {
             CreateCalendarEntryCommand = new ViewModelCommand(ExecuteCreateCalendarEntryCommand);
             EditCalendarEntryCommand = new ViewModelCommand(ExecuteEditCalendarEntryCommand);
             DeleteCalendarEntryCommand = new ViewModelCommand(ExecuteDeleteCalendarEntryCommand);
+
+            CalendarDateChangedCommand = new ViewModelCommand(ExecuteSelectedDatesChangedCommand);
 
             CalendarEntries = new ObservableCollection<GestorEnfermeriaJoyfe.Domain.Calendar.Calendar>();
             _filteredCalendarEntriesView = CollectionViewSource.GetDefaultView(CalendarEntries);
@@ -90,6 +94,25 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             {
                 MessageBox.Show("Error al cargar las entradas del calendario");
             }
+        }
+
+        private void ExecuteSelectedDatesChangedCommand(object obj)
+        {
+            //if (obj is SelectionChangedEventArgs e)
+            //{
+            //    if (e.AddedItems.Count > 0)
+            //    {
+            //        if (e.AddedItems[0] is DateTime selectedDate)
+            //        {
+            //            // Aquí puedes implementar la lógica para mostrar las entradas del calendario para la fecha seleccionada
+            //            // Por ejemplo, podrías filtrar las entradas del calendario para mostrar solo las que corresponden a la fecha seleccionada
+            //            // También podrías mostrar las entradas del calendario en un control de usuario personalizado o en un cuadro de diálogo
+            //            // También podrías implementar la lógica para permitir al usuario agregar, editar o eliminar entradas del calendario para la fecha seleccionada
+            //        }
+            //    }
+            //}
+
+            MessageBox.Show("El comando SelectedDatesChangedCommand no está implementado.");
         }
 
         private async void ExecuteCreateCalendarEntryCommand(object obj)

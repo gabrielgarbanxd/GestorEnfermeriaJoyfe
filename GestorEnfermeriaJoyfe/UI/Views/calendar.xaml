@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
              xmlns:uc="clr-namespace:GestorEnfermeriaJoyfe.UI.Styles"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -71,7 +72,17 @@
 
                 <TextBlock x:Name="txtMonth" Text="Febrero" Foreground="#87CEEB" FontSize="24" TextAlignment="Center" FontWeight="SemiBold" Margin="0 15 0 20"/>
 
-                <Calendar x:Name="MyCalendar" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" Style="{DynamicResource CalendarStyle1}"/>
+                <Calendar x:Name="MyCalendar" 
+                          CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" 
+                          CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" 
+                          CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" 
+                          Style="{DynamicResource CalendarStyle1}"/>
+                          <!--SelectedDate=""/>-->
+                <i:Interaction.Triggers>
+                    <i:PropertyChangedTrigger Binding="{Binding SelectedDate, ElementName=MyCalendar}">
+                        <i:InvokeCommandAction Command="{Binding CalendarDateChangedCommand}" CommandParameter="{Binding SelectedDate, ElementName=MyCalendar}"/>
+                    </i:PropertyChangedTrigger>
+                </i:Interaction.Triggers>
 
             </StackPanel>
 
