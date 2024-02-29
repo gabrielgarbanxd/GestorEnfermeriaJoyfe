@@ -60,40 +60,24 @@ CREATE TABLE `gestor_enfermeria`.`visits` (
 ENGINE = InnoDB;
 
 
-
--- -- Calendar table
--- CREATE TABLE `gestor_enfermeria`.`calendar` (
---     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
---     `date` DATE NOT NULL,
---     `year` YEAR AS (YEAR(`date`)),
---     `quarter` TINYINT AS (QUARTER(`date`)),
---     `month` TINYINT AS (MONTH(`date`)),
---     `day` TINYINT AS (DAY(`date`)),
---     `task` TEXT NOT NULL,
---     PRIMARY KEY (`id`),
---     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
--- );
-
-
-
 -- Cites table
 CREATE TABLE `gestor_enfermeria`.`cites` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `id_paciente` INT UNSIGNED NOT NULL,
-    `nota` TEXT,
-    `id_visita` INT UNSIGNED,
-    `fecha_cita` DATETIME,
+    `patient_id` INT UNSIGNED NOT NULL,
+    `note` TEXT,
+    `visit_id` INT UNSIGNED,
+    `date` DATETIME,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-    INDEX `fk_paciente_idx` (`id_paciente` ASC) VISIBLE,
-    INDEX `fk_visita_idx` (`id_visita` ASC) VISIBLE,
+    INDEX `fk_paciente_idx` (`patient_id` ASC) VISIBLE,
+    INDEX `fk_visita_idx` (`visit_id` ASC) VISIBLE,
     CONSTRAINT `fk_paciente`
-        FOREIGN KEY (`id_paciente`)
+        FOREIGN KEY (`patient_id`)
         REFERENCES `gestor_enfermeria`.`patients` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
     CONSTRAINT `fk_visita`
-        FOREIGN KEY (`id_visita`)
+        FOREIGN KEY (`visit_id`)
         REFERENCES `gestor_enfermeria`.`visitas` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION

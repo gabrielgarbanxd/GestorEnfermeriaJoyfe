@@ -11,10 +11,10 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitesPersistence
         public Cite Map(IDataReader reader)
         {
             int id = reader.GetInt32(reader.GetOrdinal("id"));
-            int patientId = reader.GetInt32(reader.GetOrdinal("id_paciente"));
-            string note = reader.IsDBNull(reader.GetOrdinal("nota")) ? string.Empty : reader.GetString(reader.GetOrdinal("nota"));
-            int? visitId = reader.IsDBNull(reader.GetOrdinal("id_visita")) ? null : (int?)reader.GetInt32(reader.GetOrdinal("id_visita"));
-            DateTime date = reader.GetDateTime(reader.GetOrdinal("fecha_cita"));
+            int patientId = reader.GetInt32(reader.GetOrdinal("patient_id"));
+            string? note = reader.GetString(reader.GetOrdinal("nota"));
+            int? visitId = reader.GetInt32(reader.GetOrdinal("visit_id"));
+            DateTime date = reader.GetDateTime(reader.GetOrdinal("date"));
 
             return Cite.FromPrimitives(id, patientId, note, visitId, date);
         }

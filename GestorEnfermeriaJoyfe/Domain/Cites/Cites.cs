@@ -11,7 +11,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Cites
         public int? VisitId { get; private set; }
         public DateTime Date { get; private set; }
 
-        public Cite(CitesId? id, int patientId, string note, int? visitId, DateTime date)
+        public Cite(CitesId? id, int patientId, string? note, int? visitId, DateTime date)
         {
             Id = id ?? new CitesId(0);
             PatientId = patientId;
@@ -25,7 +25,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Cites
             return new Cite(id, patientId, note, visitId, date);
         }
 
-        public static Cite FromPrimitives(int? id, int patientId, string note, int? visitId, DateTime date)
+        public static Cite FromPrimitives(int? id, int patientId, string? note, int? visitId, DateTime date)
         {
             return new Cite(new CitesId(id ?? 0), patientId, note, visitId, date);
         }
