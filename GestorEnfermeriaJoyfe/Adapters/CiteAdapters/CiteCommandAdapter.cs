@@ -29,6 +29,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.CiteAdapters
             });
         }
 
+
         public async Task<CommandResponse> Delete(int id)
         {
             return await RunCommand(async () =>

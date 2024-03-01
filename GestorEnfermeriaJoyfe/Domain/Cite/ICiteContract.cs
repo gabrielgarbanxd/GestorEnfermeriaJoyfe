@@ -13,3 +13,4 @@ namespace GestorEnfermeriaJoyfe.Domain.Cite
         Task<int> DeleteAsync(CiteId citeId);
     }
 }
+

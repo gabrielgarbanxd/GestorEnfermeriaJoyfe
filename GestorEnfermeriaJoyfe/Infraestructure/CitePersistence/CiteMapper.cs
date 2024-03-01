@@ -19,3 +19,4 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
         }
     }
 }
+

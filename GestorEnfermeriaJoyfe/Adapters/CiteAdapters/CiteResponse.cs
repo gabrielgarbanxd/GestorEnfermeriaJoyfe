@@ -29,3 +29,4 @@ namespace GestorEnfermeriaJoyfe.Adapters.CiteAdapters
         }
     }
 }
+

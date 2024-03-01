@@ -7,3 +7,4 @@ namespace GestorEnfermeriaJoyfe.Domain.Cite.ValueObjects
         public CiteNote(string value) : base(value) { }
     }
 }
+

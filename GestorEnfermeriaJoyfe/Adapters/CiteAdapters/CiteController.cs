@@ -15,6 +15,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.CiteAdapters
         private readonly CiteQueryAdapter CiteQueryAdapter;
         private readonly CiteCommandAdapter CiteCommandAdapter;
 
+
         public CiteController()
         {
             citeMapper = new ();

@@ -8,3 +8,4 @@ namespace GestorEnfermeriaJoyfe.Domain.Cite.ValueObjects
         public CiteDate(DateTime value) : base(value) { }
     }
 }
+

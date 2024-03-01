@@ -16,3 +16,4 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.CiteApp
         public async Task<int> Run(Cite cite) => await _citeRpository.AddAsync(cite);
     }
 }
+
