@@ -11,28 +11,25 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="430*"/>
-            <ColumnDefinition Width="238*"/>
-            <ColumnDefinition Width="121*"/>
-            <ColumnDefinition Width="12*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Border CornerRadius="20 0 0 20" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,238,0"/>
+        <Border CornerRadius="20 0 0 20" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,152,0"/>
         <!--<Border CornerRadius="0 20 20 0" MouseDown="Border_MouseDown" Background="Orange" Grid.Column="1"/>-->
-        <Border CornerRadius="0 20 20 0" Background="#ADD8E6" Margin="8,0,10,0" Grid.ColumnSpan="3" Grid.Column="1"/>
+        <Border CornerRadius="0 20 20 0" Background="#ADD8E6" Margin="88,0,10,0" Grid.ColumnSpan="2" Grid.Column="1"/>
 
         <!-- Otros controles en el UserControl -->
         <Grid Grid.ColumnSpan="2" Margin="0,0,238,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0*" />
             </Grid.ColumnDefinitions>
 
-
-
-
             <StackPanel>
-                <!--seleccionar año-->
+                <!-- seleccionar año -->
                 <StackPanel x:Name="YearButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 50 0 30">
                     <Button Style="{StaticResource button}" Click="YearButton_Click">
                         <fa:ImageAwesome Icon="AngleLeft" Style="{StaticResource angle}"/>
@@ -49,10 +46,8 @@
                     </Button>
                 </StackPanel>
 
-
-                <!--Seleccionar mes-->
-                <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" Width="434">
-
+                <!-- Seleccionar mes -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="434">
                     <Button Content="1" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
                     <Button Content="2" Style="{StaticResource buttonMonth}" Click="MonthButton_Click" FontWeight="SemiBold"/>
                     <Button Content="3" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
@@ -65,7 +60,6 @@
                     <Button Content="10" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
                     <Button Content="11" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
                     <Button Content="12" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-
                 </StackPanel>
 
                 <Separator Height="0.8" Background="#cacaca" Margin="30 10"/>
@@ -77,7 +71,7 @@
                           CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" 
                           CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" 
                           Style="{DynamicResource CalendarStyle1}"/>
-                          <!--SelectedDate=""/>-->
+                <!--SelectedDate=""/>-->
                 <i:Interaction.Triggers>
                     <i:PropertyChangedTrigger Binding="{Binding SelectedDate, ElementName=MyCalendar}">
                         <i:InvokeCommandAction Command="{Binding CalendarDateChangedCommand}" CommandParameter="{Binding SelectedDate, ElementName=MyCalendar}"/>
@@ -86,10 +80,8 @@
 
             </StackPanel>
 
-
-
-            <StackPanel Margin="10,0,-373,0" Grid.Column="1">
-                <!--Titulos-->
+            <StackPanel Margin="59,0,-422,0" Grid.Column="1">
+                <!-- Titulos -->
                 <StackPanel Margin="20 45 30 10" Orientation="Horizontal">
                     <!--<TextBlock x:Name="txtSelectedDay" Text="1" FontSize="50" Foreground="#ffffff"/>-->
                     <TextBlock x:Name="txtSelectedDay" FontSize="50" Foreground="#ffffff"/>
@@ -106,79 +98,57 @@
                     <Button Style="{StaticResource buttonBig}">
                         <fa:ImageAwesome Icon="AngleRight" Style="{StaticResource angleBig}"/>
                     </Button>
-
-
                 </StackPanel>
 
                 <TextBlock Text="5 tarea - faltan 2" Foreground="White" FontSize="16" Margin="35 0 20 0"/>
 
-                <!--Agregar notas-->
-
+                <!-- Agregar notas -->
                 <Border Background="#87CEEB" CornerRadius="10" HorizontalAlignment="Center" Width="310" Margin="0 30 0 20" Padding="17 15 5 15">
-
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <fa:ImageAwesome Icon="Pencil" Width="15" Height="15" Foreground="Black" />
                                 <TextBlock Text="Agregar nota" Name="lblNote" Style="{StaticResource textHint}" MouseDown="lblNote_MouseDown"/>
                                 <TextBox x:Name="txtNote" Style="{StaticResource textBox}" TextChanged="txtNote_TextChanged"/>
-
                             </Grid>
-
 
                             <Separator Margin="0 12 0 11" Height="0.8" Background="Beige"/>
 
-
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15*"/>
-                                    <ColumnDefinition Width="106*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <fa:ImageAwesome Icon="Bell" Width="15" Height="15" Foreground="Black" />
                                 <TextBlock Text="_ _ : _ _ - _ _ : _ _" Name="lblTime" Style="{StaticResource textHint}" MouseDown="lblTime_MouseDown"/>
                                 <TextBox x:Name="txtTime" Style="{StaticResource textBox}" TextChanged="txtTime_TextChanged"/>
-
                             </Grid>
-
-
-
                         </StackPanel>
-
 
                         <Button Grid.Column="1" Style="{StaticResource button}" Command="{Binding CreateCalendarEntryCommand}" CommandParameter="AgregarNota">
                             <fa:ImageAwesome x:Name="añadir" Icon="PlusCircle" Width="28" Foreground="White"/>
                         </Button>
-
-
-
                     </Grid>
                 </Border>
 
-
-                <!--Notas-->
-
+                <!-- Notas -->
                 <uc:Item Title="Post social network" Time="09:45 - 10:30" Color="#eba5bb" Icon="CheckCircle" IconBell="BellSlash"/>
                 <uc:Item Title="Review the app desing" Time="11:30 - 12:00" Color="#eba5bb" Icon="CheckCircle" IconBell="BellSlash"/>
                 <uc:Item Title="Build a demo of app" Time="14:00 - 15:30" Color="#f1f1f1" Icon="CircleThin" IconBell="Bell"/>
                 <uc:Item Title="Dinner with John Doe" Time="20:15 - 21:15" Color="#f1f1f1" Icon="CircleThin" IconBell="Bell"/>
                 <uc:Item Title="Send email xxx" Time="23:00 - 23:20" Color="#f1f1f1" Icon="CircleThin" IconBell="Bell"/>
-
-
             </StackPanel>
-
-
         </Grid>
     </Grid>
 </UserControl>
