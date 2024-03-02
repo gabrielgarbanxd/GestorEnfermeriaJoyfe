@@ -67,6 +67,7 @@ CREATE TABLE `gestor_enfermeria`.`cites` (
     `note` TEXT,
     `visit_id` INT UNSIGNED,
     `date` DATETIME,
+    `visit_template_id` INT UNSIGNED,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
     INDEX `fk_paciente_idx` (`patient_id` ASC) VISIBLE,
