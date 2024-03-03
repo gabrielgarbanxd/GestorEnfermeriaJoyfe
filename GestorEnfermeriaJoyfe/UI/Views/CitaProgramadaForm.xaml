@@ -6,14 +6,23 @@
         xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
         xmlns:Components="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
         mc:Ignorable="d"
-        Title="CitaProgramadaForm" Height="400" Width="679">
+        Title="CitaProgramadaForm" Height="400" Width="300">
     <StackPanel Margin="10">
 
         <Components:FormGroup x:Name="Motivo" LabelText="Motivo"/>
-        
-        
 
-        <ListBox SelectionMode="Multiple">
+
+
+
+        <Label Content="Días de las semana"
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat"
+               Padding="0,0,0,4"/>
+
+        <!-- Selector de día de la semana -->
+        <ListBox x:Name="lstDiasSemana" SelectionMode="Multiple">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -25,7 +34,53 @@
             <ListBoxItem>Jueves</ListBoxItem>
             <ListBoxItem>Viernes</ListBoxItem>
         </ListBox>
+        
 
+        <!-- Selector de fecha de inicio -->
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <Label Content="Fecha inicio: "
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat"
+               Padding="0,8,0,0"/>
+            <DatePicker x:Name="dpFechaInicio" Width="150" Margin="5"/>
+        </StackPanel>
+
+        <!-- Selector de fecha de fin -->
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <Label Content="Fecha fin: "
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat"
+               Padding="0,8,0,0"/>
+            <DatePicker x:Name="dpFechaFin" Width="150" Margin="5"/>
+        </StackPanel>
+
+        <Label Content="Hora: "
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat"
+               Padding="0,8,0,0"/>
+
+        <!-- Selector de hora -->
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock Text="Hora:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="txtHora" Width="50" TextAlignment="Center" Text="" />
+            <TextBlock Text=":" VerticalAlignment="Center" Margin="5,0"/>
+            <TextBlock Text="Minutos:" VerticalAlignment="Center" Margin="5,0"/>
+            <TextBox x:Name="txtMinutos" Width="50" TextAlignment="Center" Text="" />
+        </StackPanel>
+
+        <!-- Botón -->
+        <Button Margin="0,20,20,0" 
+                Content="Aceptar" 
+                IsDefault="True" 
+                Click="AceptarButton_Click"
+                Style="{StaticResource actionPacienteBtn}"
+                Background="{StaticResource color9}"/>
 
     </StackPanel>
 </Window>
