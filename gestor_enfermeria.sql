@@ -14,6 +14,9 @@ DROP TABLE IF EXISTS `gestor_enfermeria`.`users`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`visits`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`patients`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`calendar`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`cites`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`scheduled_cites_rules`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`visits_templates`;
 
 -- Users table
 CREATE TABLE `gestor_enfermeria`.`users` (
@@ -85,6 +88,44 @@ CREATE TABLE `gestor_enfermeria`.`cites` (
 ) ENGINE = InnoDB;
 
 
+-- Scheduled Cites Rules
+CREATE TABLE `gestor_enfermeria`.`scheduled_cites_rules` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `patient_id` INT UNSIGNED NOT NULL,
+    `start_date` DATETIME,
+    `end_date` DATETIME,
+    `hour` TIME NOT NULL,
+    `lunes` INT UNSIGNED NOT NULL,
+    `martes` INT UNSIGNED NOT NULL,
+    `miercoles` INT UNSIGNED NOT NULL,
+    `jueves` INT UNSIGNED NOT NULL,
+    `viernes` INT UNSIGNED NOT NULL,
+    `visit_template_id` INT UNSIGNED NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+    INDEX `fk_patient_idx_2` (`patient_id` ASC) VISIBLE,
+    CONSTRAINT `fk_patient_2`
+        FOREIGN KEY (`patient_id`)
+        REFERENCES `gestor_enfermeria`.`patients` (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
+) ENGINE = InnoDB;
+
+
+-- Visits Templates
+CREATE TABLE `gestor_enfermeria`.`visits_templates` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `type` ENUM('Agudo', 'Crónico') NOT NULL,
+    `classification` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `is_comunicated` INT UNSIGNED NOT NULL,
+    `is_derived` INT UNSIGNED NOT NULL,
+    `trauma_type` ENUM('BUCODENTAL/MAXILOFACIAL', 'CUERPO EXTRAÑO (INGESTA/OTROS)', 'BRECHAS', 'TEC', 'CARA', 'ROTURA DE GAFAS', 'TRAUMATOLOGÍA MIEMBRO INFERIOR', 'TRAUMATOLOGÍA MIEMBRO SUPERIOR', 'OTROS ACCIDENTES') NULL,
+    `place` ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS') NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
+) ENGINE = InnoDB;
 
 
 
@@ -1220,11 +1261,342 @@ PRO : BEGIN
 END$$
 
 
+-- =====================================
+-- ========>> SCHEDULED CITES RULES <<===
+-- =====================================
+
+-- //===>> GetAllScheduledCiteRulesProcedure scheduled_cites_rules procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllScheduledCiteRulesProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetAllScheduledCiteRulesProcedure`()
+PRO : BEGIN
+
+    -- Obtener todas las reglas de citas programadas
+    SELECT * FROM scheduled_cites_rules;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetAllScheduledCiteRulesPaginatedProcedure scheduled_cites_rules procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllScheduledCiteRulesPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetAllScheduledCiteRulesPaginatedProcedure`(
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM scheduled_cites_rules;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM scheduled_cites_rules LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetScheduledCiteRuleByIdProcedure scheduled_cites_rules procedure <<===//
+DROP PROCEDURE IF EXISTS `GetScheduledCiteRuleByIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetScheduledCiteRuleByIdProcedure`(
+    IN p_id INT
+)
+PRO : BEGIN
+
+    -- Obtener la regla de citas programadas por ID
+    SELECT * FROM scheduled_cites_rules WHERE id = p_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Create scheduled_cites_rule procedure <<===//
+DROP PROCEDURE IF EXISTS `CreateScheduledCiteRuleProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `CreateScheduledCiteRuleProcedure`(
+    IN p_name VARCHAR(100),
+    IN p_hour TIME,
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_lunes INT,
+    IN p_martes INT,
+    IN p_miercoles INT,
+    IN p_jueves INT,
+    IN p_viernes INT,
+    IN p_patient_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar que el nombre no sea nulo
+    IF p_name IS NULL THEN 
+        SET p_Result = -1; -- Código de error para nombre nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la hora no sea nula
+    IF p_hour IS NULL THEN
+        SET p_Result = -2; -- Código de error para hora nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la fecha de inicio no sea nula
+    IF p_start_date IS NULL THEN
+        SET p_Result = -3; -- Código de error para fecha de inicio nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la fecha de fin no sea nula
+    IF p_end_date IS NULL THEN
+        SET p_Result = -4; -- Código de error para fecha de fin nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que al menos un día de la semana esté seleccionado
+    IF p_lunes = 0 AND p_martes = 0 AND p_miercoles = 0 AND p_jueves = 0 AND p_viernes = 0 THEN
+        SET p_Result = -5; -- Código de error para días de la semana no seleccionados
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -6; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Insertar nueva regla de citas programadas
+    INSERT INTO scheduled_cites_rules(name, hour, start_date, end_date, patient_id)
+    VALUES(p_name, p_hour, p_start_date, p_end_date, p_patient_id);
+
+    -- Verificar si la inserción fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = LAST_INSERT_ID(); -- Devolver el ID de la regla de citas programadas insertada
+    ELSE
+        SET p_Result = 0; -- Código de error para inserción no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> Update scheduled_cites_rule procedure <<===//
+DROP PROCEDURE IF EXISTS `UpdateScheduledCiteRuleProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `UpdateScheduledCiteRuleProcedure`(
+    IN p_id INT,
+    IN p_name VARCHAR(100),
+    IN p_hour TIME,
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_lunes INT,
+    IN p_martes INT,
+    IN p_miercoles INT,
+    IN p_jueves INT,
+    IN p_viernes INT,
+    IN p_patient_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la regla de citas programadas existe
+    IF NOT EXISTS (SELECT * FROM scheduled_cites_rules WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para regla de citas programadas no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el nombre no sea nulo
+    IF p_name IS NULL THEN 
+        SET p_Result = -2; -- Código de error para nombre nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la hora no sea nula
+    IF p_hour IS NULL THEN
+        SET p_Result = -3; -- Código de error para hora nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la fecha de inicio no sea nula
+    IF p_start_date IS NULL THEN
+        SET p_Result = -4; -- Código de error para fecha de inicio nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la fecha de fin no sea nula
+    IF p_end_date IS NULL THEN
+        SET p_Result = -5; -- Código de error para fecha de fin nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que al menos un día de la semana esté seleccionado
+    IF p_lunes = 0 AND p_martes = 0 AND p_miercoles = 0 AND p_jueves = 0 AND p_viernes = 0 THEN
+        SET p_Result = -6; -- Código de error para días de la semana no seleccionados
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -7; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Actualizar regla de citas programadas
+    UPDATE scheduled_cites_rules
+    SET name = p_name, hour = p_hour, start_date = p_start_date, end_date = p_end_date, patient_id = p_patient_id
+    WHERE id = p_id;
+
+    -- Verificar si la actualización fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = 1; -- Código de éxito
+    ELSE
+        SET p_Result = 0; -- Código de error para actualización no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
 
 
--- =====================================
--- ========>>    CALENDAR    <<=========
--- =====================================
+-- //===>> Delete scheduled_cites_rule procedure <<===//
+DROP PROCEDURE IF EXISTS `DeleteScheduledCiteRuleProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `DeleteScheduledCiteRuleProcedure`(
+    IN p_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la regla de citas programadas existe
+    IF NOT EXISTS (SELECT * FROM scheduled_cites_rules WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para regla de citas programadas no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Eliminar regla de citas programadas
+    DELETE FROM scheduled_cites_rules WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    SELECT id INTO p_Result FROM scheduled_cites_rules WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    IF p_Result > 0 THEN
+        SET p_Result = 0; -- Código de error para eliminación no exitosa
+    ELSE
+        SET p_Result = p_id; -- Código de éxito
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> SearchScheduledCiteRuleByPatientIdProcedure scheduled_cites_rules procedure <<===//
+DROP PROCEDURE IF EXISTS `SearchScheduledCiteRuleByPatientIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `SearchScheduledCiteRuleByPatientIdProcedure`(
+    IN p_patient_id INT
+)
+
+PRO : BEGIN
+
+    -- Obtener las reglas de citas programadas por ID de paciente
+    SELECT * FROM scheduled_cites_rules WHERE patient_id = p_patient_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> SearchScheduledCiteRuleByPatientIdPaginatedProcedure scheduled_cites_rules procedure <<===//
+DROP PROCEDURE IF EXISTS `SearchScheduledCiteRuleByPatientIdPaginatedProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `SearchScheduledCiteRuleByPatientIdPaginatedProcedure`(
+    IN p_patient_id INT,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM scheduled_cites_rules WHERE patient_id = p_patient_id;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM scheduled_cites_rules WHERE patient_id = p_patient_id LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
 
 
 
@@ -1243,6 +1615,12 @@ END$$
 -- *                                                                       *
 -- *************************************************************************
 
+
+-- Scheduled Cites Rules and Days By Patient ID
+CREATE VIEW scheduled_cites_rules_days AS
+SELECT r.id, r.name, r.patient_id, r.start_date, r.end_date, d.day, d.hour
+FROM scheduled_cites_rules r
+JOIN scheduled_cites_rule_days d ON r.id = d.scheduled_cites_rule_id;
 
 
 
