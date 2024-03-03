@@ -4,6 +4,7 @@ using GestorEnfermeriaJoyfe.Infraestructure.Shared;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
 {
@@ -39,7 +40,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
 
             if (!result.Any())
             {
-                throw new System.Exception("No se ha encontrado la cita.");
+                throw new Exception("No se ha encontrado la cita.");
             }
 
             return result.First();
@@ -49,16 +50,16 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
         {
             var parameters = new Dictionary<string, object>
             {
-                {"p_patient_id", cite.PatientId},
-                {"p_note", cite.Note},
-                {"p_date", cite.Date}
+                {"p_date", cite.Date.Value},
+                {"p_patient_id", cite.PatientId.Value},
+                {"p_note", cite.Note.Value}
             };
 
             var result = await ExecuteNonQueryAsync("CreateCiteProcedure", parameters);
 
             if (result <= 0)
             {
-                throw new System.Exception("No se ha podido crear la cita.");
+                throw new Exception("No se ha podido crear la cita.");
             }
 
             return result;
@@ -69,17 +70,18 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             var parameters = new Dictionary<string, object>
             {
                 {"p_id", cite.Id.Value},
-                {"p_patient_id", cite.PatientId},
-                {"p_note", cite.Note},
-                {"p_date", cite.Date}
+                {"p_date", cite.Date.Value},
+                {"p_patient_id", cite.PatientId.Value},
+                {"p_note", cite.Note.Value}
             };
 
             var result = await ExecuteNonQueryAsync("UpdateCiteProcedure", parameters);
 
             if (result <= 0)
             {
-                throw new System.Exception("No se ha podido actualizar la cita.");
+                throw new Exception("No se ha podido actualizar la cita.");
             }
+
             return result;
         }
 
@@ -89,10 +91,117 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
 
             if (result <= 0)
             {
-                throw new System.Exception("No se ha podido eliminar la cita.");
+                throw new Exception("No se ha podido eliminar la cita.");
             }
 
             return result;
+        }
+
+        public async Task<IEnumerable<Cite>> GetCitesByPatientIdAsync(int patientId, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_patient_id", patientId},
+                {"p_per_page", perPage},
+                {"p_page", page}
+            };
+
+            if (paginated)
+            {
+                return await ExecuteQueryAsync("GetCitesByPatientIdPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetCitesByPatientIdProcedure", parameters);
+        }
+
+        public async Task<IEnumerable<Cite>> GetCitesByDayAsync(DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_date", date},
+                {"p_per_page", perPage},
+                {"p_page", page}
+            };
+
+            if (paginated)
+            {
+                return await ExecuteQueryAsync("GetCitesByDayPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetCitesByDayProcedure", parameters);
+        }
+
+        public async Task<IEnumerable<Cite>> GetCitesByDayAndPatientIdAsync(int patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_patient_id", patientId},
+                {"p_date", date},
+                {"p_per_page", perPage},
+                {"p_page", page}
+            };
+
+            if (paginated)
+            {
+                return await ExecuteQueryAsync("GetCitesByDayAndPatientIdPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetCitesByDayAndPatientIdProcedure", parameters);
+        }
+
+        public async Task<IEnumerable<Cite>> GetCitesByDayRangeAsync(DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_start_date", startDate},
+                {"p_end_date", endDate},
+                {"p_per_page", perPage},
+                {"p_page", page}
+            };
+
+            if (paginated)
+            {
+                return await ExecuteQueryAsync("GetCitesByDayRangePaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetCitesByDayRangeProcedure", parameters);
+        }
+
+        public async Task<IEnumerable<Cite>> GetCitesByPatientIdAndDayAsync(int patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_patient_id", patientId},
+                {"p_date", date},
+                {"p_per_page", perPage},
+                {"p_page", page}
+            };
+
+            if (paginated)
+            {
+                return await ExecuteQueryAsync("GetCitesByPatientIdAndDayPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetCitesByPatientIdAndDayProcedure", parameters);
+        }
+
+        public async Task<IEnumerable<Cite>> GetCitesByPatientIdAndDayRangeAsync(int patientId, DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_patient_id", patientId},
+                {"p_start_date", startDate},
+                {"p_end_date", endDate},
+                {"p_per_page", perPage},
+                {"p_page", page}
+            };
+
+            if (paginated)
+            {
+                return await ExecuteQueryAsync("GetCitesByPatientIdAndDayRangePaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetCitesByPatientIdAndDayRangeProcedure", parameters);
         }
     }
 }
