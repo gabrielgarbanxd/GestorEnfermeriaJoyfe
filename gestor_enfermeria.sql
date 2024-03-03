@@ -64,6 +64,28 @@ ENGINE = InnoDB;
 
 
 -- Cites table
+-- CREATE TABLE `gestor_enfermeria`.`cites` (
+--     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--     `patient_id` INT UNSIGNED NOT NULL,
+--     `note` TEXT,
+--     `visit_id` INT UNSIGNED,
+--     `date` DATETIME,
+--     `visit_template_id` INT UNSIGNED,
+--     PRIMARY KEY (`id`),
+--     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+--     INDEX `fk_patient_idx` (`patient_id` ASC) VISIBLE,
+--     INDEX `fk_visit_idx` (`visit_id` ASC) VISIBLE,
+--     CONSTRAINT `fk_patient`
+--         FOREIGN KEY (`patient_id`)
+--         REFERENCES `gestor_enfermeria`.`patients` (`id`)
+--         ON DELETE NO ACTION
+--         ON UPDATE NO ACTION,
+--     CONSTRAINT `fk_visits_patient`
+--         FOREIGN KEY (`visit_id`)
+--         REFERENCES `gestor_enfermeria`.`visits` (`id`)
+--         ON DELETE NO ACTION
+--         ON UPDATE NO ACTION
+-- ) ENGINE = InnoDB;
 CREATE TABLE `gestor_enfermeria`.`cites` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `patient_id` INT UNSIGNED NOT NULL,
@@ -73,19 +95,20 @@ CREATE TABLE `gestor_enfermeria`.`cites` (
     `visit_template_id` INT UNSIGNED,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-    INDEX `fk_paciente_idx` (`patient_id` ASC) VISIBLE,
-    INDEX `fk_visita_idx` (`visit_id` ASC) VISIBLE,
-    CONSTRAINT `fk_paciente`
+    INDEX `fk_cites_patient_idx` (`patient_id` ASC) VISIBLE,
+    INDEX `fk_cites_visit_idx` (`visit_id` ASC) VISIBLE,
+    CONSTRAINT `fk_cites_patient`
         FOREIGN KEY (`patient_id`)
         REFERENCES `gestor_enfermeria`.`patients` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
-    CONSTRAINT `fk_visita`
+    CONSTRAINT `fk_cites_visit`
         FOREIGN KEY (`visit_id`)
-        REFERENCES `gestor_enfermeria`.`visitas` (`id`)
+        REFERENCES `gestor_enfermeria`.`visits` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
+
 
 
 -- Scheduled Cites Rules

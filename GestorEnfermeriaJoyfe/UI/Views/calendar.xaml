@@ -7,148 +7,293 @@
              xmlns:uc="clr-namespace:GestorEnfermeriaJoyfe.UI.Styles"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <Border CornerRadius="20 0 0 20" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,152,0"/>
-        <!--<Border CornerRadius="0 20 20 0" MouseDown="Border_MouseDown" Background="Orange" Grid.Column="1"/>-->
-        <Border CornerRadius="0 20 20 0" Background="#ADD8E6" Margin="88,0,10,0" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <Border CornerRadius="20 0 0 20" Background="White" Grid.Column="0"/>
+        <Border CornerRadius="0 20 20 0" Background="#ADD8E6" Margin="0,0,10,0" Grid.Column="1"/>
 
-        <!-- Otros controles en el UserControl -->
-        <Grid Grid.ColumnSpan="2" Margin="0,0,238,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="0*" />
-            </Grid.ColumnDefinitions>
 
-            <StackPanel>
-                <!-- seleccionar año -->
-                <StackPanel x:Name="YearButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 50 0 30">
-                    <Button Style="{StaticResource button}" Click="YearButton_Click">
-                        <fa:ImageAwesome Icon="AngleLeft" Style="{StaticResource angle}"/>
-                    </Button>
 
-                    <Button x:Name="btn2022" Content="2022" Style="{StaticResource button}" Click="YearButton_Click"/>
-                    <Button x:Name="btn2023" Content="2023" Style="{StaticResource button}" Click="YearButton_Click"/>
-                    <Button x:Name="btn2024" Content="2024" Style="{StaticResource button}" FontSize="24" Foreground="#87CEEB" Click="YearButton_Click"/>
-                    <Button x:Name="btn2025" Content="2025" Style="{StaticResource button}" Click="YearButton_Click"/>
-                    <Button x:Name="btn2026" Content="2026" Style="{StaticResource button}" Click="YearButton_Click"/>
+        <StackPanel Grid.Column="0">
+            <!--seleccionar año-->
+            <StackPanel x:Name="YearButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 50 0 30">
+                <!--<Button Style="{StaticResource button}" Click="YearButton_Click">
+                    <fa:ImageAwesome Icon="AngleLeft" Style="{StaticResource angle}"/>
+                </Button>-->
 
-                    <Button Style="{StaticResource button}" Click="YearButton_Click">
-                        <fa:ImageAwesome Icon="AngleRight" Style="{StaticResource angle}"/>
-                    </Button>
-                </StackPanel>
+                <Button x:Name="btn2022" Content="2022" Style="{StaticResource button}" Click="YearButton_Click"/>
+                <Button x:Name="btn2023" Content="2023" Style="{StaticResource button}" Click="YearButton_Click"/>
+                <Button x:Name="btn2024" Content="2024" Style="{StaticResource button}" FontSize="24" Foreground="#87CEEB" Click="YearButton_Click"/>
+                <Button x:Name="btn2025" Content="2025" Style="{StaticResource button}" Click="YearButton_Click"/>
+                <Button x:Name="btn2026" Content="2026" Style="{StaticResource button}" Click="YearButton_Click"/>
 
-                <!-- Seleccionar mes -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="434">
-                    <Button Content="1" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="2" Style="{StaticResource buttonMonth}" Click="MonthButton_Click" FontWeight="SemiBold"/>
-                    <Button Content="3" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="4" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="5" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="6" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="7" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="8" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="9" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="10" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="11" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                    <Button Content="12" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
-                </StackPanel>
+                <!--<Button Style="{StaticResource button}" Click="YearButton_Click">
+                    <fa:ImageAwesome Icon="AngleRight" Style="{StaticResource angle}"/>
+                </Button>-->
+            </StackPanel>
 
-                <Separator Height="0.8" Background="#cacaca" Margin="30 10"/>
 
-                <TextBlock x:Name="txtMonth" Text="Febrero" Foreground="#87CEEB" FontSize="24" TextAlignment="Center" FontWeight="SemiBold" Margin="0 15 0 20"/>
+            <!--Seleccionar mes-->
+            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" Width="434">
 
-                <Calendar x:Name="MyCalendar" 
+                <Button Content="1" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="2" Style="{StaticResource buttonMonth}" Click="MonthButton_Click" FontWeight="SemiBold"/>
+                <Button Content="3" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="4" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="5" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="6" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="7" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="8" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="9" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="10" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="11" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+                <Button Content="12" Style="{StaticResource buttonMonth}" Click="MonthButton_Click"/>
+
+            </StackPanel>
+
+            <Separator Height="0.8" Background="#cacaca" Margin="30 10"/>
+
+            <TextBlock x:Name="txtMonth" Text="Febrero" Foreground="#87CEEB" FontSize="24" TextAlignment="Center" FontWeight="SemiBold" Margin="0 15 0 20"/>
+
+            <Calendar x:Name="MyCalendar" 
                           CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" 
                           CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" 
                           CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" 
                           Style="{DynamicResource CalendarStyle1}"/>
-                <!--SelectedDate=""/>-->
-                <i:Interaction.Triggers>
-                    <i:PropertyChangedTrigger Binding="{Binding SelectedDate, ElementName=MyCalendar}">
-                        <i:InvokeCommandAction Command="{Binding CalendarDateChangedCommand}" CommandParameter="{Binding SelectedDate, ElementName=MyCalendar}"/>
-                    </i:PropertyChangedTrigger>
-                </i:Interaction.Triggers>
+            <!--SelectedDate=""/>-->
+            <i:Interaction.Triggers>
+                <i:PropertyChangedTrigger Binding="{Binding SelectedDate, ElementName=MyCalendar}">
+                    <i:InvokeCommandAction Command="{Binding CalendarDateChangedCommand}" CommandParameter="{Binding SelectedDate, ElementName=MyCalendar}"/>
+                </i:PropertyChangedTrigger>
+            </i:Interaction.Triggers>
+        </StackPanel>
 
+
+
+
+
+        <!--IZQUIERDA-->
+
+        <StackPanel Margin="10,0,10,0" Grid.Column="1">
+            <!--Titulos-->
+            <StackPanel Margin="20 45 30 10" Orientation="Horizontal">
+                <TextBlock x:Name="txtSelectedDay" FontSize="50" Foreground="#ffffff"/>
+
+                <!-- Aquí está el TextBlock txtMonth1 y los botones -->
+                <StackPanel Orientation="Horizontal" Margin="10 0 0 0" VerticalAlignment="Center">
+                    <TextBlock x:Name="txtMonth1" Text="Febrero" Foreground="#ffffff" FontSize="24"/>
+
+
+                </StackPanel>
             </StackPanel>
 
-            <StackPanel Margin="59,0,-422,0" Grid.Column="1">
-                <!-- Titulos -->
-                <StackPanel Margin="20 45 30 10" Orientation="Horizontal">
-                    <!--<TextBlock x:Name="txtSelectedDay" Text="1" FontSize="50" Foreground="#ffffff"/>-->
-                    <TextBlock x:Name="txtSelectedDay" FontSize="50" Foreground="#ffffff"/>
 
-                    <StackPanel Margin="10 0 0 0" VerticalAlignment="Center">
-                        <TextBlock x:Name="txtMonth1" Text="Febrero" Foreground="#ffffff" FontSize="24"/>
-                        <TextBlock x:Name="txtMonth2" Text="Febrero" Foreground="#ffffff" FontSize="14"/>
+
+
+
+            <!--<StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Top"
+                        Grid.Column="0"
+                        Margin="15,0,0,10">
+                <fIcons:IconImage Icon="Search" Height="20" Width="20" Foreground="{StaticResource text}"/>
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="13"
+                         Height="24"
+                         Width="300"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="{StaticResource text}"
+                         CaretBrush="{StaticResource text}"
+                         BorderBrush="{StaticResource text}"
+                         BorderThickness="0,0,0,1"                             
+                         VerticalContentAlignment="Center"
+                         Margin="10,5,0,0">
+
+                    <TextBox.Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <VisualBrush Stretch="None">
+                                                <VisualBrush.Visual>
+                                                    <Label 
+                                                        Content="Buscar..." 
+                                                        Padding="0,0,250,0"
+                                                        Foreground="{StaticResource placeholder}"
+                                                        FontSize="13"
+                                                        FontWeight="Medium"
+                                                        FontFamily="Montserrat"/>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+
+
+            </StackPanel>-->
+
+
+
+            <!-- StackPanel para los botones -->
+            <StackPanel Orientation="Horizontal" Margin="15,0,20,10" HorizontalAlignment="Right">
+
+                <!-- Botón Azul -->
+                <Button Style="{StaticResource actionPacienteBtn}"
+                            Tag="{StaticResource white}"
+                            Background="Blue"
+                            Command="{Binding CreatePacienteCommand}"
+                            Margin="15,0,0,0" Width="121">
+                    <StackPanel Orientation="Horizontal" Width="100">
+                        <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Nuevo" Style="{StaticResource textActionPacienteBtn}" Width="85" Height="14"/>
                     </StackPanel>
+                </Button>
 
-                    <Button Style="{StaticResource buttonBig}" Margin="112 0 5 0">
-                        <fa:ImageAwesome Icon="AngleLeft" Style="{StaticResource angleBig}"/>
-                    </Button>
+                <!-- Botón Naranja -->
+                <Button Style="{StaticResource actionPacienteBtn}"
+                            Tag="{StaticResource tempHover}"
+                            Background="Orange"
+                            Command="{Binding EditPacienteCommand}"
+                            Margin="15,0,0,0" Height="43" Width="121" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" Width="100">
+                        <fIcons:IconImage Icon="Edit" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Editar" Style="{StaticResource textActionPacienteBtn}" Height="14" Width="67"/>
+                    </StackPanel>
+                </Button>
 
-                    <Button Style="{StaticResource buttonBig}">
-                        <fa:ImageAwesome Icon="AngleRight" Style="{StaticResource angleBig}"/>
-                    </Button>
-                </StackPanel>
+                <!-- Botón Rojo -->
+                <Button Style="{StaticResource actionPacienteBtn}"
+                            Tag="{StaticResource tempHover}"
+                            Background="{StaticResource red}"
+                            Command="{Binding DeletePacienteCommand}"
+                            Margin="15,0,0,0" Height="45" Width="121">
+                    <StackPanel Orientation="Horizontal" Width="100">
+                        <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Eliminar" Style="{StaticResource textActionPacienteBtn}" Width="81" Height="14"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
 
-                <TextBlock Text="5 tarea - faltan 2" Foreground="White" FontSize="16" Margin="35 0 20 0"/>
 
-                <!-- Agregar notas -->
-                <Border Background="#87CEEB" CornerRadius="10" HorizontalAlignment="Center" Width="310" Margin="0 30 0 20" Padding="17 15 5 15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
 
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
 
-                                <fa:ImageAwesome Icon="Pencil" Width="15" Height="15" Foreground="Black" />
-                                <TextBlock Text="Agregar nota" Name="lblNote" Style="{StaticResource textHint}" MouseDown="lblNote_MouseDown"/>
-                                <TextBox x:Name="txtNote" Style="{StaticResource textBox}" TextChanged="txtNote_TextChanged"/>
-                            </Grid>
+            <!-- DataGrid para mostrar los datos -->
+            <StackPanel HorizontalAlignment="Stretch" Margin="15,0,20,0">
+                <Border Grid.Row="1"
+        Background="{StaticResource temptable1}"
+        Padding="30"
+        CornerRadius="10"
+        BorderBrush="{StaticResource white}"
+        BorderThickness="2">
 
-                            <Separator Margin="0 12 0 11" Height="0.8" Background="Beige"/>
+                    <DataGrid ItemsSource="{Binding FilteredPacientesView}"
+              SelectedItem="{Binding SelectedPaciente}"
+              AutoGenerateColumns="False"
+              ColumnWidth="*"
+              Background="{StaticResource temptable1}"
+              BorderThickness="0"
+              GridLinesVisibility="None"
+              HeadersVisibility="Column"
+              SelectionUnit="FullRow"
+              IsReadOnly="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding DoubleClickPacienteCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                                <Setter Property="Padding" Value="2,0,0,10"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
 
-                                <fa:ImageAwesome Icon="Bell" Width="15" Height="15" Foreground="Black" />
-                                <TextBlock Text="_ _ : _ _ - _ _ : _ _" Name="lblTime" Style="{StaticResource textHint}" MouseDown="lblTime_MouseDown"/>
-                                <TextBox x:Name="txtTime" Style="{StaticResource textBox}" TextChanged="txtTime_TextChanged"/>
-                            </Grid>
-                        </StackPanel>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Margin" Value="2,10,0,10"/>
 
-                        <Button Grid.Column="1" Style="{StaticResource button}" Command="{Binding CreateCalendarEntryCommand}" CommandParameter="AgregarNota">
-                            <fa:ImageAwesome x:Name="añadir" Icon="PlusCircle" Width="28" Foreground="White"/>
-                        </Button>
-                    </Grid>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource color2}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource color1}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.RowHeaderStyle>
+                            <Style TargetType="DataGridRowHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                            </Style>
+                        </DataGrid.RowHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding buscar}" Header="Hora" HeaderStringFormat=""/>
+                            <DataGridTextColumn Binding="{Binding buscar}" Header="Nombre"/>
+                            <DataGridTextColumn Binding="{Binding buscar}" Header="Nota"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
                 </Border>
 
-                <!-- Notas -->
-                <uc:Item Title="Post social network" Time="09:45 - 10:30" Color="#eba5bb" Icon="CheckCircle" IconBell="BellSlash"/>
-                <uc:Item Title="Review the app desing" Time="11:30 - 12:00" Color="#eba5bb" Icon="CheckCircle" IconBell="BellSlash"/>
-                <uc:Item Title="Build a demo of app" Time="14:00 - 15:30" Color="#f1f1f1" Icon="CircleThin" IconBell="Bell"/>
-                <uc:Item Title="Dinner with John Doe" Time="20:15 - 21:15" Color="#f1f1f1" Icon="CircleThin" IconBell="Bell"/>
-                <uc:Item Title="Send email xxx" Time="23:00 - 23:20" Color="#f1f1f1" Icon="CircleThin" IconBell="Bell"/>
             </StackPanel>
-        </Grid>
+
+
+
+
+
+
+
+
+
+
+
+        </StackPanel>
     </Grid>
 </UserControl>

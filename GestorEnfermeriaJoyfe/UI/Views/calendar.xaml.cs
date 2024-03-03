@@ -44,45 +44,45 @@ namespace GestorEnfermeriaJoyfe.UI.Views
             }
         }
 
-        private void lblNote_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            txtNote.Focus();
-        }
+        //private void lblNote_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    txtNote.Focus();
+        //}
 
-        private void txtNote_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtNote.Text) && txtNote.Text.Length > 0)
-            {
-                lblNote.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                lblNote.Visibility = Visibility.Visible;
-            }
-        }
+        //private void txtNote_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        //{
+        //    if (string.IsNullOrEmpty(txtNote.Text) && txtNote.Text.Length > 0)
+        //    {
+        //        lblNote.Visibility = Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        lblNote.Visibility = Visibility.Visible;
+        //    }
+        //}
 
-        private void lblTime_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            txtTime.Focus();
-        }
+        //private void lblTime_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    txtTime.Focus();
+        //}
 
-        private void txtTime_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtTime.Text) && txtTime.Text.Length > 0)
-            {
-                lblTime.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                lblTime.Visibility = Visibility.Visible;
-            }
-        }
+        //private void txtTime_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        //{
+        //    if (string.IsNullOrEmpty(txtTime.Text) && txtTime.Text.Length > 0)
+        //    {
+        //        lblTime.Visibility = Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        lblTime.Visibility = Visibility.Visible;
+        //    }
+        //}
 
 
 
         private void ChangeCalendarMonth(int month)
         {
-            int year = 2024; 
+            int year = 2024;
 
             DateTime newDate = new DateTime(year, month, 1);
 
@@ -90,7 +90,7 @@ namespace GestorEnfermeriaJoyfe.UI.Views
 
             txtMonth.Text = newDate.ToString("MMMM");
             txtMonth1.Text = newDate.ToString("MMMM");
-            txtMonth2.Text = newDate.ToString("MMMM");
+            //txtMonth2.Text = newDate.ToString("MMMM");
 
 
         }
@@ -165,7 +165,6 @@ namespace GestorEnfermeriaJoyfe.UI.Views
 
             txtSelectedDay.Text = selectedDate.ToString("dd");
         }
-
 
     }
 }
