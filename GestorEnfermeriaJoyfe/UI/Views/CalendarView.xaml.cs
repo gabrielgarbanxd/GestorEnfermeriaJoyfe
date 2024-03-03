@@ -2,16 +2,15 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GestorEnfermeriaJoyfe.UI.Views
 {
-    public partial class Calendar : UserControl
+    public partial class CalendarView : UserControl
     {
         private int selectedYear = 2024;
-        public Calendar()
+        public CalendarView()
         {
             InitializeComponent();
             // Suscribirse al evento MouseLeftButtonDown

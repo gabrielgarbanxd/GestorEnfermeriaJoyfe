@@ -30,7 +30,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:CalendarViewModel}">
-            <local:Calendar/>
+            <local:CalendarView/>
         </DataTemplate>
 
         <converters:RadioButtonIndexToBooleanConverter x:Key="RadioButtonIndexToBooleanConverter" />
