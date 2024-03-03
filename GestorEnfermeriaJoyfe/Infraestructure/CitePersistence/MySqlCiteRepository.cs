@@ -51,7 +51,6 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             {
                 {"p_patient_id", cite.PatientId},
                 {"p_note", cite.Note},
-                {"p_visit_id", cite.VisitId},
                 {"p_date", cite.Date}
             };
 
@@ -72,7 +71,6 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
                 {"p_id", cite.Id.Value},
                 {"p_patient_id", cite.PatientId},
                 {"p_note", cite.Note},
-                {"p_visit_id", cite.VisitId},
                 {"p_date", cite.Date}
             };
 

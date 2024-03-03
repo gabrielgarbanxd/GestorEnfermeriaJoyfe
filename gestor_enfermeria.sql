@@ -1007,7 +1007,7 @@ DROP PROCEDURE IF EXISTS `GetVisitsByDatePaginatedProcedure`;
 DELIMITER $$
 
 CREATE PROCEDURE `GetVisitsByDatePaginatedProcedure`(
-    IN p_date DATETIME,
+    IN p_date DATE,
     In p_per_page INT,
     In p_page INT,
     OUT p_Result INT
@@ -1033,7 +1033,7 @@ PRO : BEGIN
     SET p_offset = (p_page - 1) * p_per_page;
 
     -- Obtener el número total de registros
-    SELECT COUNT(*) INTO @total_records FROM visits WHERE date = p_date;
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE DATE(date) = p_date;
 
     -- Verificar que el número de registros a omitir sea menor al número total de registros
     IF p_offset >= @total_records THEN
@@ -1200,13 +1200,13 @@ DELIMITER $$
 
 CREATE PROCEDURE `GetVisitsByPatientIdAndDateProcedure`(
     IN p_patient_id INT,
-    IN p_date DATETIME
+    IN p_date DATE
 )
 
 PRO : BEGIN
 
     -- Obtener las visitas por ID de paciente y fecha
-    SELECT * FROM visits WHERE patient_id = p_patient_id AND date = p_date;
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND DATE(date) = p_date;
 
 END$$
 
@@ -1218,7 +1218,7 @@ DROP PROCEDURE IF EXISTS `GetVisitsByPatientIdAndDatePaginatedProcedure`;
 DELIMITER $$
 CREATE PROCEDURE `GetVisitsByPatientIdAndDatePaginatedProcedure`(
     IN p_patient_id INT,
-    IN p_date DATETIME,
+    IN p_date DATE,
     In p_per_page INT,
     In p_page INT,
     OUT p_Result INT
@@ -1244,7 +1244,7 @@ PRO : BEGIN
     SET p_offset = (p_page - 1) * p_per_page;
 
     -- Obtener el número total de registros
-    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id AND date = p_date;
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id AND DATE(date) = p_date;
 
     -- Verificar que el número de registros a omitir sea menor al número total de registros
     IF p_offset >= @total_records THEN
@@ -1253,7 +1253,7 @@ PRO : BEGIN
     END IF;
 
     -- Obtener los registros de la página actual
-    SELECT * FROM visits WHERE patient_id = p_patient_id AND date = p_date LIMIT p_per_page OFFSET p_offset;
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND DATE(date) = p_date LIMIT p_per_page OFFSET p_offset;
 
     -- Devolver el número total de registros
     SET p_Result = @total_records;
@@ -1598,6 +1598,410 @@ PRO : BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+-- ==================================
+-- ========>>    CITES    <<=========
+-- ==================================
+
+-- //===>> GetAllCitesProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllCitesProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetAllCitesProcedure`()
+PRO : BEGIN
+
+    -- Obtener todas las citas
+    SELECT * FROM cites;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetAllCitesPaginatedProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllCitesPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetAllCitesPaginatedProcedure`(
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM cites;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM cites LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCiteByIdProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCiteByIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCiteByIdProcedure`(
+    IN p_id INT
+)
+PRO : BEGIN
+
+    -- Obtener la cita por ID
+    SELECT * FROM cites WHERE id = p_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> CreateCiteProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `CreateCiteProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `CreateCiteProcedure`(
+    IN p_date DATETIME,
+    IN p_patient_id INT,
+    IN p_note TEXT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar que la fecha no sea nula
+    IF p_date IS NULL THEN
+        SET p_Result = -1; -- Código de error para fecha nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -2; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Insertar nueva cita
+    INSERT INTO cites(date, patient_id, note)
+    VALUES(p_date, p_patient_id, p_note);
+
+    -- Verificar si la inserción fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = LAST_INSERT_ID(); -- Devolver el ID de la cita insertada
+    ELSE
+        SET p_Result = 0; -- Código de error para inserción no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> UpdateCiteProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `UpdateCiteProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `UpdateCiteProcedure`(
+    IN p_id INT,
+    IN p_date DATETIME,
+    IN p_patient_id INT,
+    IN p_note TEXT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la cita existe
+    IF NOT EXISTS (SELECT * FROM cites WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para cita no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que la fecha no sea nula
+    IF p_date IS NULL THEN
+        SET p_Result = -2; -- Código de error para fecha nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -3; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Actualizar cita
+    UPDATE cites
+    SET date = p_date, patient_id = p_patient_id, note = p_note
+    WHERE id = p_id;
+
+    -- Verificar si la actualización fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = 1; -- Código de éxito
+    ELSE
+        SET p_Result = 0; -- Código de error para actualización no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> DeleteCiteProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `DeleteCiteProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `DeleteCiteProcedure`(
+    IN p_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la cita existe
+    IF NOT EXISTS (SELECT * FROM cites WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para cita no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Eliminar cita
+    DELETE FROM cites WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    SELECT id INTO p_Result FROM cites WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    IF p_Result > 0 THEN
+        SET p_Result = 0; -- Código de error para eliminación no exitosa
+    ELSE
+        SET p_Result = p_id; -- Código de éxito
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByPatientIdProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCitesByPatientIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByPatientIdProcedure`(
+    IN p_patient_id INT
+)
+PRO : BEGIN
+
+    -- Obtener las citas por ID de paciente
+    SELECT * FROM cites WHERE patient_id = p_patient_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByPatientIdPaginatedProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCitesByPatientIdPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByPatientIdPaginatedProcedure`(
+    IN p_patient_id INT,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM cites WHERE patient_id = p_patient_id;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM cites WHERE patient_id = p_patient_id LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByDateProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCitesByDayProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByDayProcedure`(
+    IN p_date DATE
+)
+PRO : BEGIN
+
+    -- Obtener las citas por fecha
+    SELECT * FROM cites WHERE DATE(date) = p_date;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByDatePaginatedProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCitesByDayPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByDayPaginatedProcedure`(
+    IN p_date DATE,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM cites WHERE DATE(date) = p_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM cites WHERE DATE(date) = p_date LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByDayAndPatientIdProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCitesByDayAndPatientIdProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByDayAndPatientIdProcedure`(
+    IN p_patient_id INT,
+    IN p_date DATE
+)
+
+PRO : BEGIN
+
+    -- Obtener las citas por ID de paciente y fecha
+    SELECT * FROM cites WHERE patient_id = p_patient_id AND DATE(date) = p_date;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByDayAndPatientIdPaginatedProcedure cites procedure <<===//
+DROP PROCEDURE IF EXISTS `GetCitesByDayAndPatientIdPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByDayAndPatientIdPaginatedProcedure`(
+    IN p_patient_id INT,
+    IN p_date DATE,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM cites WHERE patient_id = p_patient_id AND DATE(date) = p_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM cites WHERE patient_id = p_patient_id AND DATE(date) = p_date LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
 
 
 
