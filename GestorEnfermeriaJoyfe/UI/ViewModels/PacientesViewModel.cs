@@ -221,9 +221,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 MessageBox.Show("Debe seleccionar un paciente");
                 return;
             }
-
-            //MainViewModelRouter.Instance.OnShowPacienteVisitsView(SelectedPaciente.Id.Value);
-            MainViewModelRouter.Instance.OnShowCalendarView("");
+            MainViewModelRouter.Instance.OnShowSinglePacienteView(SelectedPaciente);
         }
 
         //===>> Private Methods <<====//

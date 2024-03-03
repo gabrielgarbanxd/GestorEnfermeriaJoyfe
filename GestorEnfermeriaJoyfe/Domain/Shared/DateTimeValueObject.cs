@@ -7,21 +7,13 @@ namespace GestorEnfermeriaJoyfe.Domain.Shared
     {
         protected DateTimeValueObject(DateTime value) : base(value) { }
 
-        public override string ToString()
-        { 
-            return Value.ToString("dd/MM/yyyy");
-        }
+        public string ToDate => Value.ToString("dd/MM/yyyy");
 
-        public string ToLongString()
-        {
-            return Value.ToString("dd/MM/yyyy HH:mm");
-        }
+        public string ToLongString => Value.ToString("dd/MM/yyyy HH:mm");
 
-        public string ToTime()
-        {
-            return Value.ToString("HH:mm");
-        }
+        public string ToTime => Value.ToString("HH:mm");
 
+        public string ToDayOfMonth => Value.ToString("M");
 
     }
 }

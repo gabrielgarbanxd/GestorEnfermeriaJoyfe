@@ -90,8 +90,10 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             // Suscripcion a los eventos del router
             MainViewModelRouter.Instance.ShowPrincipalView += ExecuteShowPrincipalViewCommand;
             MainViewModelRouter.Instance.ShowPacientesView += ExecuteShowPacientesViewCommand;
-            //MainViewModelRouter.Instance.ShowPacienteVisitsView += OnShowPacienteVisitsView;
+            MainViewModelRouter.Instance.ShowSinglePacienteView += ExecuteShowSinglePacienteView;
             MainViewModelRouter.Instance.ShowCalendarView += ExecuteShowCalendarioViewCommand;
+            MainViewModelRouter.Instance.ShowPacienteVisitsView += ShowPacienteVisitsView;
+            MainViewModelRouter.Instance.ShowPacienteCitasView += ShowPacienteCitasView;
         }
 
         public override async Task OnMountedAsync()
@@ -119,6 +121,28 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             SelectedRadioButtonIndex = 2;
             CurrentPageView = new CalendarViewModel();
             Title = "Calendario";
+            Icon = IconChar.CalendarAlt;
+        }
+
+        // ====>> Router Extra Methods <<====//
+        private void ExecuteShowSinglePacienteView(Patient paciente)
+        {
+            CurrentPageView = new SinglePacienteViewModel(paciente);
+            Title = paciente.Name.Value + " " + paciente.LastName.Value + " " + paciente.LastName2.Value + " - " + paciente.Course.Value;
+            Icon = IconChar.UserAlt;
+        }
+
+        private void ShowPacienteVisitsView(Patient paciente)
+        {
+            CurrentPageView = new PacienteVisitsViewModel(paciente);
+            Title = "Visitas de " + paciente.Name.Value + " " + paciente.LastName.Value + " " + paciente.LastName2.Value + " - " + paciente.Course.Value;
+            Icon = IconChar.Stethoscope;
+        }
+
+        private void ShowPacienteCitasView(Patient paciente)
+        {
+            CurrentPageView = new PacienteCitasViewModel(paciente);
+            Title = "Citas de " + paciente.Name.Value + " " + paciente.LastName.Value + " " + paciente.LastName2.Value + " - " + paciente.Course.Value;
             Icon = IconChar.CalendarAlt;
         }
 

@@ -167,4 +167,146 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+
+    <!-- //=====>> GO BACK BUTTON <<=====// -->
+    <Style x:Key="goBackButton" TargetType="Button">
+
+        <!-- *** Normal *** -->
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="15,10"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+
+                    <Border Height="40"
+                            CornerRadius="10"
+                            Background="{TemplateBinding Background}">
+
+                        <Grid>
+                            <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                            <Rectangle x:Name="HoverRectangle" 
+                                       Fill="#33000000" 
+                                       Visibility="Hidden" 
+                                       RadiusX="10" 
+                                       RadiusY="10"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- *** Hover *** -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverRectangle" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <!-- *** Hover Without Backgroud Stablished *** -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <!-- //=====>> ICON BUTTON GO BACK <<=====// -->
+    <Style x:Key="icongoBackButton" TargetType="fIcons:IconImage">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Margin" Value="0,0,20,0"/>
+    </Style>
+
+    <!-- //=====>> TEXT BUTTON GO BACK <<=====// -->
+    <Style x:Key="textgoBackButton" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="19"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
+    
+    
+    
+
+    <!-- //=====>> SHOW OTHER BUTTON <<=====// -->
+    <Style x:Key="showOtherButton" TargetType="Button">
+
+        <!-- *** Normal *** -->
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="5,10"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+
+                    <Border Height="40"
+                            CornerRadius="10"
+                            Background="{TemplateBinding Background}">
+
+                        <Grid>
+                            <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                            <Rectangle x:Name="HoverRectangle" 
+                                       Fill="#33000000" 
+                                       Visibility="Hidden" 
+                                       RadiusX="10" 
+                                       RadiusY="10"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- *** Hover *** -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverRectangle" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!-- *** Hover Without Backgroud Stablished *** -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <!-- //=====>> ICON LEFT BUTTON SHOW OTHER <<=====// -->
+    <Style x:Key="iconLeftShowOtherButton" TargetType="fIcons:IconImage">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+    </Style>
+
+    <!-- //=====>> TEXT BUTTON BUTTON SHOW OTHER <<=====// -->
+    <Style x:Key="textShowOtherButton" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="23"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- //=====>> ICON RIGHT SHOW OTHER <<=====// -->
+    <Style x:Key="iconRigthShowOtherButton" TargetType="fIcons:IconImage">
+        <Setter Property="Foreground" Value="{StaticResource white}"/>
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Margin" Value="30,0,0,0"/>
+    </Style>
 </ResourceDictionary>

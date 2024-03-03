@@ -1,0 +1,31 @@
+﻿<Window x:Class="GestorEnfermeriaJoyfe.UI.Views.CitaProgramadaForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
+        xmlns:Components="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
+        mc:Ignorable="d"
+        Title="CitaProgramadaForm" Height="400" Width="679">
+    <StackPanel Margin="10">
+
+        <Components:FormGroup x:Name="Motivo" LabelText="Motivo"/>
+        
+        
+
+        <ListBox SelectionMode="Multiple">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBoxItem>Lunes</ListBoxItem>
+            <ListBoxItem>Martes</ListBoxItem>
+            <ListBoxItem>Miércoles</ListBoxItem>
+            <ListBoxItem>Jueves</ListBoxItem>
+            <ListBoxItem>Viernes</ListBoxItem>
+        </ListBox>
+
+
+    </StackPanel>
+</Window>

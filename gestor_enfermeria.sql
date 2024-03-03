@@ -101,7 +101,7 @@ CREATE TABLE `gestor_enfermeria`.`scheduled_cites_rules` (
     `miercoles` INT UNSIGNED NOT NULL,
     `jueves` INT UNSIGNED NOT NULL,
     `viernes` INT UNSIGNED NOT NULL,
-    `visit_template_id` INT UNSIGNED NOT NULL,
+    `visit_template_id` INT UNSIGNED,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
     INDEX `fk_patient_idx_2` (`patient_id` ASC) VISIBLE,

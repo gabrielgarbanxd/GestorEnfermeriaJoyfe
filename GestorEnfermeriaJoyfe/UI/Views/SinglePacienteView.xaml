@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="GestorEnfermeriaJoyfe.UI.Views.SinglePacienteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
+             xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Go Back Btn -->
+            <Button Grid.Column="0" 
+                    Background="MediumSeaGreen" 
+                    Style="{StaticResource goBackButton}" 
+                    Tag="{StaticResource white}"
+                    Command="{Binding GoBackCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <fIcons:IconImage Icon="ArrowLeft" Style="{StaticResource icongoBackButton}"/>
+                    <TextBlock Text="Atras" Style="{StaticResource textgoBackButton}"/>
+                </StackPanel>
+            </Button>
+            
+            <!-- Show Cites Btn -->
+            <Button Grid.Column="1" 
+                    Background="BlueViolet" 
+                    Style="{StaticResource showOtherButton}" 
+                    Tag="{StaticResource white}"
+                    Command="{Binding ShowCitesCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <fIcons:IconImage Icon="Calendar" Style="{StaticResource iconLeftShowOtherButton}"/>
+                    <TextBlock Text="Citas" Style="{StaticResource textShowOtherButton}"/>
+                    <fIcons:IconImage Icon="ArrowCircleRight" Style="{StaticResource iconRigthShowOtherButton}"/>
+                </StackPanel>
+            </Button>
+            
+            <!-- Show Visits Btn -->
+            <Button Grid.Column="2" 
+                    Background="BlueViolet" 
+                    Style="{StaticResource showOtherButton}" 
+                    Tag="{StaticResource white}"
+                    Command="{Binding ShowVisitsCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <fIcons:IconImage Icon="CalendarCheck" Style="{StaticResource iconLeftShowOtherButton}"/>
+                    <TextBlock Text="Visitas" Style="{StaticResource textShowOtherButton}"/>
+                    <fIcons:IconImage Icon="ArrowCircleRight" Style="{StaticResource iconRigthShowOtherButton}"/>
+                </StackPanel>
+            </Button>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="0,10,0,0">
+                <fIcons:IconImage Icon="Thumbtack"
+                  Height="20"
+                  Width="20"
+                  Foreground="{StaticResource text}"
+                  Margin="35,0,10,0"/>
+
+                <TextBlock Text="Citas Programadas"
+                           Foreground="{StaticResource text}"
+                           FontSize="16"
+                           FontFamily="Montserrat"
+                           FontWeight="Medium"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+
+            <Grid Grid.Column="1" Margin="0,20,0,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Style="{StaticResource actionPacienteBtn}"
+                        Tag="{StaticResource white}"
+                        Background="Blue"
+                        Command="{Binding CreateScheduleCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Nuevo" Style="{StaticResource textActionPacienteBtn}"/>
+                    </StackPanel>
+
+                </Button>
+
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource actionPacienteBtn}"
+                        Tag="{StaticResource tempHover}"
+                        Background="Orange"
+                        Command="{Binding EditScheduleCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <fIcons:IconImage Icon="Edit" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Editar" Style="{StaticResource textActionPacienteBtn}"/>
+                    </StackPanel>
+
+                </Button>
+
+                <Button Grid.Column="2"
+                        Style="{StaticResource actionPacienteBtn}"
+                        Tag="{StaticResource tempHover}"
+                        Background="{StaticResource red}"
+                        Command="{Binding DeleteScheduleCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Eliminar" Style="{StaticResource textActionPacienteBtn}"/>
+                    </StackPanel>
+
+                </Button>
+
+            </Grid>
+
+
+        </Grid>
+
+        <Border Grid.Row="2"
+                Background="{StaticResource temptable1}"
+                Padding="30"
+                CornerRadius="10"
+                BorderBrush="{StaticResource white}"
+                BorderThickness="2">
+
+            <DataGrid ItemsSource="{Binding ScheduledCiteRules}"
+                      SelectedItem="{Binding SelectedScheduledCiteRule}"
+                AutoGenerateColumns="False"
+                ColumnWidth="*"
+                Background="{StaticResource temptable1}"
+                BorderThickness="0"
+                GridLinesVisibility="None"
+                HeadersVisibility="Column"
+                SelectionUnit="FullRow"
+                IsReadOnly="True">
+
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                        <Setter Property="Padding" Value="2,0,0,10"/>
+                        <Setter Property="FontFamily" Value="Montserrat"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                        <Setter Property="FontFamily" Value="Montserrat"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="Margin" Value="2,10,0,10"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FontFamily" Value="Montserrat"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color2}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource color1}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.RowHeaderStyle>
+                    <Style TargetType="DataGridRowHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FontFamily" Value="Montserrat"/>
+                        <Setter Property="FontSize" Value="15"/>
+                    </Style>
+                </DataGrid.RowHeaderStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name.Value}" Header="Motivo"/>
+                    <DataGridTextColumn Binding="{Binding Hour.ToHour}" Header="Hora"/>
+                    <DataGridTextColumn Binding="{Binding Lunes.ToCheckString}" Header="L"/>
+                    <DataGridTextColumn Binding="{Binding Martes.ToCheckString}" Header="M"/>
+                    <DataGridTextColumn Binding="{Binding Miercoles.ToCheckString}" Header="X"/>
+                    <DataGridTextColumn Binding="{Binding Jueves.ToCheckString}" Header="J"/>
+                    <DataGridTextColumn Binding="{Binding Viernes.ToCheckString}" Header="V"/>
+                    <DataGridTextColumn Binding="{Binding EndDate.ToDayOfMonth}" Header="Fecha Fin"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Border>
+
+
+    </Grid>
+
+</UserControl>

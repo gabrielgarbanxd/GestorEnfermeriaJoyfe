@@ -33,6 +33,20 @@
             <local:CalendarView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:SinglePacienteViewModel}">
+            <local:SinglePacienteView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:PacienteCitasViewModel}">
+            <local:PacienteCitasView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:PacienteVisitsViewModel}">
+            <local:PacienteVisitsView/>
+        </DataTemplate>
+
+
+
         <converters:RadioButtonIndexToBooleanConverter x:Key="RadioButtonIndexToBooleanConverter" />
 
     </Window.Resources>
@@ -186,7 +200,7 @@
 
                             <TextBlock Text="{Binding Title}"
                                        Foreground="{StaticResource text}"
-                                       FontSize="16"
+                                       FontSize="20"
                                        FontFamily="Montserrat"
                                        FontWeight="Medium"
                                        VerticalAlignment="Center"/>

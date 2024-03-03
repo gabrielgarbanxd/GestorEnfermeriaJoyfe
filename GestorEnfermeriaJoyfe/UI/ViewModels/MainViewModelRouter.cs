@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GestorEnfermeriaJoyfe.Domain.Patient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -13,13 +15,16 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
 
         public event Action<string> ShowPrincipalView;
+
         public event Action<string> ShowPacientesView;
-        public event Action<int> ShowPacienteVisitsView;
 
-        public event Action<string> ShowCalendarView;
+        public event Action<Patient> ShowSinglePacienteView;
 
-        //public event Action<string> ShowConfiguracionView;
-        //public event Action<string> ShowCitasView;
+        public event Action<Patient> ShowPacienteVisitsView;
+
+        public event Action<Patient> ShowPacienteCitasView;
+
+        public event Action<Patient> ShowCalendarView;
 
         public void OnShowPrincipalView(string view)
         {
@@ -31,25 +36,26 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             ShowPacientesView?.Invoke(view);
         }
 
-        public void OnShowPacienteVisitsView(int id)
+        public void OnShowSinglePacienteView(Patient patient)
         {
-            ShowPacienteVisitsView?.Invoke(id);
+            ShowSinglePacienteView?.Invoke(patient);
         }
 
-        public void OnShowCalendarView(string view)
+        public void OnShowPacienteVisitsView(Patient patient)
         {
-            ShowCalendarView?.Invoke(view);
+            ShowPacienteVisitsView?.Invoke(patient);
         }
 
-        //public void OnShowConfiguracionView(string view)
-        //{
-        //    ShowConfiguracionView?.Invoke(view);
-        //}
+        public void OnShowCalendarView(Patient patient)
+        {
+            ShowCalendarView?.Invoke(patient);
+        }
 
-        //public void OnShowCitasView(string view)
-        //{
-        //    ShowCitasView?.Invoke(view);
-        //}
+
+        public void OnShowCitasView(Patient patient)
+        {
+            ShowPacienteCitasView?.Invoke(patient);
+        }
 
 
     }
