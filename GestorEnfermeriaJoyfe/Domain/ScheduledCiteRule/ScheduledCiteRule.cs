@@ -2,10 +2,6 @@
 using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
 using GestorEnfermeriaJoyfe.Domain.ScheduledCiteRule.ValueObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.Domain.ScheduledCiteRule
 {
@@ -43,7 +39,7 @@ namespace GestorEnfermeriaJoyfe.Domain.ScheduledCiteRule
             return new ScheduledCiteRule(id, name, hour, startDate, endDate, lunes, martes, miercoles, jueves, viernes, patientId);
         }
 
-        public static ScheduledCiteRule FromPrimitives(int id, string name, TimeSpan hour DateTime startDate, DateTime endDate, bool lunes, bool martes, bool miercoles, bool jueves, bool viernes, int patientId)
+        public static ScheduledCiteRule FromPrimitives(int id, string name, TimeSpan hour, DateTime startDate, DateTime endDate, bool lunes, bool martes, bool miercoles, bool jueves, bool viernes, int patientId)
         {
             return new ScheduledCiteRule(
                 new ScheduledCiteRuleId(id),

@@ -11,12 +11,11 @@ use gestor_enfermeria;
 
 -- Drop tables if they exist
 DROP TABLE IF EXISTS `gestor_enfermeria`.`users`;
-DROP TABLE IF EXISTS `gestor_enfermeria`.`visits`;
-DROP TABLE IF EXISTS `gestor_enfermeria`.`patients`;
-DROP TABLE IF EXISTS `gestor_enfermeria`.`calendar`;
-DROP TABLE IF EXISTS `gestor_enfermeria`.`cites`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`scheduled_cites_rules`;
 DROP TABLE IF EXISTS `gestor_enfermeria`.`visits_templates`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`cites`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`visits`;
+DROP TABLE IF EXISTS `gestor_enfermeria`.`patients`;
 
 -- Users table
 CREATE TABLE `gestor_enfermeria`.`users` (
@@ -64,28 +63,6 @@ ENGINE = InnoDB;
 
 
 -- Cites table
--- CREATE TABLE `gestor_enfermeria`.`cites` (
---     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
---     `patient_id` INT UNSIGNED NOT NULL,
---     `note` TEXT,
---     `visit_id` INT UNSIGNED,
---     `date` DATETIME,
---     `visit_template_id` INT UNSIGNED,
---     PRIMARY KEY (`id`),
---     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
---     INDEX `fk_patient_idx` (`patient_id` ASC) VISIBLE,
---     INDEX `fk_visit_idx` (`visit_id` ASC) VISIBLE,
---     CONSTRAINT `fk_patient`
---         FOREIGN KEY (`patient_id`)
---         REFERENCES `gestor_enfermeria`.`patients` (`id`)
---         ON DELETE NO ACTION
---         ON UPDATE NO ACTION,
---     CONSTRAINT `fk_visits_patient`
---         FOREIGN KEY (`visit_id`)
---         REFERENCES `gestor_enfermeria`.`visits` (`id`)
---         ON DELETE NO ACTION
---         ON UPDATE NO ACTION
--- ) ENGINE = InnoDB;
 CREATE TABLE `gestor_enfermeria`.`cites` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `patient_id` INT UNSIGNED NOT NULL,
@@ -1283,6 +1260,8 @@ PRO : BEGIN
 
 END$$
 
+DELIMITER ;
+
 
 -- =====================================
 -- ========>> SCHEDULED CITES RULES <<===
@@ -1637,14 +1616,6 @@ DELIMITER ;
 -- *                                 VIEWS                               *
 -- *                                                                       *
 -- *************************************************************************
-
-
--- Scheduled Cites Rules and Days By Patient ID
-CREATE VIEW scheduled_cites_rules_days AS
-SELECT r.id, r.name, r.patient_id, r.start_date, r.end_date, d.day, d.hour
-FROM scheduled_cites_rules r
-JOIN scheduled_cites_rule_days d ON r.id = d.scheduled_cites_rule_id;
-
 
 
 -- *************************************************************************
