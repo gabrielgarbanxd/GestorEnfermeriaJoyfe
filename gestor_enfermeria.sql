@@ -2446,6 +2446,91 @@ DELIMITER ;
 
 
 
+-- ==================================
+-- ========>>    OTHERS    <<========
+-- ==================================
+
+-- //===>> CreateAllCitesForNewScheduledCiteRuleProcedure procedure <<===//
+DROP PROCEDURE IF EXISTS `CreateAllCitesForNewScheduledCiteRuleProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `CreateAllCitesForNewScheduledCiteRuleProcedure`(
+    IN p_patient_id INT,
+    IN p_hour TIME,
+    IN p_days ENUM('Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'),
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_current_date DATE;
+    DECLARE p_current_day ENUM('Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes');
+
+    -- Verificar que el paciente exista
+    IF NOT EXISTS (SELECT * FROM patients WHERE id = p_patient_id) THEN
+        SET p_Result = -1; -- Código de error para paciente no encontrado
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que la hora no sea nula
+    IF p_hour IS NULL THEN
+        SET p_Result = -2; -- Código de error para hora nula
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el día de inicio no sea nulo
+    IF p_start_date IS NULL THEN
+        SET p_Result = -3; -- Código de error para día de inicio nulo
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el día de fin no sea nulo
+    IF p_end_date IS NULL THEN
+        SET p_Result = -4; -- Código de error para día de fin nulo
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el día de inicio sea menor o igual al día de fin
+    IF p_start_date > p_end_date THEN
+        SET p_Result = -5; -- Código de error para día de inicio mayor al día de fin
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Inicializar la fecha actual
+    SET p_current_date = p_start_date;
+
+    -- Mientras la fecha actual sea menor o igual a la fecha de fin
+    WHILE p_current_date <= p_end_date DO
+
+        -- Obtener el día de la semana de la fecha actual
+        SET p_current_day = DAYNAME(p_current_date);
+
+        -- Verificar si el día de la semana de la fecha actual es igual al día de la regla
+        IF p_current_day = p_days THEN
+
+            -- Insertar nueva cita
+            INSERT INTO cites(date, patient_id, note)
+            VALUES(CONCAT(p_current_date, ' ', p_hour), p_patient_id, NULL);
+
+        END IF;
+
+        -- Añadir un día a la fecha actual
+        SET p_current_date = DATE_ADD(p_current_date, INTERVAL 1 DAY);
+
+    END WHILE;
+
+    -- Devolver el número total de citas creadas
+    SET p_Result = ROW_COUNT();
+
+END$$
+
+DELIMITER ;
+
+
+
+
 
 
 
@@ -2490,13 +2575,159 @@ END$$
 DELIMITER ;
 
 
+-- //===>> GetTotalVisitsFunction function <<===//
+DROP FUNCTION IF EXISTS `GetTotalVisitsFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetTotalVisitsFunction`(
+    p_patient_id INT
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_visits INT;
+
+    -- Contar el número total de visitas del paciente
+    SELECT COUNT(*) INTO total_visits FROM visits WHERE patient_id = p_patient_id;
+
+    -- Devolver el número total de visitas
+    RETURN total_visits;
+END$$
+DELIMITER ;
 
 
--- *************************************************************************
--- *                                                                       *
--- *                               INSERTS                               *
--- *                                                                       *
--- *************************************************************************
+
+-- //===>> GetNextAppointmentFunction function <<===//
+DROP FUNCTION IF EXISTS `GetNextAppointmentFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetNextAppointmentFunction`(
+    p_patient_id INT
+)
+RETURNS DATETIME
+DETERMINISTIC
+BEGIN
+    DECLARE next_appointment DATETIME;
+
+    -- Obtener el próximo horario de cita del paciente
+    SELECT MIN(date) INTO next_appointment FROM cites WHERE patient_id = p_patient_id AND date > NOW();
+
+    -- Devolver el próximo horario de cita
+    RETURN next_appointment;
+END$$
+DELIMITER ;
+
+
+
+-- //===>> GetAverageVisitDurationFunction function <<===//
+DROP FUNCTION IF EXISTS `GetAverageVisitDurationFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetAverageVisitDurationFunction`(
+    p_patient_id INT
+)
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE avg_duration DECIMAL(10,2);
+
+    -- Calcular la duración promedio de las visitas del paciente
+    SELECT AVG(TIMESTAMPDIFF(MINUTE, date, end_date)) INTO avg_duration FROM visits WHERE patient_id = p_patient_id;
+
+    -- Devolver la duración promedio de la visita
+    RETURN avg_duration;
+END$$
+DELIMITER ;
+
+
+
+-- //===>> GetTotalVisitsByTypeFunction function <<===//
+DROP FUNCTION IF EXISTS `GetTotalVisitsByTypeFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetTotalVisitsByTypeFunction`(
+    p_patient_id INT,
+    p_visit_type ENUM('Agudo', 'Crónico')
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_visits INT;
+
+    -- Contar el número total de visitas del paciente por tipo
+    SELECT COUNT(*) INTO total_visits FROM visits WHERE patient_id = p_patient_id AND type = p_visit_type;
+
+    -- Devolver el número total de visitas por tipo
+    RETURN total_visits;
+END$$
+DELIMITER ;
+
+
+
+-- //===>> GetTotalVisitsByTraumaTypeFunction function <<===//
+DROP FUNCTION IF EXISTS `GetAverageTimeBetweenAppointmentsFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetAverageTimeBetweenAppointmentsFunction`(
+    p_patient_id INT
+)
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE avg_time DECIMAL(10,2);
+
+    -- Calcular el tiempo promedio entre citas del paciente
+    SELECT AVG(TIMESTAMPDIFF(DAY, date, (SELECT MIN(date) FROM cites WHERE patient_id = p_patient_id AND date > t.date))) INTO avg_time 
+    FROM cites t WHERE patient_id = p_patient_id;
+
+    -- Devolver el tiempo promedio entre citas
+    RETURN avg_time;
+END$$
+DELIMITER ;
+
+
+
+-- //===>> GetTotalVisitsByTraumaTypeFunction function <<===//
+DROP FUNCTION IF EXISTS `GetLastVisitDateFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetLastVisitDateFunction`(
+    p_patient_id INT
+)
+RETURNS DATETIME
+DETERMINISTIC
+BEGIN
+    DECLARE last_visit_date DATETIME;
+
+    -- Obtener la fecha de la última visita del paciente
+    SELECT MAX(date) INTO last_visit_date FROM visits WHERE patient_id = p_patient_id;
+
+    -- Devolver la fecha de la última visita
+    RETURN last_visit_date;
+END$$
+DELIMITER ;
+
+
+
+-- //===>> GetTotalVisitsByTraumaTypeFunction function <<===//
+DROP FUNCTION IF EXISTS `GetTotalVisitsByPlaceFunction`;
+DELIMITER $$
+CREATE FUNCTION `GetTotalVisitsByPlaceFunction`(
+    p_patient_id INT,
+    p_place ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS')
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_visits_by_place INT;
+
+    -- Contar el número total de visitas del paciente por lugar
+    SELECT COUNT(*) INTO total_visits_by_place FROM visits WHERE patient_id = p_patient_id AND place = p_place;
+
+    -- Devolver el número total de visitas por lugar
+    RETURN total_visits_by_place;
+END$$
+DELIMITER ;
+
+
+
+
+
+
 
 -- ==================================
 -- ========>>    USERS    <<=========
