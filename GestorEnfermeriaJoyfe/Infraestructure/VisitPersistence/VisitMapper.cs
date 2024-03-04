@@ -20,8 +20,8 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             string classification = reader.GetString(reader.GetOrdinal("classification"));
             int isComunicated = reader.GetInt32(reader.GetOrdinal("is_comunicated"));
             int isDerived = reader.GetInt32(reader.GetOrdinal("is_derived"));
-            string? traumaType = reader.GetString(reader.GetOrdinal("trauma_type"));
-            string? place =reader.GetString(reader.GetOrdinal("place"));
+            string? traumaType = !reader.IsDBNull(reader.GetOrdinal("trauma_type")) ? reader.GetString(reader.GetOrdinal("trauma_type")) : null;
+            string? place = !reader.IsDBNull(reader.GetOrdinal("place")) ? reader.GetString(reader.GetOrdinal("place")) : null;
             DateTime date = reader.GetDateTime(reader.GetOrdinal("date"));
             int patientId = reader.GetInt32(reader.GetOrdinal("patient_id"));
 

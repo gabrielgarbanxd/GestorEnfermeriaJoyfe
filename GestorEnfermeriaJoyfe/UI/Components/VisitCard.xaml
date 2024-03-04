@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="GestorEnfermeriaJoyfe.UI.Components.VisitCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="200">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" CornerRadius="5">
+            <TextBlock 
+                Text="{Binding Date.ToLongString}" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                FontFamily="Montserrat"/>
+        </Border>
+
+        <Border Grid.Row="1" 
+                CornerRadius="5"
+                Margin="1">
+            <StackPanel Margin="2">
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock 
+                        Text="Tipo : " 
+                        FontFamily="Montserrat"
+                        FontWeight="Bold"/>
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Text="{Binding Type.Value}" 
+                        FontFamily="Montserrat"/>
+                </StackPanel>
+
+                <TextBlock 
+                    Margin="0,3,0,0"
+                    Text="Clasificación : " 
+                    FontFamily="Montserrat"
+                    FontWeight="Bold"/>
+                
+                <TextBlock
+                    Margin="8,0,0,0"
+                    Text="{Binding Classification.Value}" 
+                    FontFamily="Montserrat"
+                    TextWrapping="WrapWithOverflow"
+                    MaxHeight="42"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                    <TextBlock 
+                        Text="Comunicado : " 
+                        FontFamily="Montserrat"
+                        FontWeight="Bold"/>
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Text="{Binding IsComunicated.ToCheckString}" 
+                        FontFamily="Montserrat"/>
+
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                    <TextBlock 
+                        Text="Derivado : " 
+                        FontFamily="Montserrat"
+                        FontWeight="Bold"/>
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Text="{Binding IsDerived.ToCheckString}" 
+                        FontFamily="Montserrat"/>
+
+                </StackPanel>
+
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

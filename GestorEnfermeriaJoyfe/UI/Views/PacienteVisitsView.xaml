@@ -4,9 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
+             xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+             xmlns:Components="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" HorizontalAlignment="Left">
+            <!-- Go Back Btn -->
+            <Button
+                    Width="140"
+                    Grid.Column="0" 
+                    Background="MediumSeaGreen" 
+                    Style="{StaticResource goBackButton}" 
+                    Tag="{StaticResource white}"
+                    Command="{Binding GoBackCommand}">
+                
+                <StackPanel Orientation="Horizontal">
+                    <fIcons:IconImage Icon="ArrowLeft" Style="{StaticResource icongoBackButton}"/>
+                    <TextBlock Text="Atras" Style="{StaticResource textgoBackButton}"/>
+                </StackPanel>
+             </Button>
+        </StackPanel>
+
+        <ListBox  Grid.Row="1" ItemsSource="{Binding Visits}">
             
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Height" Value="150"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#D3D3D3"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Components:VisitCard/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
     </Grid>
 </UserControl>

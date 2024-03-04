@@ -8,7 +8,5 @@ namespace GestorEnfermeriaJoyfe.Domain.ScheduledCiteRule.ValueObjects
 
         public static ScheduledCiteRuleDay FromInt(int value) => new(value == 1);
 
-        public string ToCheckString => Value ? "✓" : "✗";
-
     }
 }

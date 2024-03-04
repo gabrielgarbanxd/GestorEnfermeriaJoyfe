@@ -9,7 +9,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Shared
 
         public string ToDate => Value.ToString("dd/MM/yyyy");
 
-        public string ToLongString => Value.ToString("dd/MM/yyyy HH:mm");
+        public string ToLongString => Value.ToString("G");
 
         public string ToTime => Value.ToString("HH:mm");
 
