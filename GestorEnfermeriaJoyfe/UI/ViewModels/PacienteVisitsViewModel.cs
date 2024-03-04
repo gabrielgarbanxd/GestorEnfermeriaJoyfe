@@ -42,6 +42,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
         // ===>> Commands <<====//
         public ICommand GoBackCommand { get; }
+        public ICommand DoubleClickVisitCommand { get; }
+        public ICommand CreateVisitCommand { get; }
+        public ICommand DeleteVisitCommand { get; }
 
         public PacienteVisitsViewModel(Patient patient)
         {
@@ -53,6 +56,39 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
             // *** Carga Commands *** 
             GoBackCommand = new ViewModelCommand((object parameter) => MainViewModelRouter.Instance.OnShowSinglePacienteView(patient));
+            DoubleClickVisitCommand = new ViewModelCommand(ExecuteDoubleClickVisitCommand);
+            CreateVisitCommand = new ViewModelCommand(ExecuteCreateVisitCommand);
+            DeleteVisitCommand = new ViewModelCommand(ExecuteDeleteVisitCommand);
+        }
+
+        // ====>> Command Methods <<====//
+        private void ExecuteDoubleClickVisitCommand(object parameter)
+        {
+            if (SelectedVisit != null)
+            {
+                //MainViewModelRouter.Instance.OnShowSingleVisitView(SelectedVisit);
+            }
+        }
+
+        private void ExecuteCreateVisitCommand(object parameter)
+        {
+            //MainViewModelRouter.Instance.OnShowCreateVisitView(patient);
+        }
+
+        private async void ExecuteDeleteVisitCommand(object parameter)
+        {
+            if (SelectedVisit != null)
+            {
+                var response = await visitController.Delete(SelectedVisit.Id.Value);
+                if (response.Success)
+                {
+                    Visits.Remove(SelectedVisit);
+                }
+                else
+                {
+                    MessageBox.Show("Error al eliminar la visita");
+                }
+            }
         }
 
         // ====>> Private Methods <<====//
