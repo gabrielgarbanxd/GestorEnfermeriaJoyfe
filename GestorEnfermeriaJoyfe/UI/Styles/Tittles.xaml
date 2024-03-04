@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Estilo para el Label -->
+    <Style TargetType="Label" x:Key="LabelStyle">
+        <Setter Property="Foreground" Value="{StaticResource color9}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontFamily" Value="Monserrat" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+</ResourceDictionary>

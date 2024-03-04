@@ -75,7 +75,7 @@
         </StackPanel>
 
         <!-- Botón -->
-        <Button Margin="0,20,20,0" 
+        <Button Margin="20,20,20,0" 
                 Content="Aceptar" 
                 IsDefault="True" 
                 Click="AceptarButton_Click"

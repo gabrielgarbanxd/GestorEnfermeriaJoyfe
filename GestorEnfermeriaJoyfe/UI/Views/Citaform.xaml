@@ -1,0 +1,35 @@
+﻿<Window x:Class="GestorEnfermeriaJoyfe.UI.Views.Citaform"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
+        xmlns:Components="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
+
+        mc:Ignorable="d"
+        Title="Citaform" Height="450" Width="350">
+    <Grid>
+        <StackPanel Margin="10">
+
+            <Components:FormGroup x:Name="txtNote" LabelText="Nota"/>
+            <!-- Selector de fecha de inicio -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <Label Content="Fecha inicio: "
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat"
+               Padding="0,8,0,0"/>
+                <DatePicker x:Name="dpFechaInicio" Width="150" Margin="5"/>
+            </StackPanel>
+
+            <Button Margin="20,10,20,0" 
+                Content="Aceptar" 
+                IsDefault="True" 
+                
+                Style="{StaticResource actionPacienteBtn}"
+                Background="{StaticResource color9}"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

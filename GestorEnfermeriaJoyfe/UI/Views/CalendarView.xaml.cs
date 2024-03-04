@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestorEnfermeriaJoyfe.UI.ViewModels;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,10 @@ namespace GestorEnfermeriaJoyfe.UI.Views
         public CalendarView()
         {
             InitializeComponent();
+
+            DataContext = new CalendarViewModel();
+
+
             // Suscribirse al evento MouseLeftButtonDown
             this.MouseLeftButtonDown += Calendar_MouseLeftButtonDown;
 
