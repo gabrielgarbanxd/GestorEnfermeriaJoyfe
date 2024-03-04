@@ -2481,7 +2481,7 @@ BEGIN
     DECLARE p_info TEXT;
 
     -- Obtener la información del paciente
-    SELECT CONCAT(name, ' ',last_name, ' ', course,) INTO p_info FROM patients WHERE id = p_patient_id;
+    SELECT CONCAT(name, ' ', last_name, ' ', course) INTO p_info FROM patients WHERE id = p_patient_id;
 
     -- Devolver la información del paciente
     RETURN p_info;
