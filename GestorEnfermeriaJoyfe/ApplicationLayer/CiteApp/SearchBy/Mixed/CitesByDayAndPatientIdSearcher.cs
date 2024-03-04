@@ -20,10 +20,10 @@ namespace GestorEnfermeriaJoyfe.ApplicationLayer.CiteApp.SearchBy.Mixed
                     throw new ArgumentException("El número de página y el número de elementos por página deben ser mayores a 0.");
                 }
 
-                return await _citeContract.GetCitesByDayAndPatientIdAsync(day, patientId, paginated, perPage, page);
+                return await _citeContract.GetCitesByDayAndPatientIdAsync(patientId, day, paginated, perPage, page);
             }
 
-            return await _citeContract.GetCitesByDayAndPatientIdAsync(day, patientId);
+            return await _citeContract.GetCitesByDayAndPatientIdAsync(patientId, day);
         }
     }
 }

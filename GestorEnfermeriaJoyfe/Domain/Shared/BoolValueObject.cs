@@ -14,7 +14,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Shared
        
         public string ToYesNoString() => Value ? "Sí" : "No";
 
-        public string ToCheckString => Value ? "✓" : "✗";
+        public string ToCheckString => Value ? "✓" : " ";
 
 
     }
