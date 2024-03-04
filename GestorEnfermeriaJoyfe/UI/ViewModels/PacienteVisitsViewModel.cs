@@ -29,6 +29,17 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
+        private Visit _selectedVisit;
+        public Visit SelectedVisit
+        {
+            get => _selectedVisit;
+            set
+            {
+                _selectedVisit = value;
+                OnPropertyChanged(nameof(SelectedVisit));
+            }
+        }
+
         // ===>> Commands <<====//
         public ICommand GoBackCommand { get; }
 

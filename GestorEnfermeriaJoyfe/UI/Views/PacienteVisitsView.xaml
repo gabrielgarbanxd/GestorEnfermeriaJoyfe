@@ -31,11 +31,14 @@
              </Button>
         </StackPanel>
 
-        <ListBox  Grid.Row="1" ItemsSource="{Binding Visits}">
+        <ListBox  Grid.Row="1" 
+                  ItemsSource="{Binding Visits}" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  SelectedItem="{Binding SelectedVisit}">
             
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
