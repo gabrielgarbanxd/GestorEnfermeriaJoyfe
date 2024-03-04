@@ -133,7 +133,45 @@
             </StackPanel>
 
 
+            <!-- StackPanel para los botones -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,20,0" HorizontalAlignment="Right">
 
+                <!-- Botón Azul -->
+                <Button Style="{StaticResource actionPacienteBtn}"
+      Tag="{StaticResource white}"
+      Background="Blue"
+      Command="{Binding CreatePacienteCommand}"
+      Margin="15,0,0,0" Width="121">
+                    <StackPanel Orientation="Horizontal" Width="97">
+                        <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Nuevo" Style="{StaticResource textActionPacienteBtn}" Width="85" Height="14"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Botón Naranja -->
+                <Button Style="{StaticResource actionPacienteBtn}"
+      Tag="{StaticResource tempHover}"
+      Background="Orange"
+      Command="{Binding EditPacienteCommand}"
+      Margin="15,0,0,0" Height="43" Width="121" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <fIcons:IconImage Icon="Edit" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Editar" Style="{StaticResource textActionPacienteBtn}" Height="14" Width="67"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Botón Rojo -->
+                <Button Style="{StaticResource actionPacienteBtn}"
+      Tag="{StaticResource tempHover}"
+      Background="{StaticResource red}"
+      Command="{Binding DeletePacienteCommand}"
+      Margin="15,0,0,0" Height="45" Width="121">
+                    <StackPanel Orientation="Horizontal" Width="97">
+                        <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Eliminar" Style="{StaticResource textActionPacienteBtn}" Width="81" Height="14"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
 
 
 
@@ -225,111 +263,18 @@
                         </DataGrid.RowHeaderStyle>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding buscar}" Header="Hora" HeaderStringFormat=""/>
-                            <DataGridTextColumn Binding="{Binding buscar}" Header="Nombre"/>
-                            <DataGridTextColumn Binding="{Binding buscar}" Header="Nota"/>
+                            <DataGridTextColumn Binding="{Binding HasVisit.Value}" Header="Visita"/>
+                            <DataGridTextColumn Binding="{Binding }" Header="Hora" HeaderStringFormat=""/>
+                            <DataGridTextColumn Binding="{Binding Note.Value }" Header="Nota"/>
+                            <DataGridTextColumn Binding="{Binding PatientInfo.Value}" Header="Paciente"/>
+
+
                         </DataGrid.Columns>
 
                     </DataGrid>
                 </Border>
 
             </StackPanel>
-
-
-            <!--DataGrid para mostrar visitas-->
-            <StackPanel HorizontalAlignment="Stretch" Margin="15,40,20,0">
-                <Border Grid.Row="1"
-                        Background="{StaticResource temptable1}"
-                        Padding="30"
-                        CornerRadius="10"
-                        BorderBrush="{StaticResource white}"
-                        BorderThickness="2">
-
-                    <DataGrid ItemsSource="{Binding FilteredPacientesView}"
-                              SelectedItem="{Binding SelectedPaciente}"
-                              AutoGenerateColumns="False"
-                              ColumnWidth="*"
-                              Background="{StaticResource temptable1}"
-                              BorderThickness="0"
-                              GridLinesVisibility="None"
-                              HeadersVisibility="Column"
-                              SelectionUnit="FullRow"
-                              IsReadOnly="True">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding DoubleClickPacienteCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
-                                <Setter Property="Padding" Value="2,0,0,10"/>
-                                <Setter Property="FontFamily" Value="Montserrat"/>
-                                <Setter Property="FontSize" Value="15"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
-                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
-
-                        <DataGrid.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
-                                <Setter Property="FontFamily" Value="Montserrat"/>
-                                <Setter Property="FontSize" Value="15"/>
-                                <Setter Property="Margin" Value="2,10,0,10"/>
-
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="BorderThickness" Value="0"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.CellStyle>
-
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="FontFamily" Value="Montserrat"/>
-                                <Setter Property="FontSize" Value="15"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
-                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
-
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource color2}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource color1}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-
-                        <DataGrid.RowHeaderStyle>
-                            <Style TargetType="DataGridRowHeader">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="FontFamily" Value="Montserrat"/>
-                                <Setter Property="FontSize" Value="15"/>
-                            </Style>
-                        </DataGrid.RowHeaderStyle>
-
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Date}" Header="Fecha" HeaderStringFormat="dd/MM/yyyy HH:mm"/>
-                            <DataGridTextColumn Binding="{Binding Type}" Header="Tipo"/>
-                            <DataGridTextColumn Binding="{Binding IsDerived}" Header="Derivado"/>
-                            <DataGridTextColumn Binding="{Binding TraumaType}" Header="Tipo Trauma"/>
-                        </DataGrid.Columns>
-
-
-                    </DataGrid>
-                </Border>
-
-            </StackPanel>
-
 
 
         </StackPanel>
