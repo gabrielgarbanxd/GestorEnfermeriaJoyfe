@@ -2322,6 +2322,26 @@ DELIMITER ;
 -- *                                                                       *
 -- *************************************************************************
 
+-- //===>> GetPatientInfoFunction function <<===//
+DROP FUNCTION IF EXISTS `GetPatientInfoFunction`;
+
+DELIMITER $$
+CREATE FUNCTION `GetPatientInfoFunction`(
+    p_patient_id INT
+)
+RETURNS TEXT
+DETERMINISTIC
+BEGIN
+    DECLARE p_info TEXT;
+
+    -- Obtener la información del paciente
+    SELECT CONCAT(name, ' ',last_name, ' ', course,) INTO p_info FROM patients WHERE id = p_patient_id;
+
+    -- Devolver la información del paciente
+    RETURN p_info;
+END$$
+
+DELIMITER ;
 
 
 

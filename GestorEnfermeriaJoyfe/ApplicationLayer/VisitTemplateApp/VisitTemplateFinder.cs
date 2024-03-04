@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using GestorEnfermeriaJoyfe.Domain.Visit;
+using GestorEnfermeriaJoyfe.Domain.Visit.ValueObjects;
+using GestorEnfermeriaJoyfe.Domain.VisitTemplate;
 using System.Threading.Tasks;
 
 namespace GestorEnfermeriaJoyfe.ApplicationLayer.VisitTemplateApp
 {
-    internal class VisitTemplateFinder
+    public class VisitTemplateFinder
     {
+        private readonly IVisitTemplateContract _visitTemplateRepository;
+
+        public VisitTemplateFinder(IVisitTemplateContract visitTemplateContract) => _visitTemplateRepository = visitTemplateContract;
+
+        public async Task<VisitTemplate> Run(int id) => await _visitTemplateRepository.FindAsync(new(id));
     }
 }

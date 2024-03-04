@@ -102,12 +102,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             var parameters = new Dictionary<string, object>
             {
                 {"p_patient_id", patientId},
-                {"p_per_page", perPage},
-                {"p_page", page}
             };
 
             if (paginated)
             {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
                 return await ExecuteQueryAsync("GetCitesByPatientIdPaginatedProcedure", parameters);
             }
 
@@ -119,12 +119,12 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             var parameters = new Dictionary<string, object>
             {
                 {"p_date", date},
-                {"p_per_page", perPage},
-                {"p_page", page}
             };
 
             if (paginated)
             {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
                 return await ExecuteQueryAsync("GetCitesByDayPaginatedProcedure", parameters);
             }
 
@@ -137,12 +137,13 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             {
                 {"p_patient_id", patientId},
                 {"p_date", date},
-                {"p_per_page", perPage},
-                {"p_page", page}
             };
 
             if (paginated)
             {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
+
                 return await ExecuteQueryAsync("GetCitesByDayAndPatientIdPaginatedProcedure", parameters);
             }
 
@@ -155,34 +156,17 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             {
                 {"p_start_date", startDate},
                 {"p_end_date", endDate},
-                {"p_per_page", perPage},
-                {"p_page", page}
             };
 
             if (paginated)
             {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
+                
                 return await ExecuteQueryAsync("GetCitesByDayRangePaginatedProcedure", parameters);
             }
 
             return await ExecuteQueryAsync("GetCitesByDayRangeProcedure", parameters);
-        }
-
-        public async Task<IEnumerable<Cite>> GetCitesByPatientIdAndDayAsync(int patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1)
-        {
-            var parameters = new Dictionary<string, object>
-            {
-                {"p_patient_id", patientId},
-                {"p_date", date},
-                {"p_per_page", perPage},
-                {"p_page", page}
-            };
-
-            if (paginated)
-            {
-                return await ExecuteQueryAsync("GetCitesByPatientIdAndDayPaginatedProcedure", parameters);
-            }
-
-            return await ExecuteQueryAsync("GetCitesByPatientIdAndDayProcedure", parameters);
         }
 
         public async Task<IEnumerable<Cite>> GetCitesByPatientIdAndDayRangeAsync(int patientId, DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1)
@@ -192,16 +176,41 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
                 {"p_patient_id", patientId},
                 {"p_start_date", startDate},
                 {"p_end_date", endDate},
-                {"p_per_page", perPage},
-                {"p_page", page}
             };
 
             if (paginated)
             {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
+
                 return await ExecuteQueryAsync("GetCitesByPatientIdAndDayRangePaginatedProcedure", parameters);
             }
 
             return await ExecuteQueryAsync("GetCitesByPatientIdAndDayRangeProcedure", parameters);
+        }
+
+        public Task<IEnumerable<Cite>> GetCitesByDayWithPatientInfoAsync(DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object> { {"p_date", date},};
+            if (paginated)
+            {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
+                return ExecuteQueryAsync("GetCitesByDayWithPatientInfoPaginatedProcedure", parameters);
+            }
+            return ExecuteQueryAsync("GetCitesByDayWithPatientInfoProcedure", parameters);
+        }
+
+        public Task<IEnumerable<Cite>> GetAlWithPatientInfoAsync(bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object> { };
+            if (paginated)
+            {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
+                return ExecuteQueryAsync("GetAllWithPatientInfoPaginatedProcedure", parameters);
+            }
+            return ExecuteQueryAsync("GetAllWithPatientInfoProcedure", parameters);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Cite
         public CiteNote Note { get; set; }
         public VisitId? VisitId { get; set; }
         public CiteDate Date { get; set; }
+        public CitePatientInfo? PatientInfo { get; set; }
 
         public Cite(CiteId? id, PatientId patientId, CiteNote note, VisitId? visitId, CiteDate date)
         {
@@ -38,6 +39,19 @@ namespace GestorEnfermeriaJoyfe.Domain.Cite
                 new CiteDate(date));
         }
 
+        public static Cite FromPrimitives(int? id, int patientId, string note, int? visitId, DateTime date, string? patientInfo)
+        {
+            return new Cite(
+                new CiteId(id ?? 0),
+                new PatientId(patientId),
+                new CiteNote(note),
+                visitId != null ? new VisitId((int)visitId) : null,
+                new CiteDate(date))
+            {
+                PatientInfo =  patientInfo != null ? new CitePatientInfo(patientInfo) : null
+            };
+        }
+
         public void SetId(CiteId id)
         {
             if (Id.Value != 0)
@@ -46,6 +60,8 @@ namespace GestorEnfermeriaJoyfe.Domain.Cite
             }
             Id = id;
         }
+
+        public string HasVisit => VisitId != null ? "✓" : " ";
     }
 }
 

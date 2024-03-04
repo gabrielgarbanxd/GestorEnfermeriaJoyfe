@@ -54,7 +54,7 @@ namespace GestorEnfermeriaJoyfe.Domain.VisitTemplate
         }
 
 
-        public void SetId(VisitId id)
+        public void SetId(VisitTemplateId id)
         {
             if (Id.Value != 0)
             {
