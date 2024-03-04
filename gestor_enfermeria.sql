@@ -2004,6 +2004,152 @@ END$$
 DELIMITER ;
 
 
+-- //===>> GetCitesByDayWithPatientInfoProcedure
+DROP PROCEDURE IF EXISTS `GetCitesByDayWithPatientInfoProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByDayWithPatientInfoProcedure`(
+    IN p_date DATE
+)
+
+PRO : BEGIN
+
+    -- Obtener las citas por fecha con información del paciente
+    SELECT cites.id, cites.date, cites.note, cites.visit_id, patients.id AS patient_id, GetPatientInfoFunction(patients.id) AS patient_info
+    FROM cites
+    INNER JOIN patients ON cites.patient_id = patients.id
+    WHERE DATE(cites.date) = p_date
+    ORDER BY cites.date DESC;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetCitesByDayWithPatientInfoPaginatedProcedure
+DROP PROCEDURE IF EXISTS `GetCitesByDayWithPatientInfoPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetCitesByDayWithPatientInfoPaginatedProcedure`(
+    IN p_date DATE,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records
+    FROM cites
+    WHERE DATE(cites.date) = p_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT cites.id, cites.date, cites.note, cites.visit_id, patients.id AS patient_id, GetPatientInfoFunction(patients.id) AS patient_info
+    FROM cites
+    INNER JOIN patients ON cites.patient_id = patients.id
+    WHERE DATE(cites.date) = p_date
+    ORDER BY cites.date DESC
+    LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetAllWithPatientInfoProcedure
+DROP PROCEDURE IF EXISTS `GetAllCitesWithPatientInfoProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetAllCitesWithPatientInfoProcedure`()
+PRO : BEGIN
+
+    -- Obtener todas las citas con información del paciente
+    SELECT cites.id, cites.date, cites.note, cites.visit_id, patients.id AS patient_id, GetPatientInfoFunction(patients.id) AS patient_info
+    FROM cites
+    INNER JOIN patients ON cites.patient_id = patients.id
+    ORDER BY cites.date DESC;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetAllWithPatientInfoPaginatedProcedure
+DROP PROCEDURE IF EXISTS `GetAllCitesWithPatientInfoPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetAllCitesWithPatientInfoPaginatedProcedure`(
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM cites;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT cites.id, cites.date, cites.note, cites.visit_id, patients.id AS patient_id, GetPatientInfoFunction(patients.id) AS patient_info
+    FROM cites
+    INNER JOIN patients ON cites.patient_id = patients.id
+    ORDER BY cites.date DESC
+    LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+
 
 -- ==================================
 -- =====>> VISITS TEMPLATES    <<====
