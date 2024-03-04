@@ -116,6 +116,7 @@ CREATE TABLE `gestor_enfermeria`.`scheduled_cites_rules` (
 -- Visits Templates
 CREATE TABLE `gestor_enfermeria`.`visits_templates` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
     `type` ENUM('Agudo', 'Crónico') NOT NULL,
     `classification` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
@@ -931,7 +932,7 @@ CREATE PROCEDURE `GetVisitsByPatientIdProcedure`(
 PRO : BEGIN
 
     -- Obtener las visitas por ID de paciente
-    SELECT * FROM visits WHERE patient_id = p_patient_id;
+    SELECT * FROM visits WHERE patient_id = p_patient_id ORDER BY date ASC;
 
 END$$
 
@@ -967,7 +968,7 @@ PRO : BEGIN
     SET p_offset = (p_page - 1) * p_per_page;
 
     -- Obtener el número total de registros
-    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id;
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE patient_id = p_patient_id  ORDER BY date ASC;
 
     -- Verificar que el número de registros a omitir sea menor al número total de registros
     IF p_offset >= @total_records THEN
@@ -995,7 +996,7 @@ CREATE PROCEDURE `GetVisitsByDateProcedure`(
 PRO : BEGIN
 
     -- Obtener las visitas por fecha
-    SELECT * FROM visits WHERE DATE(date) = p_date;
+    SELECT * FROM visits WHERE DATE(date) = p_date  ORDER BY date ASC;
 
 END$$
 
@@ -1064,7 +1065,7 @@ CREATE PROCEDURE `GetVisitsByDateRangeProcedure`(
 PRO : BEGIN
 
     -- Obtener las visitas por rango de fechas
-    SELECT * FROM visits WHERE date BETWEEN p_start_date AND p_end_date;
+    SELECT * FROM visits WHERE date BETWEEN p_start_date AND p_end_date  ORDER BY date ASC;
 
 END$$
 
@@ -1135,7 +1136,7 @@ CREATE PROCEDURE `GetVisitsByPatientIdAndDateRangeProcedure`(
 PRO : BEGIN
 
     -- Obtener las visitas por ID de paciente y rango de fechas
-    SELECT * FROM visits WHERE patient_id = p_patient_id AND date BETWEEN p_start_date AND p_end_date;
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND date BETWEEN p_start_date AND p_end_date  ORDER BY date ASC;
 
 END$$
 
@@ -1206,7 +1207,7 @@ CREATE PROCEDURE `GetVisitsByPatientIdAndDateProcedure`(
 PRO : BEGIN
 
     -- Obtener las visitas por ID de paciente y fecha
-    SELECT * FROM visits WHERE patient_id = p_patient_id AND DATE(date) = p_date;
+    SELECT * FROM visits WHERE patient_id = p_patient_id AND DATE(date) = p_date  ORDER BY date ASC;
 
 END$$
 
@@ -1543,7 +1544,7 @@ CREATE PROCEDURE `SearchScheduledCiteRuleByPatientIdProcedure`(
 PRO : BEGIN
 
     -- Obtener las reglas de citas programadas por ID de paciente
-    SELECT * FROM scheduled_cites_rules WHERE patient_id = p_patient_id;
+    SELECT * FROM scheduled_cites_rules WHERE patient_id = p_patient_id ORDER BY hour ASC;
 
 END$$
 
@@ -1613,7 +1614,7 @@ CREATE PROCEDURE `GetAllCitesProcedure`()
 PRO : BEGIN
 
     -- Obtener todas las citas
-    SELECT * FROM cites;
+    SELECT * FROM cites ORDER BY date DESC;
 
 END$$
 
@@ -1814,7 +1815,7 @@ CREATE PROCEDURE `GetCitesByPatientIdProcedure`(
 PRO : BEGIN
 
     -- Obtener las citas por ID de paciente
-    SELECT * FROM cites WHERE patient_id = p_patient_id;
+    SELECT * FROM cites WHERE patient_id = p_patient_id ORDER BY date DESC;
 
 END$$
 
@@ -1879,7 +1880,7 @@ CREATE PROCEDURE `GetCitesByDayProcedure`(
 PRO : BEGIN
 
     -- Obtener las citas por fecha
-    SELECT * FROM cites WHERE DATE(date) = p_date;
+    SELECT * FROM cites WHERE DATE(date) = p_date ORDER BY date DESC;
 
 END$$
 
@@ -1946,7 +1947,7 @@ CREATE PROCEDURE `GetCitesByDayAndPatientIdProcedure`(
 PRO : BEGIN
 
     -- Obtener las citas por ID de paciente y fecha
-    SELECT * FROM cites WHERE patient_id = p_patient_id AND DATE(date) = p_date;
+    SELECT * FROM cites WHERE patient_id = p_patient_id AND DATE(date) = p_date ORDER BY date DESC;
 
 END$$
 
@@ -1997,6 +1998,299 @@ PRO : BEGIN
 
     -- Devolver el número total de registros
     SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+
+
+-- ==================================
+-- =====>> VISITS TEMPLATES    <<====
+-- ==================================
+
+-- //===>> GetAllVisitsTemplatesProcedure visits_templates procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllVisitsTemplatesProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetAllVisitsTemplatesProcedure`()
+PRO : BEGIN
+
+    -- Obtener todas las plantillas de visitas
+    SELECT * FROM visits_templates;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetAllVisitsTemplatesPaginatedProcedure visits_templates procedure <<===//
+DROP PROCEDURE IF EXISTS `GetAllVisitsTemplatesPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetAllVisitsTemplatesPaginatedProcedure`(
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits_templates;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT * FROM visits_templates LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsTemplateByIdProcedure visits_templates procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsTemplateByIdProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `GetVisitsTemplateByIdProcedure`(
+    IN p_id INT
+)
+
+PRO : BEGIN
+
+    -- Obtener la plantilla de visitas por ID
+    SELECT * FROM visits_templates WHERE id = p_id;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> CreateVisitsTemplateProcedure visits_templates procedure <<===//
+DROP PROCEDURE IF EXISTS `CreateVisitsTemplateProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `CreateVisitsTemplateProcedure`(
+    IN p_name VARCHAR(100),
+    IN p_type ENUM('Agudo', 'Crónico'),
+    IN p_classification VARCHAR(255),
+    IN p_description TEXT,
+    IN p_is_comunicated INT,
+    IN p_is_derived INT,
+    IN p_trauma_type ENUM('BUCODENTAL/MAXILOFACIAL', 'CUERPO EXTRAÑO (INGESTA/OTROS)', 'BRECHAS', 'TEC', 'CARA', 'ROTURA DE GAFAS', 'TRAUMATOLOGÍA MIEMBRO INFERIOR', 'TRAUMATOLOGÍA MIEMBRO SUPERIOR', 'OTROS ACCIDENTES'),
+    IN p_place ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS'),
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar que el nombre no sea nulo
+    IF p_name IS NULL THEN 
+        SET p_Result = -1; -- Código de error para nombre nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el tipo no sea nulo
+    IF p_type IS NULL THEN
+        SET p_Result = -2; -- Código de error para tipo nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la clasificación no sea nula
+    IF p_classification IS NULL THEN
+        SET p_Result = -3; -- Código de error para clasificación nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la descripción no sea nula
+    IF p_description IS NULL THEN
+        SET p_Result = -4; -- Código de error para descripción nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo de comunicado no sea nulo
+    IF p_is_comunicated IS NULL THEN
+        SET p_Result = -5; -- Código de error para campo de comunicado nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo de derivado no sea nulo
+    IF p_is_derived IS NULL THEN
+        SET p_Result = -6; -- Código de error para campo de derivado nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el tipo de trauma no sea nulo
+    IF p_trauma_type IS NULL THEN
+        SET p_Result = -7; -- Código de error para tipo de trauma nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el lugar no sea nulo
+    IF p_place IS NULL THEN
+        SET p_Result = -8; -- Código de error para lugar nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Insertar nueva plantilla de visitas
+    INSERT INTO visits_templates(name, type, classification, description, is_comunicated, is_derived, trauma_type, place)
+    VALUES(p_name, p_type, p_classification, p_description, p_is_comunicated, p_is_derived, p_trauma_type, p_place);
+
+    -- Verificar si la inserción fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = LAST_INSERT_ID(); -- Devolver el ID de la plantilla de visitas insertada
+    ELSE
+        SET p_Result = 0; -- Código de error para inserción no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> UpdateVisitsTemplateProcedure visits_templates procedure <<===//
+DROP PROCEDURE IF EXISTS `UpdateVisitsTemplateProcedure`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `UpdateVisitsTemplateProcedure`(
+    IN p_id INT,
+    IN p_name VARCHAR(100),
+    IN p_type ENUM('Agudo', 'Crónico'),
+    IN p_classification VARCHAR(255),
+    IN p_description TEXT,
+    IN p_is_comunicated INT,
+    IN p_is_derived INT,
+    IN p_trauma_type ENUM('BUCODENTAL/MAXILOFACIAL', 'CUERPO EXTRAÑO (INGESTA/OTROS)', 'BRECHAS', 'TEC', 'CARA', 'ROTURA DE GAFAS', 'TRAUMATOLOGÍA MIEMBRO INFERIOR', 'TRAUMATOLOGÍA MIEMBRO SUPERIOR', 'OTROS ACCIDENTES'),
+    IN p_place ENUM('RECREO', 'ED. FÍSICA', 'CLASE', 'NATACIÓN', 'GUARDERÍA', 'SEMANA DEPORTIVA', 'DÍA VERDE', 'EXTRAESCOLAR', 'OTROS'),
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la plantilla de visitas existe
+    IF NOT EXISTS (SELECT * FROM visits_templates WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para plantilla de visitas no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el nombre no sea nulo
+    IF p_name IS NULL THEN 
+        SET p_Result = -2; -- Código de error para nombre nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el tipo no sea nulo
+    IF p_type IS NULL THEN
+        SET p_Result = -3; -- Código de error para tipo nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la clasificación no sea nula
+    IF p_classification IS NULL THEN
+        SET p_Result = -4; -- Código de error para clasificación nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que la descripción no sea nula
+    IF p_description IS NULL THEN
+        SET p_Result = -5; -- Código de error para descripción nula
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo de comunicado no sea nulo
+    IF p_is_comunicated IS NULL THEN
+        SET p_Result = -6; -- Código de error para campo de comunicado nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el campo de derivado no sea nulo
+    IF p_is_derived IS NULL THEN
+        SET p_Result = -7; -- Código de error para campo de derivado nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el tipo de trauma no sea nulo
+    IF p_trauma_type IS NULL THEN
+        SET p_Result = -8; -- Código de error para tipo de trauma nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Verificar que el lugar no sea nulo
+    IF p_place IS NULL THEN
+        SET p_Result = -9; -- Código de error para lugar nulo
+        LEAVE PRO;
+    END IF;
+
+    -- Actualizar plantilla de visitas
+    UPDATE visits_templates
+    SET name = p_name, type = p_type, classification = p_classification, description = p_description, is_comunicated = p_is_comunicated, is_derived = p_is_derived, trauma_type = p_trauma_type, place = p_place
+    WHERE id = p_id;
+
+    -- Verificar si la actualización fue exitosa
+    IF ROW_COUNT() > 0 THEN
+        SET p_Result = 1; -- Código de éxito
+    ELSE
+        SET p_Result = 0; -- Código de error para actualización no exitosa
+    END IF;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> DeleteVisitsTemplateProcedure visits_templates procedure <<===//
+DROP PROCEDURE IF EXISTS `DeleteVisitsTemplateProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `DeleteVisitsTemplateProcedure`(
+    IN p_id INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    -- Verificar si la plantilla de visitas existe
+    IF NOT EXISTS (SELECT * FROM visits_templates WHERE id = p_id) THEN
+        SET p_Result = -1; -- Código de error para plantilla de visitas no encontrada
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Eliminar plantilla de visitas
+    DELETE FROM visits_templates WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    SELECT id INTO p_Result FROM visits_templates WHERE id = p_id;
+
+    -- Verificar si la eliminación fue exitosa
+    IF p_Result > 0 THEN
+        SET p_Result = 0; -- Código de error para eliminación no exitosa
+    ELSE
+        SET p_Result = p_id; -- Código de éxito
+    END IF;
 
 END$$
 

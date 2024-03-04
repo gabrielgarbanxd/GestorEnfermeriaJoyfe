@@ -14,7 +14,7 @@
             <Components:FormGroup x:Name="txtNote" LabelText="Nota"/>
             <!-- Selector de fecha de inicio -->
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <Label Content="Fecha inicio: "
+                <Label Content="Fecha : "
                Foreground="{StaticResource color9}" 
                FontSize="14" 
                FontWeight="Bold"
