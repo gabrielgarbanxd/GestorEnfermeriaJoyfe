@@ -1,0 +1,172 @@
+
+
+
+-- *************************************************************************
+-- *                                                                       *
+-- *                                 VIEWS                               *
+-- *                                                                       *
+-- *************************************************************************
+
+
+
+
+-- =====>>Patient Active Cites <<====
+
+CREATE VIEW patient_active_cites AS
+SELECT c.id AS cite_id, p.name AS patient_name, c.date, vt.name AS template_name
+FROM `gestor_enfermeria`.`cites` c
+INNER JOIN `gestor_enfermeria`.`patients` p ON c.patient_id = p.id
+INNER JOIN `gestor_enfermeria`.`visits_templates` vt ON c.visit_template_id = vt.id
+WHERE c.date >= CURDATE();
+
+select * from patient_active_cites;
+
+-- =====>>Scheduled Cites by Weekday <<====
+
+CREATE VIEW scheduled_cites_by_weekday AS
+SELECT p.name AS patient_name, scr.start_date, scr.hour, 
+CASE WHEN scr.lunes = 1 THEN 'Lunes' ELSE '' END AS lunes,
+CASE WHEN scr.martes = 1 THEN 'Martes' ELSE '' END AS martes,
+CASE WHEN scr.miercoles = 1 THEN 'Miércoles' ELSE '' END AS miercoles,
+CASE WHEN scr.jueves = 1 THEN 'Jueves' ELSE '' END AS jueves,
+CASE WHEN scr.viernes = 1 THEN 'Viernes' ELSE '' END AS viernes
+FROM `gestor_enfermeria`.`scheduled_cites_rules` scr
+INNER JOIN `gestor_enfermeria`.`patients` p ON scr.patient_id = p.id;
+
+
+select * from scheduled_cites_by_weekday;
+
+
+
+
+
+-- =====>>Vista de Visitas por Tipo <<====
+
+CREATE VIEW vw_visits_by_type AS
+SELECT type AS tipo_visita, COUNT(*) AS cantidad
+FROM visits
+GROUP BY type;
+
+select * from scheduled_cites_by_weekday;
+
+
+-- =====>>Vista de Citas con detalles del paciente <<====
+
+
+CREATE VIEW vw_cites_with_patient_details AS
+SELECT c.id AS cita_id, c.date AS fecha_cita, p.name AS nombre_paciente, p.last_name AS apellido_paciente, c.note AS nota
+FROM cites c
+JOIN patients p ON c.patient_id = p.id;
+
+select * from vw_cites_with_patient_details;
+
+
+
+-- =====>>Vista de Citas Pendientes<<====
+
+CREATE VIEW vw_pending_cites AS
+SELECT c.id AS cita_id, p.name AS nombre_paciente, p.last_name AS apellido_paciente, c.date AS fecha_cita
+FROM cites c
+JOIN patients p ON c.patient_id = p.id
+WHERE c.date > NOW();
+
+select * from vw_acute_visits;
+
+
+
+
+
+-- =====>>Vista de Visitas Agudas<<====
+
+CREATE VIEW vw_acute_visits AS
+SELECT id, date, classification, description, patient_id
+FROM visits
+WHERE type = 'Agudo';
+
+select * from vw_acute_visits;
+
+
+-- =====>>Vista de Pacientes con Citas Pendientes<<====
+
+
+CREATE VIEW vw_patients_with_pending_cites AS
+SELECT p.id AS paciente_id, p.name AS nombre_paciente, p.last_name AS apellido_paciente, COUNT(c.id) AS citas_pendientes
+FROM patients p
+LEFT JOIN cites c ON p.id = c.patient_id AND c.date > NOW()
+GROUP BY p.id;
+
+select * from vw_patients_with_pending_cites;
+
+-- =====>>Daily Cites Grouped by Place and Trauma Type<<====
+
+CREATE VIEW daily_cites_grouped_by_place_trauma_type AS
+SELECT place, trauma_type, DATE(date) AS visit_date, COUNT(*) AS daily_cite_count
+FROM `gestor_enfermeria`.`visits` v
+WHERE trauma_type IS NOT NULL
+GROUP BY place, trauma_type, DATE(date)
+ORDER BY visit_date ASC;
+
+
+select * from daily_cites_grouped_by_place_trauma_type;
+
+
+
+-- =====>> Most Frequent Trauma Types<<====
+
+
+CREATE VIEW most_frequent_trauma_types AS
+SELECT trauma_type, COUNT(*) AS trauma_count
+FROM `gestor_enfermeria`.`visits` v
+WHERE trauma_type IS NOT NULL
+GROUP BY trauma_type
+ORDER BY trauma_count DESC
+LIMIT 5;
+
+select * from most_frequent_trauma_types;
+
+
+-- =====>>Vista de Citas Canceladas<<====
+
+
+CREATE VIEW vw_cancelled_cites AS
+SELECT c.id AS cita_id, c.date AS fecha_cita, p.name AS nombre_paciente, p.last_name AS apellido_paciente, c.note AS motivo_cancelacion
+FROM cites c
+JOIN patients p ON c.patient_id = p.id
+WHERE c.date < NOW() AND c.note IS NOT NULL;
+
+select * from vw_cancelled_cites;
+
+
+
+-- =====>>Vista de Visitas Crónicas Realizadas<<====
+
+CREATE VIEW vw_completed_chronic_visits AS
+SELECT id, date, classification, description, patient_id
+FROM visits
+WHERE type = 'Crónico' AND date < NOW();
+
+select * from vw_completed_chronic_visits;
+
+
+
+-- =====>>Vista de Citas por Mes<<====
+
+
+CREATE VIEW vw_cites_by_month AS
+SELECT MONTH(date) AS mes, COUNT(*) AS cantidad_citas
+FROM cites
+GROUP BY mes;
+
+select * from vw_cites_by_month;
+
+
+
+-- =====>>Cites by Weekday and Hour<<====
+
+
+
+CREATE VIEW cites_by_weekday_hour AS
+SELECT DATE_FORMAT(date, '%W') AS weekday, HOUR(date) AS hour, COUNT(*) AS cite_count
+FROM `gestor_enfermeria`.`cites`
+GROUP BY DATE_FORMAT(date, '%W'), HOUR(date)
+ORDER BY weekday, hour;
