@@ -23,5 +23,8 @@ namespace GestorEnfermeriaJoyfe.UI.Views
         {
             InitializeComponent();
         }
+
+        private void AceptarButton_Click(object sender, RoutedEventArgs e) => this.DialogResult = true;
+
     }
 }

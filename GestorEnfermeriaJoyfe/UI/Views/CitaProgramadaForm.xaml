@@ -9,7 +9,7 @@
         Title="CitaProgramadaForm" Height="400" Width="300">
     <StackPanel Margin="10">
 
-        <Components:FormGroup x:Name="Motivo" LabelText="Motivo"/>
+        <Components:FormGroup x:Name="txtNombre" LabelText="Nombre"/>
 
 
 
@@ -28,11 +28,11 @@
                     <StackPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-            <ListBoxItem>Lunes</ListBoxItem>
-            <ListBoxItem>Martes</ListBoxItem>
-            <ListBoxItem>Miércoles</ListBoxItem>
-            <ListBoxItem>Jueves</ListBoxItem>
-            <ListBoxItem>Viernes</ListBoxItem>
+            <ListBoxItem Content="Lunes"/>
+            <ListBoxItem Content="Martes"/>
+            <ListBoxItem Content="Miercoles"/>
+            <ListBoxItem Content="Jueves"/>
+            <ListBoxItem Content="Viernes"/>
         </ListBox>
         
 

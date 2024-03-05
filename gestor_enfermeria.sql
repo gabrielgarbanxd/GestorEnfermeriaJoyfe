@@ -2539,6 +2539,7 @@ DELIMITER ;
 
 
 -- =====>>Patient Active Cites <<====
+DROP VIEW IF EXISTS patient_active_cites;
 
 CREATE VIEW patient_active_cites AS
 SELECT c.id AS cite_id, p.name AS patient_name, c.date, vt.name AS template_name
@@ -2549,7 +2550,9 @@ WHERE c.date >= CURDATE();
 
 select * from patient_active_cites;
 
+
 -- =====>>Scheduled Cites by Weekday <<====
+DROP VIEW IF EXISTS scheduled_cites_by_weekday;
 
 CREATE VIEW scheduled_cites_by_weekday AS
 SELECT p.name AS patient_name, scr.start_date, scr.hour, 
@@ -2569,6 +2572,7 @@ select * from scheduled_cites_by_weekday;
 
 
 -- =====>>Vista de Visitas por Tipo <<====
+DROP VIEW IF EXISTS vw_visits_by_type;
 
 CREATE VIEW vw_visits_by_type AS
 SELECT type AS tipo_visita, COUNT(*) AS cantidad
@@ -2579,6 +2583,7 @@ select * from scheduled_cites_by_weekday;
 
 
 -- =====>>Vista de Citas con detalles del paciente <<====
+DROP VIEW IF EXISTS vw_cites_with_patient_details;
 
 
 CREATE VIEW vw_cites_with_patient_details AS
@@ -2591,6 +2596,7 @@ select * from vw_cites_with_patient_details;
 
 
 -- =====>>Vista de Citas Pendientes<<====
+DROP VIEW IF EXISTS vw_pending_cites;
 
 CREATE VIEW vw_pending_cites AS
 SELECT c.id AS cita_id, p.name AS nombre_paciente, p.last_name AS apellido_paciente, c.date AS fecha_cita
@@ -2605,6 +2611,7 @@ select * from vw_acute_visits;
 
 
 -- =====>>Vista de Visitas Agudas<<====
+DROP VIEW IF EXISTS vw_acute_visits;
 
 CREATE VIEW vw_acute_visits AS
 SELECT id, date, classification, description, patient_id
@@ -2615,6 +2622,7 @@ select * from vw_acute_visits;
 
 
 -- =====>>Vista de Pacientes con Citas Pendientes<<====
+DROP VIEW IF EXISTS vw_patients_with_pending_cites;
 
 
 CREATE VIEW vw_patients_with_pending_cites AS
@@ -2626,6 +2634,7 @@ GROUP BY p.id;
 select * from vw_patients_with_pending_cites;
 
 -- =====>>Daily Cites Grouped by Place and Trauma Type<<====
+DROP VIEW IF EXISTS daily_cites_grouped_by_place_trauma_type;
 
 CREATE VIEW daily_cites_grouped_by_place_trauma_type AS
 SELECT place, trauma_type, DATE(date) AS visit_date, COUNT(*) AS daily_cite_count
@@ -2640,6 +2649,7 @@ select * from daily_cites_grouped_by_place_trauma_type;
 
 
 -- =====>> Most Frequent Trauma Types<<====
+DROP VIEW IF EXISTS most_frequent_trauma_types;
 
 
 CREATE VIEW most_frequent_trauma_types AS
@@ -2654,6 +2664,7 @@ select * from most_frequent_trauma_types;
 
 
 -- =====>>Vista de Citas Canceladas<<====
+DROP VIEW IF EXISTS vw_cancelled_cites;
 
 
 CREATE VIEW vw_cancelled_cites AS
@@ -2667,6 +2678,7 @@ select * from vw_cancelled_cites;
 
 
 -- =====>>Vista de Visitas Crónicas Realizadas<<====
+DROP VIEW IF EXISTS vw_completed_chronic_visits;
 
 CREATE VIEW vw_completed_chronic_visits AS
 SELECT id, date, classification, description, patient_id
@@ -2678,7 +2690,7 @@ select * from vw_completed_chronic_visits;
 
 
 -- =====>>Vista de Citas por Mes<<====
-
+DROP VIEW IF EXISTS vw_cites_by_month;
 
 CREATE VIEW vw_cites_by_month AS
 SELECT MONTH(date) AS mes, COUNT(*) AS cantidad_citas
@@ -2690,7 +2702,7 @@ select * from vw_cites_by_month;
 
 
 -- =====>>Cites by Weekday and Hour<<====
-
+DROP VIEW IF EXISTS cites_by_weekday_hour;
 
 
 CREATE VIEW cites_by_weekday_hour AS

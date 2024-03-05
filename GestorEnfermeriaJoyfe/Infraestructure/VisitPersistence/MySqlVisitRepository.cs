@@ -54,6 +54,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             {
                 {"p_type", visit.Type.Value},
                 {"p_classification", visit.Classification.Value},
+                {"p_description", visit.Description?.Value ?? ""},
                 {"p_is_comunicated",visit.IsComunicated.ToInt()},
                 {"p_is_derived",visit.IsDerived.ToInt()},
                 {"p_trauma_type",visit.TraumaType?.Value ?? ""},
@@ -74,6 +75,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
                 {"p_id", visit.Id.Value},
                 {"p_type", visit.Type.Value},
                 {"p_classification", visit.Classification.Value},
+                {"p_description", visit.Description?.Value ?? ""},
                 {"p_is_comunicated",visit.IsComunicated.ToInt()},
                 {"p_is_derived",visit.IsDerived.ToInt()},
                 {"p_trauma_type",visit.TraumaType?.Value ?? ""},

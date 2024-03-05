@@ -14,5 +14,9 @@ namespace GestorEnfermeriaJoyfe.Domain.ScheduledCiteRule.ValueObjects
         public override string ToString() => Value.ToString(@"hh\:mm");
 
         public string ToHour => Value.ToString(@"hh\:mm");
+
+        public string GetHoures => Value.Hours.ToString();
+
+        public string GetMinutes => Value.Minutes.ToString();
     }
 }

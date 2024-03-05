@@ -33,8 +33,8 @@
             <ComboBoxItem>Crónico</ComboBoxItem>
         </ComboBox>
 
-        <Components:FormGroup x:Name="calificacion" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Calificación" Margin="20,10,0,0"/>
-        <Components:FormGroup x:Name="descripcion" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Descripción" Margin="20,10,0,0"/>
+        <Components:FormGroup x:Name="txtClasificacion" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Claificación" Margin="20,10,0,0"/>
+        <Components:FormGroup x:Name="txtDescripcion" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Descripción" Margin="20,10,0,0"/>
 
         <Label Grid.Row="3" Grid.Column="0" Margin="20,0,0,10" Content="Comunicado:" VerticalAlignment="Center" Foreground="{StaticResource color9}" FontSize="14" FontWeight="Bold" FontFamily="Monserrat" Padding="0"/>
         <CheckBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" x:Name="chkIsCommunicated" VerticalAlignment="Center"/>
@@ -68,7 +68,18 @@
             <ComboBoxItem>OTROS</ComboBoxItem>
         </ComboBox>
 
-        <Button Width="100" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Content="Aceptar" IsDefault="True"  Style="{StaticResource actionPacienteBtn}" Background="{StaticResource color9}" HorizontalAlignment="Center" Margin="0,20"/>
+        <Button 
+            Click="AceptarButton_Click"
+            Width="100" 
+            Grid.Row="8" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2" 
+            Content="Aceptar" 
+            IsDefault="True"  
+            Style="{StaticResource actionPacienteBtn}" 
+            Background="{StaticResource color9}" 
+            HorizontalAlignment="Center" 
+            Margin="0,20"/>
 
     </Grid>
 </Window>

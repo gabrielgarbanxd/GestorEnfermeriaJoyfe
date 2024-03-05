@@ -1,6 +1,7 @@
 ﻿using GestorEnfermeriaJoyfe.Adapters.VisitAdapters;
 using GestorEnfermeriaJoyfe.Domain.Patient;
 using GestorEnfermeriaJoyfe.Domain.Visit;
+using GestorEnfermeriaJoyfe.UI.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -72,7 +73,34 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
         private void ExecuteCreateVisitCommand(object parameter)
         {
-            //MainViewModelRouter.Instance.OnShowCreateVisitView(patient);
+            VisitForm dialog = new();
+            bool? result = dialog.ShowDialog();
+
+            if (result == false) return;
+
+            Visit newVisit;
+
+            try
+            {
+                newVisit = Visit.FromPrimitives(
+                    0,
+                    dialog.cmbType.SelectedItem,
+                    dialog.txtClasificacion.Text,
+                    dialog.txtDescripcion.Text,
+                    dialog.chkIsCommunicated.IsChecked,
+                    dialog.chkIsDerived.IsChecked,
+                    dialog.chkIsDerived.IsChecked == true ? dialog.cmbTraumaType.SelectedItem : null,
+                    dialog.chkIsDerived.IsChecked == true ? dialog.cmbLugar.SelectedItem : null,
+                    DateTime.Now,
+                    patient.Id.Value
+                    );
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Datos de visita no validos");
+                ExecuteCreateVisitCommand(null);
+                return;
+            }
         }
 
         private async void ExecuteDeleteVisitCommand(object parameter)

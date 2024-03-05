@@ -9,6 +9,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
         public VisitId Id { get; private set; }
         public VisitType Type { get; set; }
         public VisitClassification Classification { get; set; }
+        public VisitDescription? Description { get; set; }
         public VisitIsComunicated IsComunicated { get; set; }
         public VisitIsDerived IsDerived { get; set; }
         public VisitTraumaType? TraumaType { get; set; }
@@ -16,11 +17,12 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
         public VisitDate Date { get; set; }
         public PatientId PatientId { get; set; }
 
-        public Visit(VisitId? id, VisitType type, VisitClassification classification, VisitIsComunicated isComunicated, VisitIsDerived isDerived, VisitTraumaType? traumaType, VisitPlace? place, VisitDate date, PatientId patientId)
+        public Visit(VisitId? id, VisitType type, VisitClassification classification, VisitDescription? description, VisitIsComunicated isComunicated, VisitIsDerived isDerived, VisitTraumaType? traumaType, VisitPlace? place, VisitDate date, PatientId patientId)
         {
             Id = id ?? new VisitId(0);
             Type = type;
             Classification = classification;
+            Description = description;
             IsComunicated = isComunicated;
             IsDerived = isDerived;
 
@@ -32,17 +34,18 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
             PatientId = patientId;
         }
 
-        public static Visit Create(VisitId? id, VisitType type, VisitClassification classification, VisitIsComunicated isComunicated, VisitIsDerived isDerived, VisitTraumaType? traumaType, VisitPlace? place, VisitDate date, PatientId patientId)
+        public static Visit Create(VisitId? id, VisitType type, VisitClassification classification, VisitDescription? description, VisitIsComunicated isComunicated, VisitIsDerived isDerived, VisitTraumaType? traumaType, VisitPlace? place, VisitDate date, PatientId patientId)
         {
-            return new Visit(id, type, classification, isComunicated, isDerived, traumaType, place, date, patientId);
+            return new Visit(id, type, classification, description, isComunicated, isDerived, traumaType, place, date, patientId);
         }
 
-        public static Visit FromPrimitives(int id, string type, string classification, bool isComunicated, bool isDerived, string? traumaType, string? place, DateTime date, int patientId)
+        public static Visit FromPrimitives(int id, string type, string classification, string? description, bool isComunicated, bool isDerived, string? traumaType, string? place, DateTime date, int patientId)
         {
             return new Visit(
                 new VisitId(id),
                 new VisitType(type),
                 new VisitClassification(classification),
+                description != null ? new VisitDescription(description) : null,
                 new VisitIsComunicated(isComunicated),
                 new VisitIsDerived(isDerived),
                 traumaType != null ? new VisitTraumaType(traumaType) : null,
