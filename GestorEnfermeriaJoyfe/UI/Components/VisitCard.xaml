@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="310">
+             d:DesignHeight="400" d:DesignWidth="500">
     <Grid Margin="15,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
@@ -46,14 +46,14 @@
                     FontFamily="Montserrat"
                     FontWeight="Bold"
                     FontSize="18"/>
-                
+
                 <TextBlock
-                    Margin="8,0,0,0"
+                    Margin="8,0,0,10"
                     Text="{Binding Classification.Value}" 
                     FontFamily="Montserrat"
                     TextWrapping="WrapWithOverflow"
                     MaxHeight="62"
-                    FontSize="18"/>
+                    FontSize="18" Height="38"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                     <TextBlock 
@@ -69,6 +69,7 @@
 
                 </StackPanel>
 
+
                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                     <TextBlock 
                         Text="Derivado : " 
@@ -82,6 +83,58 @@
                         FontSize="18"/>
 
                 </StackPanel>
+
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                    <TextBlock 
+                        Text="Trauma : " 
+                        FontFamily="Montserrat"
+                        FontWeight="Bold"
+                        FontSize="18"/>
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Text="{Binding }" 
+                        FontFamily="Montserrat"
+                        FontSize="18"/>
+
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                    <TextBlock 
+                        Text="Lugar : " 
+                        FontFamily="Montserrat"
+                        FontWeight="Bold"
+                        FontSize="18"/>
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Text="{Binding }"
+                        FontFamily="Montserrat"
+                        FontSize="18"/>
+
+                </StackPanel>
+
+
+                <TextBlock 
+                        Margin="0,3,0,0"
+                        Text="Descripción : " 
+                        FontFamily="Montserrat"
+                        FontWeight="Bold"
+                        FontSize="18"/>
+
+                <TextBlock
+                        Margin="8,0,0,0"
+                        Text="{Binding }" 
+                        FontFamily="Montserrat"
+                        TextWrapping="WrapWithOverflow"
+                        MaxHeight="62"
+                        FontSize="18" Height="38"/>
+
+
+
+
+
 
 
             </StackPanel>

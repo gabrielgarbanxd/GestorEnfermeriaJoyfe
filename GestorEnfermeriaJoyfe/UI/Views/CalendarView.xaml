@@ -263,10 +263,10 @@
                         </DataGrid.RowHeaderStyle>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding HasVisit.Value}" Header="Visita"/>
-                            <DataGridTextColumn Binding="{Binding }" Header="Hora" HeaderStringFormat=""/>
+                            <DataGridTextColumn Binding="{Binding HasVisit.ToCheckString}" Header="Visita"/>
+                            <DataGridTextColumn Binding="{Binding Date.ToTime}" Header="Hora" HeaderStringFormat=""/>
                             <DataGridTextColumn Binding="{Binding Note.Value }" Header="Nota"/>
-                            <DataGridTextColumn Binding="{Binding PatientInfo.Value}" Header="Paciente"/>
+                            <DataGridTextColumn Binding="{Binding PatientInfos.value }" Header="Paciente"/>
 
 
                         </DataGrid.Columns>
