@@ -84,8 +84,8 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Height" Value="250"/>
-                    <Setter Property="Width" Value="300"/>
+                    <Setter Property="Height" Value="300"/>
+                    <Setter Property="Width" Value="400"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#D3D3D3"/>

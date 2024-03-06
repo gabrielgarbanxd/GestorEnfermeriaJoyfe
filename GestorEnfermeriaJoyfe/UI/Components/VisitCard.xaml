@@ -94,7 +94,7 @@
                         FontSize="18"/>
                     <TextBlock
                         Margin="8,0,0,0"
-                        Text="{Binding }" 
+                        Text="{Binding hola}" 
                         FontFamily="Montserrat"
                         FontSize="18"/>
 
@@ -109,7 +109,7 @@
                         FontSize="18"/>
                     <TextBlock
                         Margin="8,0,0,0"
-                        Text="{Binding }"
+                        Text="{Binding hola }"
                         FontFamily="Montserrat"
                         FontSize="18"/>
 
@@ -125,7 +125,7 @@
 
                 <TextBlock
                         Margin="8,0,0,0"
-                        Text="{Binding }" 
+                        Text="{Binding hola }" 
                         FontFamily="Montserrat"
                         TextWrapping="WrapWithOverflow"
                         MaxHeight="62"
