@@ -30,29 +30,12 @@
                 Width="250"
                 Margin="10"
                 HorizontalAlignment="Left">
-                
+
                 <StackPanel Orientation="Horizontal">
                     <fIcons:IconImage Icon="FileArrowUp" Style="{StaticResource iconActionPacienteBtn}" />
                     <TextBlock Text="Adjuntar Visita a la Cita" Style="{StaticResource textActionPacienteBtn}"/>
                 </StackPanel>
             </Button>
-
-            <Button Grid.Column="1"
-                Style="{StaticResource actionPacienteBtn}"
-                Tag="{StaticResource white}"
-                Background="Blue"
-                Command="{Binding CreateVisitCommand}"
-                Margin="10"
-                Width="150"
-                HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal">
-                    <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
-                    <TextBlock Text="Nueva Visita" Style="{StaticResource textActionPacienteBtn}"/>
-                </StackPanel>
-            </Button>
-
-
-
 
         </Grid>
 
@@ -103,7 +86,7 @@
                           IsReadOnly="True">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding DoubleClickPacienteCommand}" />
+                                <i:InvokeCommandAction Command="{Binding DoubleClickCiteCommand}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
@@ -216,7 +199,7 @@
                           IsReadOnly="True">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding DoubleClickPacienteCommand}" />
+                                <i:InvokeCommandAction Command="{Binding DoubleClickVisitCommand}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
