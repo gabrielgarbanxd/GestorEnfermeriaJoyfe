@@ -58,7 +58,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             // *** Carga Commands *** 
             GoBackCommand = new ViewModelCommand((object parameter) => MainViewModelRouter.Instance.OnShowSinglePacienteView(patient));
             DoubleClickVisitCommand = new ViewModelCommand(ExecuteDoubleClickVisitCommand);
-            CreateVisitCommand = new ViewModelCommand(ExecuteCreateVisitCommand);
+            //CreateVisitCommand = new ViewModelCommand(ExecuteCreateVisitCommand);
             DeleteVisitCommand = new ViewModelCommand(ExecuteDeleteVisitCommand);
         }
 
@@ -71,37 +71,37 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
-        private void ExecuteCreateVisitCommand(object parameter)
-        {
-            VisitForm dialog = new();
-            bool? result = dialog.ShowDialog();
+        //private void ExecuteCreateVisitCommand(object parameter)
+        //{
+        //    VisitForm dialog = new();
+        //    bool? result = dialog.ShowDialog();
 
-            if (result == false) return;
+        //    if (result == false) return;
 
-            Visit newVisit;
+        //    Visit newVisit;
 
-            try
-            {
-                newVisit = Visit.FromPrimitives(
-                    0,
-                    dialog.cmbType.SelectedItem,
-                    dialog.txtClasificacion.Text,
-                    dialog.txtDescripcion.Text,
-                    dialog.chkIsCommunicated.IsChecked,
-                    dialog.chkIsDerived.IsChecked,
-                    dialog.chkIsDerived.IsChecked == true ? dialog.cmbTraumaType.SelectedItem : null,
-                    dialog.chkIsDerived.IsChecked == true ? dialog.cmbLugar.SelectedItem : null,
-                    DateTime.Now,
-                    patient.Id.Value
-                    );
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Datos de visita no validos");
-                ExecuteCreateVisitCommand(null);
-                return;
-            }
-        }
+        //    try
+        //    {
+        //        newVisit = Visit.FromPrimitives(
+        //            0,
+        //            dialog.cmbType.SelectedItem,
+        //            dialog.txtClasificacion.Text,
+        //            dialog.txtDescripcion.Text,
+        //            dialog.chkIsCommunicated.IsChecked,
+        //            dialog.chkIsDerived.IsChecked,
+        //            dialog.chkIsDerived.IsChecked == true ? dialog.cmbTraumaType.SelectedItem : null,
+        //            dialog.chkIsDerived.IsChecked == true ? dialog.cmbLugar.SelectedItem : null,
+        //            DateTime.Now,
+        //            patient.Id.Value
+        //            );
+        //    }
+        //    catch (Exception)
+        //    {
+        //        MessageBox.Show("Datos de visita no validos");
+        //        ExecuteCreateVisitCommand(null);
+        //        return;
+        //    }
+        //}
 
         private async void ExecuteDeleteVisitCommand(object parameter)
         {

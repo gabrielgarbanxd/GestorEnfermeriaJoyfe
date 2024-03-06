@@ -7,9 +7,17 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
-
+             xmlns:vm="clr-namespace:GestorEnfermeriaJoyfe.UI.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+
+
+
+
+
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -138,10 +146,10 @@
 
                 <!-- Botón Azul -->
                 <Button Style="{StaticResource actionPacienteBtn}"
-      Tag="{StaticResource white}"
-      Background="Blue"
-      Command="{Binding CreatePacienteCommand}"
-      Margin="15,0,0,0" Width="121">
+                          Tag="{StaticResource white}"
+                          Background="Blue"
+                          Command="{Binding CreatePacienteCommand}"
+                          Margin="15,0,0,0" Width="121">
                     <StackPanel Orientation="Horizontal" Width="97">
                         <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
                         <TextBlock Text="Nuevo" Style="{StaticResource textActionPacienteBtn}" Width="85" Height="14"/>
@@ -150,10 +158,10 @@
 
                 <!-- Botón Naranja -->
                 <Button Style="{StaticResource actionPacienteBtn}"
-      Tag="{StaticResource tempHover}"
-      Background="Orange"
-      Command="{Binding EditPacienteCommand}"
-      Margin="15,0,0,0" Height="43" Width="121" Cursor="Hand">
+                        Tag="{StaticResource tempHover}"
+                        Background="Orange"
+                        Command="{Binding EditPacienteCommand}"
+                        Margin="15,0,0,0" Height="43" Width="121" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <fIcons:IconImage Icon="Edit" Style="{StaticResource iconActionPacienteBtn}" />
                         <TextBlock Text="Editar" Style="{StaticResource textActionPacienteBtn}" Height="14" Width="67"/>
@@ -162,10 +170,10 @@
 
                 <!-- Botón Rojo -->
                 <Button Style="{StaticResource actionPacienteBtn}"
-      Tag="{StaticResource tempHover}"
-      Background="{StaticResource red}"
-      Command="{Binding DeletePacienteCommand}"
-      Margin="15,0,0,0" Height="45" Width="121">
+                        Tag="{StaticResource tempHover}"
+                        Background="{StaticResource red}"
+                        Command="{Binding DeletePacienteCommand}"
+                        Margin="15,0,0,0" Height="45" Width="121">
                     <StackPanel Orientation="Horizontal" Width="97">
                         <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" />
                         <TextBlock Text="Eliminar" Style="{StaticResource textActionPacienteBtn}" Width="81" Height="14"/>
@@ -263,8 +271,8 @@
                         </DataGrid.RowHeaderStyle>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding HasVisit.ToCheckString}" Header="Visita"/>
-                            <DataGridTextColumn Binding="{Binding Date.ToTime}" Header="Hora" HeaderStringFormat=""/>
+                            <DataGridTextColumn Binding="{Binding HasVisit.ToCheckString }" Header="Visita"/>
+                            <DataGridTextColumn Binding="{Binding Date.ToTime }" Header="Hora" HeaderStringFormat=""/>
                             <DataGridTextColumn Binding="{Binding Note.Value }" Header="Nota"/>
                             <DataGridTextColumn Binding="{Binding PatientInfos.value }" Header="Paciente"/>
 

@@ -2548,7 +2548,7 @@ INNER JOIN `gestor_enfermeria`.`patients` p ON c.patient_id = p.id
 INNER JOIN `gestor_enfermeria`.`visits_templates` vt ON c.visit_template_id = vt.id
 WHERE c.date >= CURDATE();
 
-select * from patient_active_cites;
+-- select * from patient_active_cites;
 
 
 -- =====>>Scheduled Cites by Weekday <<====
@@ -2565,7 +2565,7 @@ FROM `gestor_enfermeria`.`scheduled_cites_rules` scr
 INNER JOIN `gestor_enfermeria`.`patients` p ON scr.patient_id = p.id;
 
 
-select * from scheduled_cites_by_weekday;
+-- select * from scheduled_cites_by_weekday;
 
 
 
@@ -2579,7 +2579,7 @@ SELECT type AS tipo_visita, COUNT(*) AS cantidad
 FROM visits
 GROUP BY type;
 
-select * from scheduled_cites_by_weekday;
+-- select * from scheduled_cites_by_weekday;
 
 
 -- =====>>Vista de Citas con detalles del paciente <<====
@@ -2591,7 +2591,7 @@ SELECT c.id AS cita_id, c.date AS fecha_cita, p.name AS nombre_paciente, p.last_
 FROM cites c
 JOIN patients p ON c.patient_id = p.id;
 
-select * from vw_cites_with_patient_details;
+-- select * from vw_cites_with_patient_details;
 
 
 
@@ -2604,7 +2604,7 @@ FROM cites c
 JOIN patients p ON c.patient_id = p.id
 WHERE c.date > NOW();
 
-select * from vw_acute_visits;
+-- select * from vw_acute_visits;
 
 
 
@@ -2618,7 +2618,7 @@ SELECT id, date, classification, description, patient_id
 FROM visits
 WHERE type = 'Agudo';
 
-select * from vw_acute_visits;
+-- select * from vw_acute_visits;
 
 
 -- =====>>Vista de Pacientes con Citas Pendientes<<====
@@ -2631,7 +2631,7 @@ FROM patients p
 LEFT JOIN cites c ON p.id = c.patient_id AND c.date > NOW()
 GROUP BY p.id;
 
-select * from vw_patients_with_pending_cites;
+-- select * from vw_patients_with_pending_cites;
 
 -- =====>>Daily Cites Grouped by Place and Trauma Type<<====
 DROP VIEW IF EXISTS daily_cites_grouped_by_place_trauma_type;
@@ -2644,7 +2644,7 @@ GROUP BY place, trauma_type, DATE(date)
 ORDER BY visit_date ASC;
 
 
-select * from daily_cites_grouped_by_place_trauma_type;
+-- select * from daily_cites_grouped_by_place_trauma_type;
 
 
 
@@ -2660,7 +2660,7 @@ GROUP BY trauma_type
 ORDER BY trauma_count DESC
 LIMIT 5;
 
-select * from most_frequent_trauma_types;
+-- select * from most_frequent_trauma_types;
 
 
 -- =====>>Vista de Citas Canceladas<<====
@@ -2673,7 +2673,7 @@ FROM cites c
 JOIN patients p ON c.patient_id = p.id
 WHERE c.date < NOW() AND c.note IS NOT NULL;
 
-select * from vw_cancelled_cites;
+-- select * from vw_cancelled_cites;
 
 
 
@@ -2685,7 +2685,7 @@ SELECT id, date, classification, description, patient_id
 FROM visits
 WHERE type = 'Crónico' AND date < NOW();
 
-select * from vw_completed_chronic_visits;
+-- select * from vw_completed_chronic_visits;
 
 
 
@@ -2697,7 +2697,7 @@ SELECT MONTH(date) AS mes, COUNT(*) AS cantidad_citas
 FROM cites
 GROUP BY mes;
 
-select * from vw_cites_by_month;
+-- select * from vw_cites_by_month;
 
 
 

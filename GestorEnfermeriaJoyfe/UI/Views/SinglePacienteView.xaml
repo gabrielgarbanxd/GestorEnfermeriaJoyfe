@@ -33,7 +33,7 @@
                     <TextBlock Text="Atras" Style="{StaticResource textgoBackButton}"/>
                 </StackPanel>
             </Button>
-            
+
             <!-- Show Cites Btn -->
             <Button Grid.Column="1" 
                     Background="BlueViolet" 
@@ -46,7 +46,7 @@
                     <fIcons:IconImage Icon="ArrowCircleRight" Style="{StaticResource iconRigthShowOtherButton}"/>
                 </StackPanel>
             </Button>
-            
+
             <!-- Show Visits Btn -->
             <Button Grid.Column="2" 
                     Background="BlueViolet" 
@@ -88,12 +88,13 @@
             </StackPanel>
 
 
-            <Grid Grid.Column="1" Margin="0,20,0,0">
+            <Grid Margin="371,20,0,0" Grid.ColumnSpan="2">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <!--<ColumnDefinition/>-->
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
@@ -120,6 +121,17 @@
                     </StackPanel>
 
                 </Button>
+                <!--<Button Grid.Column="2"
+                    Style="{StaticResource actionPacienteBtn}"
+                        Tag="{StaticResource tempHover}"
+                        Background="{StaticResource color6}"
+                        Command="{Binding DeletePacienteCommand}">
+                    <StackPanel Orientation="Horizontal" Width="119">
+                        <fIcons:IconImage Icon="FileCirclePlus" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Plantilla visita" Style="{StaticResource textActionPacienteBtn}" Width="90" Height="14"/>
+                    </StackPanel>
+                </Button>-->
+
 
                 <Button Grid.Column="2"
                         Style="{StaticResource actionPacienteBtn}"

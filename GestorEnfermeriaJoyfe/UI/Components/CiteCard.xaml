@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="GestorEnfermeriaJoyfe.UI.Components.CiteCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="15,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" CornerRadius="5">
+            <TextBlock 
+             Text="{Binding Date.ToLongString}" 
+             HorizontalAlignment="Center" 
+             VerticalAlignment="Center"
+             FontFamily="Montserrat"
+             FontWeight="Bold"
+             FontSize="25"/>
+        </Border>
+
+        <Border Grid.Row="1" 
+             CornerRadius="5"
+             Margin="1">
+            <StackPanel Margin="2">
+
+
+
+
+
+                <TextBlock 
+                     Margin="0,3,0,0"
+                     Text="Nota : " 
+                     FontFamily="Montserrat"
+                     FontWeight="Bold"
+                     FontSize="18"/>
+
+                <TextBlock
+                     Margin="8,0,0,0"
+                     Text="{Binding Note.Value}" 
+                     FontFamily="Montserrat"
+                     TextWrapping="WrapWithOverflow"
+                     MaxHeight="62"
+                     FontSize="18" Height="38"/>
+
+
+
+
+
+
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
