@@ -14,62 +14,47 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel
-            Grid.Row="0"
-            Orientation="Horizontal" 
-            Margin="0,0,20,0" 
-            HorizontalAlignment="Right">
+        <Grid Grid.Row="0">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <!-- Botón Azul -->
-                <Button Style="{StaticResource actionPacienteBtn}"
-                      Tag="{StaticResource white}"
-                      Background="Blue"
-                      Command="{Binding CreatePacienteCommand}"
-                      Margin="15,0,0,0" Width="121">
-                    <StackPanel Orientation="Horizontal" Width="97">
-                        <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
-                        <TextBlock Text="Nuevo" Style="{StaticResource textActionPacienteBtn}" Width="85" Height="14"/>
-                    </StackPanel>
-                </Button>
+            <Button  
+                Grid.Column="0"
+                Style="{StaticResource actionPacienteBtn}"
+                Tag="{StaticResource tempHover}"
+                Background="{StaticResource color6}"
+                Command="{Binding AddVisitCommand}"
+                Width="250"
+                Margin="10"
+                HorizontalAlignment="Left">
+                
+                <StackPanel Orientation="Horizontal">
+                    <fIcons:IconImage Icon="FileArrowUp" Style="{StaticResource iconActionPacienteBtn}" />
+                    <TextBlock Text="Adjuntar Visita a la Cita" Style="{StaticResource textActionPacienteBtn}"/>
+                </StackPanel>
+            </Button>
 
-                <!-- Botón Naranja -->
-                <Button Style="{StaticResource actionPacienteBtn}"
-                        Tag="{StaticResource tempHover}"
-                        Background="Orange"
-                        Command="{Binding EditPacienteCommand}"
-                        Margin="15,0,0,0" Height="43" Width="121" Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">   
-                        <fIcons:IconImage Icon="Edit" Style="{StaticResource iconActionPacienteBtn}" />
-                        <TextBlock Text="Editar" Style="{StaticResource textActionPacienteBtn}" Height="14" Width="67"/>
-                    </StackPanel>
-                </Button>
-
-
-                <!-- azul clarito -->
-                <Button Style="{StaticResource actionPacienteBtn}"
-                        Tag="{StaticResource tempHover}"
-                        Background="{StaticResource color6}"
-                        Command="{Binding DeletePacienteCommand}"
-                        Margin="15,0,0,0" Height="45" Width="139">
-                    <StackPanel Orientation="Horizontal" Width="119">
-                        <fIcons:IconImage Icon="FileCirclePlus" Style="{StaticResource iconActionPacienteBtn}" />
-                        <TextBlock Text="Plantilla visita" Style="{StaticResource textActionPacienteBtn}" Width="90" Height="14"/>
-                    </StackPanel>
-                </Button>
+            <Button Grid.Column="1"
+                Style="{StaticResource actionPacienteBtn}"
+                Tag="{StaticResource white}"
+                Background="Blue"
+                Command="{Binding CreateVisitCommand}"
+                Margin="10"
+                Width="150"
+                HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" />
+                    <TextBlock Text="Nueva Visita" Style="{StaticResource textActionPacienteBtn}"/>
+                </StackPanel>
+            </Button>
 
 
-                <!-- Botón Rojo -->
-                <Button Style="{StaticResource actionPacienteBtn}"
-                        Tag="{StaticResource tempHover}"
-                        Background="{StaticResource red}"
-                        Command="{Binding DeletePacienteCommand}"
-                        Margin="15,0,0,0" Height="45" Width="121">
-                    <StackPanel Orientation="Horizontal" Width="97">
-                        <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" />
-                        <TextBlock Text="Eliminar" Style="{StaticResource textActionPacienteBtn}" Width="81" Height="14"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+
+
+        </Grid>
 
 
         <Grid Grid.Row="1">

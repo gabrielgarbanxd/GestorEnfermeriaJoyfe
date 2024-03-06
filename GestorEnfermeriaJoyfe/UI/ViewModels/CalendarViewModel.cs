@@ -4,10 +4,13 @@ using GestorEnfermeriaJoyfe.Domain.Cite.ValueObjects;
 using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
 using GestorEnfermeriaJoyfe.Domain.Shared;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -43,17 +46,32 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             }
         }
 
+        // *** Calendar *** //
+        private DateTime _selectedDate = DateTime.Now;
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
+                _ = LoadCites(SelectedDate);
+            }
+        }
+
         // *** Commands *** //
         public ICommand DoubleClickCiteCommand { get; set; }
-        public ICommand CalendarDateChangedCommand { get; set; }
 
         // //===>> Constructor <<====//
         public CalendarViewModel(CiteController citeController)
         {
             this.citeController = citeController;
 
+            // *** Commands *** //
             DoubleClickCiteCommand = new ViewModelCommand(ExecuteDoubleClickCiteCommand);
-            CalendarDateChangedCommand = new ViewModelCommand(ExecuteCalendarDateChangedCommand);
+
+            // *** Load Data *** //
+            LoadData();
         }
 
         // //===>> Command Methods <<====//
@@ -63,18 +81,29 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             {
                 MessageBox.Show("Cita seleccionada: " + SelectedCite.Id);
             }
+            MessageBox.Show("No hay ninguna cita seleccionada");
         }
 
-        private async void ExecuteCalendarDateChangedCommand(object obj)
-        {
-            if (obj is DateTime date)
-            {
-                var response = await citeController.SearchByDateWithPatientInfo(date);
 
-                if (response.Success)
-                {
-                    Cites = new ObservableCollection<Cite>(response.Data ?? new ObservableCollection<Cite>());
-                }
+        //===>> Methods <<====//
+
+        private async void LoadData()
+        {
+            await LoadCites(null);
+        }
+
+        private async Task LoadCites(DateTime? dateTime)
+        {
+            var response = await citeController.SearchByDateWithPatientInfo(dateTime ?? DateTime.Now);
+
+            if (response.Success)
+            {
+
+                Cites = new ObservableCollection<Cite>(response.Data ?? new List<Cite>());
+            }
+            else
+            {
+                MessageBox.Show(response.Message);
             }
         }
     }

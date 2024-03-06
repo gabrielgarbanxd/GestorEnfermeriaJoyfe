@@ -69,13 +69,9 @@
                           CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" 
                           CalendarItemStyle="{DynamicResource CalendarCalendarItemStyle1}" 
                           CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}" 
-                          Style="{DynamicResource CalendarStyle1}"/>
-            <!--SelectedDate=""/>-->
-            <i:Interaction.Triggers>
-                <i:PropertyChangedTrigger Binding="{Binding SelectedDate, ElementName=MyCalendar}">
-                    <i:InvokeCommandAction Command="{Binding CalendarDateChangedCommand}" CommandParameter="{Binding SelectedDate, ElementName=MyCalendar}"/>
-                </i:PropertyChangedTrigger>
-            </i:Interaction.Triggers>
+                          Style="{DynamicResource CalendarStyle1}"
+                          SelectedDate="{Binding SelectedDate}"
+             />
         </StackPanel>
 
 
@@ -104,8 +100,8 @@
                     BorderThickness="2"
                     Margin="10,0,10,0">
 
-                <DataGrid ItemsSource="{Binding FilteredPacientesView}"
-                              SelectedItem="{Binding SelectedPaciente}"
+                <DataGrid ItemsSource="{Binding Cites}"
+                              SelectedItem="{Binding SelectedCite}"
                               AutoGenerateColumns="False"
                               ColumnWidth="*"
                               Background="{StaticResource temptable1}"
@@ -179,8 +175,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding HasVisit }" Header="Visita"/>
                         <DataGridTextColumn Binding="{Binding Date.ToTime }" Header="Hora" HeaderStringFormat=""/>
-                        <DataGridTextColumn Binding="{Binding Note.Value }" Header="Nota"/>
-                        <DataGridTextColumn Binding="{Binding PatientInfo.value }" Header="Paciente"/>
+                        <DataGridTextColumn Binding="{Binding PatientInfo.Value }" Header="Paciente"/>
                     </DataGrid.Columns>
 
                 </DataGrid>

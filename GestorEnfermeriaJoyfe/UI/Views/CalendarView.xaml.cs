@@ -15,9 +15,6 @@ namespace GestorEnfermeriaJoyfe.UI.Views
         {
             InitializeComponent();
 
-            DataContext = new CalendarViewModel();
-
-
             // Suscribirse al evento MouseLeftButtonDown
             this.MouseLeftButtonDown += Calendar_MouseLeftButtonDown;
 

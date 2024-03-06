@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
@@ -68,6 +69,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         //===>> Commands <<====//
+        public ICommand AddVisitCommand { get; }
+        public ICommand CreateVisitCommand { get; }
+
 
         // ====>> Constructor <<====//
         public PrincipalViewModel(CiteController citeController, VisitController visitController)
@@ -75,11 +79,24 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             CiteController = citeController;
             VisitController = visitController;
 
+            // *** Commands *** //
+            AddVisitCommand = new ViewModelCommand(ExecuteAddVisitCommandAsync);
+            CreateVisitCommand = new ViewModelCommand(ExecuteCreateVisitCommand);
+
             // *** Data Load *** //
             LoadData();
         }
 
         //===>> Commands Methods <<====//
+        private void ExecuteCreateVisitCommand(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async void ExecuteAddVisitCommandAsync(object parameter)
+        {
+            throw new NotImplementedException();
+        }
 
         //===>> Methods <<====//
 

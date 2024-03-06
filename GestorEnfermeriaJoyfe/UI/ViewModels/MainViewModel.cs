@@ -127,7 +127,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private void ExecuteShowCalendarioViewCommand(object obj)
         {
             SelectedRadioButtonIndex = 2;
-            CurrentPageView = new CalendarViewModel();
+            CurrentPageView = new CalendarViewModel(CiteController);
             Title = "Calendario";
             Icon = IconChar.CalendarAlt;
         }
