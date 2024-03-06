@@ -6,10 +6,9 @@
              xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
              xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
              xmlns:Components="clr-namespace:GestorEnfermeriaJoyfe.UI.Components"
+              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
-
 
     <Grid>
 
@@ -47,57 +46,41 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
                         Style="{StaticResource actionPacienteBtn}"
                         Tag="{StaticResource white}"
                         Background="Blue"
-                        Command="{Binding CreateVisitCommand}"
+                        Command="{Binding CreateCiteCommand}"
                         Margin="15,10"
                         MinWidth="100"
                         MaxWidth="200">
                     <fIcons:IconImage Icon="PlusCircle" Style="{StaticResource iconActionPacienteBtn}" Margin="0"/>
                 </Button>
 
-
-                <Button Grid.Column="1"
-                        Style="{StaticResource actionPacienteBtn}"
-                        Tag="{StaticResource tempHover}"
-                        Background="Orange"
-                        Command="{Binding EditVisitCommand}"
-                        Margin="15,10"
-                        MinWidth="100"
-                        MaxWidth="200">
-                    <fIcons:IconImage Icon="Edit" Style="{StaticResource iconActionPacienteBtn}" />
-                       
-
+                <!-- azul clarito -->
+                <Button  
+                    Grid.Column="1"
+                    Style="{StaticResource actionPacienteBtn}"
+                    Tag="{StaticResource tempHover}"
+                    Background="{StaticResource color6}"
+                    Command="{Binding AddVisitCommand}"
+                    Width="150"
+                    Margin="15,10">
+                    <StackPanel Orientation="Horizontal">
+                        <fIcons:IconImage Icon="FileArrowUp" Style="{StaticResource iconActionPacienteBtn}" />
+                        <TextBlock Text="Añadir visita" Style="{StaticResource textActionPacienteBtn}" Width="90" Height="14"/>
+                    </StackPanel>
                 </Button>
 
 
-                <!-- azul clarito -->
                 <Button Grid.Column="2"
                         Style="{StaticResource actionPacienteBtn}"
                         Tag="{StaticResource tempHover}"
-                        Background="{StaticResource color6}"
-                        Command="{Binding DeleteVisitCommand}"
-                        Margin="15,10"
-                        MinWidth="100"
-                        MaxWidth="200">
-                    <fIcons:IconImage Icon="FileCirclePlus" Style="{StaticResource iconActionPacienteBtn}" Margin="0"/>
-                </Button>
-
-
-
-
-
-                <Button Grid.Column="3"
-                        Style="{StaticResource actionPacienteBtn}"
-                        Tag="{StaticResource tempHover}"
                         Background="{StaticResource red}"
-                        Command="{Binding DeleteVisitCommand}"
-                        Margin="15,10"
+                        Command="{Binding DeleteCiteCommand}"
+                        Margin="10,10"
                         MinWidth="100"
                         MaxWidth="200">
                     <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" Margin="0"/>
@@ -122,6 +105,7 @@
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Height" Value="250"/>
                     <Setter Property="Width" Value="300"/>
+                    <Setter Property="VerticalContentAlignment" Value="Top"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#D3D3D3"/>
@@ -135,12 +119,12 @@
                     <Components:CiteCard/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
-            <!--<i:Interaction.Triggers>
+            
+            <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding DoubleClickVisitCommand}" />
+                    <i:InvokeCommandAction Command="{Binding EditCiteCommand}" />
                 </i:EventTrigger>
-            </i:Interaction.Triggers>-->
+            </i:Interaction.Triggers>
         </ListBox>
     </Grid>
 </UserControl>

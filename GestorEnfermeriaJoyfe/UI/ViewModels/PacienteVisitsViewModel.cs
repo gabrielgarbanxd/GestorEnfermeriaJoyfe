@@ -1,6 +1,7 @@
 ﻿using GestorEnfermeriaJoyfe.Adapters.VisitAdapters;
 using GestorEnfermeriaJoyfe.Domain.Patient;
 using GestorEnfermeriaJoyfe.Domain.Visit;
+using GestorEnfermeriaJoyfe.Domain.Visit.ValueObjects;
 using GestorEnfermeriaJoyfe.UI.Views;
 using System;
 using System.Collections.Generic;
@@ -58,50 +59,107 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
             // *** Carga Commands *** 
             GoBackCommand = new ViewModelCommand((object parameter) => MainViewModelRouter.Instance.OnShowSinglePacienteView(patient));
             DoubleClickVisitCommand = new ViewModelCommand(ExecuteDoubleClickVisitCommand);
-            //CreateVisitCommand = new ViewModelCommand(ExecuteCreateVisitCommand);
+            CreateVisitCommand = new ViewModelCommand(ExecuteCreateVisitCommand);
             DeleteVisitCommand = new ViewModelCommand(ExecuteDeleteVisitCommand);
         }
 
         // ====>> Command Methods <<====//
-        private void ExecuteDoubleClickVisitCommand(object parameter)
+        private async void ExecuteDoubleClickVisitCommand(object parameter)
         {
-            if (SelectedVisit != null)
+            if (SelectedVisit == null)
             {
-                //MainViewModelRouter.Instance.OnShowSingleVisitView(SelectedVisit);
+                MessageBox.Show("Seleccione una visita");
+                return;
+            }
+
+            int visitId = SelectedVisit.Id.Value;
+            int index = Visits.IndexOf(SelectedVisit);
+
+            VisitForm dialog = new(SelectedVisit);
+            bool? result = dialog.ShowDialog();
+
+            if (result == false) return;
+
+            Visit updatedVisit;
+
+            try
+            {
+                updatedVisit = Visit.FromPrimitives(
+                    visitId,
+                    type: dialog.cmbType.SelectedItem.ToString() ?? throw new ArgumentException(),
+                    classification: dialog.txtClasificacion.Text,
+                    description: dialog.txtDescripcion.Text,
+                    isComunicated: dialog.chkIsCommunicated.IsChecked == true,
+                    isDerived: dialog.chkIsDerived.IsChecked == true,
+                    traumaType: dialog.chkIsDerived.IsChecked == true ? dialog.cmbTraumaType.SelectedItem.ToString() : null,
+                    place: dialog.chkIsDerived.IsChecked == true ? dialog.cmbLugar.SelectedItem.ToString() : null,
+                    date: dialog.dpFecha.SelectedDate ?? DateTime.Now,
+                    patientId: patient.Id.Value);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Datos de visita no validos");
+                ExecuteDoubleClickVisitCommand(parameter);
+                return;
+            }
+
+            var response = await visitController.Update(updatedVisit);
+
+            if (response.Success)
+            {
+                MessageBox.Show("Visita actualizada con éxito");
+                Visits[index] = updatedVisit;
+            }
+            else
+            {
+                MessageBox.Show("Error al actualizar la visita");
             }
         }
 
-        //private void ExecuteCreateVisitCommand(object parameter)
-        //{
-        //    VisitForm dialog = new();
-        //    bool? result = dialog.ShowDialog();
+        private async void ExecuteCreateVisitCommand(object? parameter)
+        {
+            VisitForm dialog = new();
+            bool? result = dialog.ShowDialog();
 
-        //    if (result == false) return;
+            if (result == false) return;
 
-        //    Visit newVisit;
+            Visit newVisit;
 
-        //    try
-        //    {
-        //        newVisit = Visit.FromPrimitives(
-        //            0,
-        //            dialog.cmbType.SelectedItem,
-        //            dialog.txtClasificacion.Text,
-        //            dialog.txtDescripcion.Text,
-        //            dialog.chkIsCommunicated.IsChecked,
-        //            dialog.chkIsDerived.IsChecked,
-        //            dialog.chkIsDerived.IsChecked == true ? dialog.cmbTraumaType.SelectedItem : null,
-        //            dialog.chkIsDerived.IsChecked == true ? dialog.cmbLugar.SelectedItem : null,
-        //            DateTime.Now,
-        //            patient.Id.Value
-        //            );
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show("Datos de visita no validos");
-        //        ExecuteCreateVisitCommand(null);
-        //        return;
-        //    }
-        //}
+            try
+            {
+                newVisit = Visit.FromPrimitives(
+                    0,
+                    type: dialog.cmbType.SelectedItem.ToString() ?? throw new ArgumentException(),
+                    classification: dialog.txtClasificacion.Text,
+                    description: dialog.txtDescripcion.Text,
+                    isComunicated: dialog.chkIsCommunicated.IsChecked == true,
+                    isDerived: dialog.chkIsDerived.IsChecked == true,
+                    traumaType: dialog.chkIsDerived.IsChecked == true ? dialog.cmbTraumaType.SelectedItem.ToString() : null,
+                    place: dialog.chkIsDerived.IsChecked == true ? dialog.cmbLugar.SelectedItem.ToString() : null,
+                    date: dialog.dpFecha.SelectedDate ?? DateTime.Now,
+                    patientId: patient.Id.Value
+                    );
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Datos de visita no validos");
+                ExecuteCreateVisitCommand(null);
+                return;
+            }
+
+            var response = await visitController.Register(newVisit);
+
+            if (response.Success)
+            {
+                MessageBox.Show("Visita creada con éxito");
+                newVisit.SetId(new VisitId(response.Id));
+                Visits.Add(newVisit);
+            }
+            else
+            {
+                MessageBox.Show("Error al crear la visita");
+            }
+        }
 
         private async void ExecuteDeleteVisitCommand(object parameter)
         {
@@ -111,6 +169,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
                 if (response.Success)
                 {
                     Visits.Remove(SelectedVisit);
+                    MessageBox.Show("Visita eliminada con éxito");
                 }
                 else
                 {

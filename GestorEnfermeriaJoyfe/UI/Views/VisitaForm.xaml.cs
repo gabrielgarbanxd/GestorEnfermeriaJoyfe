@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestorEnfermeriaJoyfe.Domain.Visit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,51 @@ namespace GestorEnfermeriaJoyfe.UI.Views
         public VisitForm()
         {
             InitializeComponent();
+        }
+
+        public VisitForm(Visit visit)
+        {
+            InitializeComponent();
+
+            foreach (ComboBoxItem item in cmbType.Items)
+            {
+                if (item.Content.ToString() == visit.Type.Value)
+                {
+                    cmbType.SelectedItem = item;
+                    break;
+                }
+            }
+
+
+            txtClasificacion.Text = visit.Classification.Value;
+            txtDescripcion.Text = visit.Description?.Value ?? "";
+
+            if (visit.IsComunicated.Value) chkIsCommunicated.IsChecked = true;
+            if (visit.IsDerived.Value) chkIsDerived.IsChecked = true;
+
+            if (visit.IsComunicated.Value == true)
+            {
+                foreach (ComboBoxItem item in cmbTraumaType.Items)
+                {
+                    if (item.Content.ToString() == visit.TraumaType?.Value)
+                    {
+                        cmbTraumaType.SelectedItem = item;
+                        break;
+                    }
+                }
+
+                foreach (ComboBoxItem item in cmbLugar.Items)
+                {
+                    if (item.Content.ToString() == visit.Place?.Value)
+                    {
+                        cmbLugar.SelectedItem = item;
+                        break;
+                    }
+                }
+
+            }
+
+            dpFecha.SelectedDate = visit.Date.Value;
         }
 
         private void AceptarButton_Click(object sender, RoutedEventArgs e) => this.DialogResult = true;

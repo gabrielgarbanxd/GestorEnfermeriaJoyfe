@@ -25,6 +25,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Margin="20,0,0,10" Grid.Column="0" Content="Tipo:" VerticalAlignment="Center" Foreground="{StaticResource color9}" FontSize="14" FontWeight="Bold" FontFamily="Monserrat" Padding="0"/>
@@ -33,7 +34,7 @@
             <ComboBoxItem>Crónico</ComboBoxItem>
         </ComboBox>
 
-        <Components:FormGroup x:Name="txtClasificacion" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Claificación" Margin="20,10,0,0"/>
+        <Components:FormGroup x:Name="txtClasificacion" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Clasificación" Margin="20,10,0,0"/>
         <Components:FormGroup x:Name="txtDescripcion" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" LabelText="Descripción" Margin="20,10,0,0"/>
 
         <Label Grid.Row="3" Grid.Column="0" Margin="20,0,0,10" Content="Comunicado:" VerticalAlignment="Center" Foreground="{StaticResource color9}" FontSize="14" FontWeight="Bold" FontFamily="Monserrat" Padding="0"/>
@@ -55,8 +56,22 @@
             <ComboBoxItem>OTROS ACCIDENTES</ComboBoxItem>
         </ComboBox>
 
-        <Label Grid.Row="6" Grid.Column="0" Margin="20,0,0,10" Content="Lugar:" VerticalAlignment="Center" Foreground="{StaticResource color9}" FontSize="14" FontWeight="Bold" FontFamily="Monserrat" Padding="0"/>
-        <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,0,0,10" x:Name="cmbLugar" VerticalAlignment="Center">
+        <Label Grid.Row="6" 
+               Grid.Column="0" 
+               Margin="20,0,0,10" 
+               Content="Lugar:" 
+               VerticalAlignment="Center" 
+               Foreground="{StaticResource color9}" 
+               FontSize="14" 
+               FontWeight="Bold"
+               FontFamily="Monserrat" 
+               Padding="0"/>
+        
+        <ComboBox Grid.Row="6" 
+                  Grid.Column="1" 
+                  Margin="0,0,0,10" 
+                  x:Name="cmbLugar" 
+                  VerticalAlignment="Center">
             <ComboBoxItem>RECREO</ComboBoxItem>
             <ComboBoxItem>ED. FÍSICA</ComboBoxItem>
             <ComboBoxItem>CLASE</ComboBoxItem>
@@ -67,11 +82,30 @@
             <ComboBoxItem>EXTRAESCOLAR</ComboBoxItem>
             <ComboBoxItem>OTROS</ComboBoxItem>
         </ComboBox>
+        
+        <!-- Selector de fecha de fin -->
+        <Label Content="Fecha: "
+               Margin="20,0,0,10" 
+                Grid.Row="8"
+               Grid.Column="0"
+                Foreground="{StaticResource color9}" 
+                FontSize="14" 
+                FontWeight="Bold"
+                FontFamily="Monserrat"
+                Padding="0,8,0,0"/>
+        <DatePicker 
+            Margin="0,0,0,10"
+            x:Name="dpFecha" 
+            Width="150" 
+            Grid.Column="1"
+            Grid.Row="8"
+            VerticalAlignment="Center"/>
+
 
         <Button 
             Click="AceptarButton_Click"
             Width="100" 
-            Grid.Row="8" 
+            Grid.Row="9" 
             Grid.Column="0" 
             Grid.ColumnSpan="2" 
             Content="Aceptar" 

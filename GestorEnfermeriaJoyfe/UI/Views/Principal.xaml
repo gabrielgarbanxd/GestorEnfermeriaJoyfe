@@ -11,10 +11,16 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
 
-        <StackPanel Margin="0,10,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,20,0" HorizontalAlignment="Right">
+        <StackPanel
+            Grid.Row="0"
+            Orientation="Horizontal" 
+            Margin="0,0,20,0" 
+            HorizontalAlignment="Right">
 
                 <!-- Botón Azul -->
                 <Button Style="{StaticResource actionPacienteBtn}"
@@ -56,10 +62,10 @@
 
                 <!-- Botón Rojo -->
                 <Button Style="{StaticResource actionPacienteBtn}"
-            Tag="{StaticResource tempHover}"
-            Background="{StaticResource red}"
-            Command="{Binding DeletePacienteCommand}"
-            Margin="15,0,0,0" Height="45" Width="121">
+                        Tag="{StaticResource tempHover}"
+                        Background="{StaticResource red}"
+                        Command="{Binding DeletePacienteCommand}"
+                        Margin="15,0,0,0" Height="45" Width="121">
                     <StackPanel Orientation="Horizontal" Width="97">
                         <fIcons:IconImage Icon="Trash" Style="{StaticResource iconActionPacienteBtn}" />
                         <TextBlock Text="Eliminar" Style="{StaticResource textActionPacienteBtn}" Width="81" Height="14"/>
@@ -68,27 +74,41 @@
             </StackPanel>
 
 
+        <Grid Grid.Row="1">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
+            <Grid Grid.Column="0">
 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!-- Citas -->
-            <Label Content="Citas: "
-                   Foreground="{StaticResource color9}" 
-                   FontSize="34" 
-                   FontWeight="Bold"
-                   FontFamily="Monserrat"
-                   Padding="0,8,0,0" Height="58"/>
+                <!-- Citas -->
+                <Label 
+                    Grid.Row="0"
+                    Content="Citas: "
+                    Foreground="{StaticResource color9}" 
+                    FontSize="24" 
+                    FontWeight="Bold"
+                    FontFamily="Monserrat"
+                    Margin="10,0"/>
 
-            <!-- DataGrid para mostrar los datos citas -->
-            <Border Background="{StaticResource temptable1}"
-                    Padding="30"
+                <!-- DataGrid para mostrar los datos citas -->
+                <Border
+                    Grid.Row="1"
+                    Background="{StaticResource temptable1}"
+                    Padding="20"
                     CornerRadius="10"
                     BorderBrush="{StaticResource white}"
                     BorderThickness="2"
-                    Margin="15,20,20,0">
+                    Margin="10,0">
 
-                <DataGrid ItemsSource="{Binding FilteredPacientesView}"
+                    <DataGrid ItemsSource="{Binding FilteredPacientesView}"
                           SelectedItem="{Binding SelectedPaciente}"
                           AutoGenerateColumns="False"
                           ColumnWidth="*"
@@ -99,53 +119,59 @@
                           SelectionUnit="FullRow"
                           IsReadOnly="True">
 
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="{StaticResource color9}"/>
-                            <Setter Property="Padding" Value="2,0,0,10"/>
-                            <Setter Property="FontFamily" Value="Montserrat"/>
-                            <Setter Property="FontSize" Value="15"/>
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                        </Style>
-                    </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                                <Setter Property="Padding" Value="2,0,0,10"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
 
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding HasVisit.ToCheckString }" Header="Visita"/>
-                        <DataGridTextColumn Binding="{Binding Date.ToTime }" Header="Hora" HeaderStringFormat=""/>
-                        <DataGridTextColumn Binding="{Binding Note.Value }" Header="Nota"/>
-                        <DataGridTextColumn Binding="{Binding PatientInfos.value }" Header="Paciente"/>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding HasVisit.ToCheckString }" Header="Visita"/>
+                            <DataGridTextColumn Binding="{Binding Date.ToTime }" Header="Hora" HeaderStringFormat=""/>
+                            <DataGridTextColumn Binding="{Binding PatientInfos.value }" Header="Paciente"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+            </Grid>
+
+            <Grid Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Citas -->
+                <Label
+                    Grid.Row="0"
+                    Content="Visitas: "
+                    Foreground="{StaticResource color9}" 
+                    FontSize="24" 
+                    FontWeight="Bold"
+                    FontFamily="Monserrat"
+                    Margin="10,0"/>
 
 
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
-
-
-
-
-            <!-- Citas -->
-            <Label Content="Visitas: "
-                   Foreground="{StaticResource color9}" 
-                   FontSize="34" 
-                   FontWeight="Bold"
-                   FontFamily="Monserrat"
-                   Margin="0 15 0 0"
-                   Padding="0,8,0,0" Height="58"/>
-
-
-            <!-- Segundo DataGrid -->
-            <Border Background="{StaticResource temptable1}"
+                <!-- Segundo DataGrid -->
+                <Border
+                    Grid.Row="1"
+                    Background="{StaticResource temptable1}"
                     Padding="30"
                     CornerRadius="10"
                     BorderBrush="{StaticResource white}"
                     BorderThickness="2"
-                    Margin="15,20,20,0">
+                    Margin="10,0">
 
-                <DataGrid ItemsSource="{Binding FilteredPacientesView}"
+                    <DataGrid ItemsSource="{Binding FilteredPacientesView}"
                           SelectedItem="{Binding SelectedPaciente}"
                           AutoGenerateColumns="False"
                           ColumnWidth="*"
@@ -157,48 +183,29 @@
                           IsReadOnly="True">
 
 
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="{StaticResource color9}"/>
-                            <Setter Property="Padding" Value="2,0,0,10"/>
-                            <Setter Property="FontFamily" Value="Montserrat"/>
-                            <Setter Property="FontSize" Value="15"/>
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                        </Style>
-                    </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                                <Setter Property="Padding" Value="2,0,0,10"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding }" Header="Tipo"/>
-                        <DataGridTextColumn Binding="{Binding }" Header="Clasificación"/>
-                        <DataGridTextColumn Binding="{Binding }" Header="Comunicado"/>
-                        <DataGridTextColumn Binding="{Binding }" Header="Derivado"/>
-                        <DataGridTextColumn Binding="{Binding }" Header="Trauma"/>
-                        <DataGridTextColumn Binding="{Binding }" Header="Lugar"/>
-                        <DataGridTextColumn Binding="{Binding }" Header="Descripción"/>
-                    </DataGrid.Columns>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding }" Header="Hora"/>
+                            <DataGridTextColumn Binding="{Binding }" Header="Paciente"/>
+                        </DataGrid.Columns>
 
-                </DataGrid>
-            </Border>
+                    </DataGrid>
+                </Border>
 
+            </Grid>
 
-
-            <!--<StackPanel Orientation="Horizontal" Margin="0,0,20,0" HorizontalAlignment="Right">
-
-                --><!-- azul clarito --><!--
-                <Button Style="{StaticResource actionPacienteBtn}"
-                        Tag="{StaticResource tempHover}"
-                        Background="{StaticResource color6}"
-                        Command="{Binding DeletePacienteCommand}"
-                        Margin="15,0,0,0" Height="45" Width="139">
-                    <StackPanel Orientation="Horizontal" Width="119">
-                        <fIcons:IconImage Icon="FileCirclePlus" Style="{StaticResource iconActionPacienteBtn}" />
-                        <TextBlock Text="Plantilla visita" Style="{StaticResource textActionPacienteBtn}" Width="90" Height="14"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>-->
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

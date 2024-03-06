@@ -94,7 +94,7 @@
                         FontSize="18"/>
                     <TextBlock
                         Margin="8,0,0,0"
-                        Text="{Binding hola}" 
+                        Text="{Binding TraumaType.Value}" 
                         FontFamily="Montserrat"
                         FontSize="18"/>
 
@@ -109,7 +109,7 @@
                         FontSize="18"/>
                     <TextBlock
                         Margin="8,0,0,0"
-                        Text="{Binding hola }"
+                        Text="{Binding Place.Value }"
                         FontFamily="Montserrat"
                         FontSize="18"/>
 
@@ -125,17 +125,11 @@
 
                 <TextBlock
                         Margin="8,0,0,0"
-                        Text="{Binding hola }" 
+                        Text="{Binding Description.Value }" 
                         FontFamily="Montserrat"
                         TextWrapping="WrapWithOverflow"
-                        MaxHeight="62"
-                        FontSize="18" Height="38"/>
-
-
-
-
-
-
+                        MaxHeight="112"
+                        FontSize="18"/>
 
             </StackPanel>
         </Border>

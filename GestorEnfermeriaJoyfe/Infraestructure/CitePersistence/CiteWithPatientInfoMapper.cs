@@ -15,7 +15,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
             int id = reader.GetInt32(reader.GetOrdinal("id"));
             int patientId = reader.GetInt32(reader.GetOrdinal("patient_id"));
             string note = reader.GetString(reader.GetOrdinal("note"));
-            int visitId = reader.GetInt32(reader.GetOrdinal("visit_id"));
+            int? visitId = reader.IsDBNull(reader.GetOrdinal("visit_id")) ? null : reader.GetInt32(reader.GetOrdinal("visit_id"));
             DateTime date = reader.GetDateTime(reader.GetOrdinal("date"));
             string? patientInfo = reader.IsDBNull(reader.GetOrdinal("patient_info")) ? null : reader.GetString(reader.GetOrdinal("patient_info"));
 

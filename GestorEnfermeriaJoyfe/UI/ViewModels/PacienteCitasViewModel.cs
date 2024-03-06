@@ -38,6 +38,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         }
 
         public ICommand GoBackCommand { get; }
+        public ICommand CreateCiteCommand { get; }
+        public ICommand EditCiteCommand { get; }
+        public ICommand DeleteCiteCommand { get; }
 
         public PacienteCitasViewModel(Patient patient)
         {
