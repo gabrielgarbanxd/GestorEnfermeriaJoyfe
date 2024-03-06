@@ -3,16 +3,24 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
+using GestorEnfermeriaJoyfe.Adapters.CiteAdapters;
 using GestorEnfermeriaJoyfe.Adapters.PatientAdapters;
+using GestorEnfermeriaJoyfe.Adapters.ScheduledCiteRuleAdapters;
+using GestorEnfermeriaJoyfe.Adapters.VisitAdapters;
 using GestorEnfermeriaJoyfe.Domain.Patient;
 
 namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
     class MainViewModel : ViewModelBase
     {
+        // //===>> Controllers To Inject <<====//
+        private readonly PatientController PatientController = new();
+        private readonly VisitController VisitController = new();
+        private readonly CiteController CiteController = new();
+        private readonly ScheduledCiteRuleController ScheduledCiteRuleController = new();
+
         // //===>> Fields <<====//
         private List<Patient> _pacientes;
-        private readonly PatientController PatientController = new();
         
         private ViewModelBase _currentPageView;
         private string _title;
@@ -105,14 +113,14 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         private void ExecuteShowPrincipalViewCommand(object? obj)
         {
             SelectedRadioButtonIndex = 0;
-            CurrentPageView = new PrincipalViewModel();
+            CurrentPageView = new PrincipalViewModel(CiteController, VisitController);
             Title = "Estadisticas Principales";
             Icon = IconChar.Home;
         }
         private void ExecuteShowPacientesViewCommand(object obj)
         {
             SelectedRadioButtonIndex = 1;
-            CurrentPageView = new PacientesViewModel(_pacientes);
+            CurrentPageView = new PacientesViewModel(_pacientes, this.PatientController);
             Title = "Pacientes";
             Icon = IconChar.HospitalUser;
         }
@@ -127,21 +135,21 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         // ====>> Router Extra Methods <<====//
         private void ExecuteShowSinglePacienteView(Patient paciente)
         {
-            CurrentPageView = new SinglePacienteViewModel(paciente);
+            CurrentPageView = new SinglePacienteViewModel(paciente, this.ScheduledCiteRuleController);
             Title = paciente.Name.Value + " " + paciente.LastName.Value + " " + paciente.LastName2.Value + " - " + paciente.Course.Value;
             Icon = IconChar.UserAlt;
         }
 
         private void ShowPacienteVisitsView(Patient paciente)
         {
-            CurrentPageView = new PacienteVisitsViewModel(paciente);
+            CurrentPageView = new PacienteVisitsViewModel(paciente, this.VisitController);
             Title = "Visitas de " + paciente.Name.Value + " " + paciente.LastName.Value + " " + paciente.LastName2.Value + " - " + paciente.Course.Value;
             Icon = IconChar.Stethoscope;
         }
 
         private void ShowPacienteCitasView(Patient paciente)
         {
-            CurrentPageView = new PacienteCitasViewModel(paciente);
+            CurrentPageView = new PacienteCitasViewModel(paciente, CiteController, VisitController);
             Title = "Citas de " + paciente.Name.Value + " " + paciente.LastName.Value + " " + paciente.LastName2.Value + " - " + paciente.Course.Value;
             Icon = IconChar.CalendarAlt;
         }

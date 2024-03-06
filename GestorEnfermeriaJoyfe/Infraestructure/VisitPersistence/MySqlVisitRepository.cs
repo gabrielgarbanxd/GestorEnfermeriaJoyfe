@@ -182,5 +182,23 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
 
             return await ExecuteQueryAsync("GetVisitsByPatientIdAndDateProcedure", parameters);
         }
+
+        public async Task<IEnumerable<Visit>> SearchByDayWithPatientInfo(DateTime date, bool paginated = false, int perPage = 10, int page = 1)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                {"p_date", date}
+            };
+
+            if (paginated)
+            {
+                parameters.Add("p_per_page", perPage);
+                parameters.Add("p_page", page);
+
+                return await ExecuteQueryAsync("GetVisitsByDayWithPatientInfoPaginatedProcedure", parameters);
+            }
+
+            return await ExecuteQueryAsync("GetVisitsByDayWithPatientInfoProcedure", parameters);
+        }
     }
 }

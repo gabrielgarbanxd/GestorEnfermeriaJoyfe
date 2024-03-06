@@ -1,19 +1,13 @@
-﻿using GestorEnfermeriaJoyfe.Domain.Patient.ValueObjects;
-using GestorEnfermeriaJoyfe.Domain.Visit;
-using GestorEnfermeriaJoyfe.Domain.Visit.ValueObjects;
-using GestorEnfermeriaJoyfe.Infraestructure.Shared;
+﻿using GestorEnfermeriaJoyfe.Domain.Visit;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
 {
-    public class VisitMapper : IObjectMapper<Visit>
+    public class VisitWithPatientInfoMapper : VisitMapper
     {
-        public virtual Visit Map(IDataReader reader)
+        public override Visit Map(IDataReader reader)
         {
             int id = reader.GetInt32(reader.GetOrdinal("id"));
             string type = reader.GetString(reader.GetOrdinal("type"));
@@ -26,7 +20,17 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.VisitPersistence
             DateTime date = reader.GetDateTime(reader.GetOrdinal("date"));
             int patientId = reader.GetInt32(reader.GetOrdinal("patient_id"));
 
-            return Visit.FromPrimitives(id, type,classification, description, isComunicated == 1,isDerived == 1, traumaType,place,date,patientId);
+            string? patientInfo;
+            try
+            {
+                patientInfo = reader.IsDBNull(reader.GetOrdinal("patient_info")) ? null : reader.GetString(reader.GetOrdinal("patient_info"));
+            }
+            catch (Exception)
+            {
+                patientInfo = null;
+            }
+
+            return Visit.FromPrimitives(id, type, classification, description, isComunicated == 1, isDerived == 1, traumaType, place, date, patientId, patientInfo);
         }
     }
 }

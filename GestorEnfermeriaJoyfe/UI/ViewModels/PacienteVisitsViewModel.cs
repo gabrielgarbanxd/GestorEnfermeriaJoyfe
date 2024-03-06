@@ -48,10 +48,10 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         public ICommand CreateVisitCommand { get; }
         public ICommand DeleteVisitCommand { get; }
 
-        public PacienteVisitsViewModel(Patient patient)
+        public PacienteVisitsViewModel(Patient patient, VisitController visitController)
         {
             this.patient = patient;
-            visitController = new VisitController();
+            this.visitController = visitController;
 
             // *** Carga de Datos ***
             LoadVisits();

@@ -4,9 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fIcons="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:vm="clr-namespace:GestorEnfermeriaJoyfe.UI.ViewModels"
-             xmlns:local="clr-namespace:GestorEnfermeriaJoyfe.UI.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -108,8 +106,8 @@
                     BorderThickness="2"
                     Margin="10,0">
 
-                    <DataGrid ItemsSource="{Binding FilteredPacientesView}"
-                          SelectedItem="{Binding SelectedPaciente}"
+                    <DataGrid ItemsSource="{Binding Cites}"
+                          SelectedItem="{Binding SelectedCite}"
                           AutoGenerateColumns="False"
                           ColumnWidth="*"
                           Background="{StaticResource temptable1}"
@@ -118,6 +116,12 @@
                           HeadersVisibility="Column"
                           SelectionUnit="FullRow"
                           IsReadOnly="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding DoubleClickPacienteCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
 
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
@@ -133,10 +137,54 @@
                         </DataGrid.ColumnHeaderStyle>
 
 
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Margin" Value="2,10,0,10"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource color2}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource color1}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.RowHeaderStyle>
+                            <Style TargetType="DataGridRowHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                            </Style>
+                        </DataGrid.RowHeaderStyle>
+
+
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding HasVisit.ToCheckString }" Header="Visita"/>
+                            <DataGridTextColumn Binding="{Binding HasVisit }" Header="Visita"/>
                             <DataGridTextColumn Binding="{Binding Date.ToTime }" Header="Hora" HeaderStringFormat=""/>
-                            <DataGridTextColumn Binding="{Binding PatientInfos.value }" Header="Paciente"/>
+                            <DataGridTextColumn Binding="{Binding PatientInfo.Value }" Header="Paciente"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -165,14 +213,14 @@
                 <Border
                     Grid.Row="1"
                     Background="{StaticResource temptable1}"
-                    Padding="30"
+                    Padding="20"
                     CornerRadius="10"
                     BorderBrush="{StaticResource white}"
                     BorderThickness="2"
                     Margin="10,0">
 
-                    <DataGrid ItemsSource="{Binding FilteredPacientesView}"
-                          SelectedItem="{Binding SelectedPaciente}"
+                    <DataGrid ItemsSource="{Binding Visits}"
+                          SelectedItem="{Binding SelectedVisit}"
                           AutoGenerateColumns="False"
                           ColumnWidth="*"
                           Background="{StaticResource temptable1}"
@@ -181,6 +229,11 @@
                           HeadersVisibility="Column"
                           SelectionUnit="FullRow"
                           IsReadOnly="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding DoubleClickPacienteCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
 
 
                         <DataGrid.ColumnHeaderStyle>
@@ -196,9 +249,53 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
 
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{StaticResource color9}"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Margin" Value="2,10,0,10"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource color8.5}"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource color2}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource color1}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.RowHeaderStyle>
+                            <Style TargetType="DataGridRowHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                            </Style>
+                        </DataGrid.RowHeaderStyle>
+
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding }" Header="Hora"/>
-                            <DataGridTextColumn Binding="{Binding }" Header="Paciente"/>
+                            <DataGridTextColumn Binding="{Binding Date.ToTime}" Header="Hora"/>
+                            <DataGridTextColumn Binding="{Binding PatientInfo.Value}" Header="Paciente"/>
                         </DataGrid.Columns>
 
                     </DataGrid>

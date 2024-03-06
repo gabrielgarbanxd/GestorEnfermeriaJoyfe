@@ -1264,6 +1264,82 @@ END$$
 DELIMITER ;
 
 
+-- //===>> GetVisitsByDayWithPatientInfoProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByDayWithPatientInfoProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetVisitsByDayWithPatientInfoProcedure`(
+    IN p_date DATE
+)
+
+PRO : BEGIN
+
+    -- Obtener las visitas por fecha con información del paciente
+    SELECT v.id, v.type, v.classification, v.description, v.is_comunicated, v.is_derived, v.trauma_type, v.place, v.date, p.id AS patient_id, GetPatientInfoFunction(p.id) AS patient_info
+    FROM visits v
+    INNER JOIN patients p ON v.patient_id = p.id
+    WHERE DATE(v.date) = p_date
+    ORDER BY v.date ASC;
+
+END$$
+
+DELIMITER ;
+
+-- //===>> GetVisitsByDayWithPatientInfoPaginatedProcedure visits procedure <<===//
+DROP PROCEDURE IF EXISTS `GetVisitsByDayWithPatientInfoPaginatedProcedure`;
+
+DELIMITER $$
+CREATE PROCEDURE `GetVisitsByDayWithPatientInfoPaginatedProcedure`(
+    IN p_date DATE,
+    In p_per_page INT,
+    In p_page INT,
+    OUT p_Result INT
+)
+
+PRO : BEGIN
+
+    DECLARE p_offset INT;
+
+    -- Verificar que el número de página sea mayor a 0
+    IF p_page < 1 THEN
+        SET p_Result = -1; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Verificar que el número de registros por página sea mayor a 0
+    IF p_per_page < 1 THEN
+        SET p_Result = -2; -- Código de error para número de registros por página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Calcular el número de registros a omitir
+    SET p_offset = (p_page - 1) * p_per_page;
+
+    -- Obtener el número total de registros
+    SELECT COUNT(*) INTO @total_records FROM visits WHERE DATE(date) = p_date;
+
+    -- Verificar que el número de registros a omitir sea menor al número total de registros
+    IF p_offset >= @total_records THEN
+        SET p_Result = -3; -- Código de error para número de página inválido
+        LEAVE PRO; -- Salir del procedimiento almacenado
+    END IF;
+
+    -- Obtener los registros de la página actual
+    SELECT v.id, v.type, v.classification, v.description, v.is_comunicated, v.is_derived, v.trauma_type, v.place, v.date, p.id AS patient_id, GetPatientInfoFunction(p.id) AS patient_info
+    FROM visits v
+    INNER JOIN patients p ON v.patient_id = p.id
+    WHERE DATE(v.date) = p_date
+    ORDER BY v.date ASC
+    LIMIT p_per_page OFFSET p_offset;
+
+    -- Devolver el número total de registros
+    SET p_Result = @total_records;
+
+END$$
+
+DELIMITER ;
+
+
 -- =====================================
 -- ========>> SCHEDULED CITES RULES <<===
 -- =====================================

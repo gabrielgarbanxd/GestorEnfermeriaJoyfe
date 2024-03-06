@@ -18,7 +18,7 @@ namespace GestorEnfermeriaJoyfe.Adapters.VisitAdapters
 
         public VisitController()
         {
-            visitMapper = new VisitMapper();
+            visitMapper = new VisitWithPatientInfoMapper();
             visitRepository = new(visitMapper);
 
             visitQueryAdapter = new(visitRepository, new());
@@ -40,7 +40,8 @@ namespace GestorEnfermeriaJoyfe.Adapters.VisitAdapters
         public async Task<VisitResponse> SearchByPatientIdAndDatePaginated(int patientId, DateTime date, int perPage, int page) => await visitQueryAdapter.SearchByPatientIdAndDatePaginated(patientId, date, perPage, page);
         public async Task<VisitResponse> SearchByPatientIdAndDateRange(int patientId, DateTime start, DateTime end) => await visitQueryAdapter.SearchByPatientIdAndDateRange(patientId, start, end);
         public async Task<VisitResponse> SearchByPatientIdAndDateRangePaginated(int patientId, DateTime start, DateTime end, int perPage, int page) => await visitQueryAdapter.SearchByPatientIdAndDateRangePaginated(patientId, start, end, perPage, page);
-
+        public async Task<VisitResponse> SearchByDateWithPatientInfo(DateTime date) => await visitQueryAdapter.SearchByDateWithPatientInfo(date);
+        public async Task<VisitResponse> SearchByDateWithPatientInfoPaginated(DateTime date, int perPage, int page) => await visitQueryAdapter.SearchByDateWithPatientInfoPaginated(date, perPage, page);
 
         // ================== COMMANDS ==================
 

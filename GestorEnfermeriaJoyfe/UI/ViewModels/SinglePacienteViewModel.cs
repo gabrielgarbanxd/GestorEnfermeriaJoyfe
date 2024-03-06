@@ -16,6 +16,8 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
     public class SinglePacienteViewModel : ViewModelBase
     {
+
+        // //===>> Fields <<====//
         private readonly ScheduledCiteRuleController scheduledCiteRuleController;
 
         private readonly Patient patient;
@@ -51,10 +53,11 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
         public ICommand EditScheduleCommand { get; }
         public ICommand DeleteScheduleCommand { get; }
 
-        public SinglePacienteViewModel(Patient patient)
+        // ====>> Constructor <<====//
+        public SinglePacienteViewModel(Patient patient, ScheduledCiteRuleController scheduledCiteRuleController)
         {
             this.patient = patient;
-            scheduledCiteRuleController = new ScheduledCiteRuleController();
+            this.scheduledCiteRuleController = scheduledCiteRuleController;
 
             // *** Carga de Datos ***
             LoadScheduledCiteRules();

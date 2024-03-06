@@ -1,6 +1,7 @@
 ﻿using GestorEnfermeriaJoyfe.ApplicationLayer.VisitApp;
 using GestorEnfermeriaJoyfe.ApplicationLayer.VisitApp.SearchBy;
 using GestorEnfermeriaJoyfe.ApplicationLayer.VisitApp.SearchBy.Mixed;
+using GestorEnfermeriaJoyfe.ApplicationLayer.VisitApp.WithPatientInfo;
 using GestorEnfermeriaJoyfe.Domain.Visit;
 using System;
 using System.Collections.Generic;
@@ -118,6 +119,24 @@ namespace GestorEnfermeriaJoyfe.Adapters.VisitAdapters
             return await RunQuery(async () =>
             {
                 return await new VisitsByPatientIdAndDateRangeSearcher(visitRepository).Run(patientId, startDate, endDate, true, perPage, page);
+            });
+        }
+
+        // =====>> WITH PATIENT INFO <<=====
+
+        public async Task<VisitResponse> SearchByDateWithPatientInfo(DateTime date)
+        {
+            return await RunQuery(async () =>
+            {
+                return await new VisitsByDayWithPatientInfoSearcher(visitRepository).Run(date);
+            });
+        }
+
+        public async Task<VisitResponse> SearchByDateWithPatientInfoPaginated(DateTime date, int perPage, int page)
+        {
+            return await RunQuery(async () =>
+            {
+                return await new VisitsByDayWithPatientInfoSearcher(visitRepository).Run(date, true, perPage, page);
             });
         }
     }

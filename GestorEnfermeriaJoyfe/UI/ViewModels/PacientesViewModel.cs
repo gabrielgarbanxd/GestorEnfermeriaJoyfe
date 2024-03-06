@@ -16,7 +16,7 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 {
     public class PacientesViewModel : ViewModelBase
     {
-        private readonly PatientController PatientController = new();
+        private readonly PatientController PatientController;
 
         // //===>> Fields <<====//
         private ObservableCollection<Patient> _pacientes;
@@ -72,8 +72,9 @@ namespace GestorEnfermeriaJoyfe.UI.ViewModels
 
 
         //===>> Constructor <<====//
-        public PacientesViewModel(List<Patient> pacientes)
+        public PacientesViewModel(List<Patient> pacientes, PatientController patientController)
         {
+            this.PatientController = patientController;
             Pacientes = new ObservableCollection<Patient>(pacientes);
 
             _filteredPacientesView = CollectionViewSource.GetDefaultView(Pacientes);

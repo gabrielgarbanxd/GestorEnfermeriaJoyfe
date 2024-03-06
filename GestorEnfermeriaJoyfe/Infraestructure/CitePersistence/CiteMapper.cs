@@ -7,7 +7,7 @@ namespace GestorEnfermeriaJoyfe.Infraestructure.CitePersistence
 {
     public class CiteMapper : IObjectMapper<Cite>
     {
-        public Cite Map(IDataReader reader)
+        public virtual Cite Map(IDataReader reader)
         {
             int id = reader.GetInt32(reader.GetOrdinal("id"));
             int patientId = reader.GetInt32(reader.GetOrdinal("patient_id"));

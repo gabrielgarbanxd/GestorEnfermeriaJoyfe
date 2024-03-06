@@ -16,6 +16,7 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
         public VisitPlace? Place { get; set; }
         public VisitDate Date { get; set; }
         public PatientId PatientId { get; set; }
+        public VisitPatientInfo? PatientInfo { get; set; }
 
         public Visit(VisitId? id, VisitType type, VisitClassification classification, VisitDescription? description, VisitIsComunicated isComunicated, VisitIsDerived isDerived, VisitTraumaType? traumaType, VisitPlace? place, VisitDate date, PatientId patientId)
         {
@@ -53,6 +54,24 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
                 new VisitDate(date),
                 new PatientId(patientId)
             );
+        }
+
+        public static Visit FromPrimitives(int id, string type, string classification, string? description, bool isComunicated, bool isDerived, string? traumaType, string? place, DateTime date, int patientId, string? patientInfo)
+        {
+            return new Visit(
+                new VisitId(id),
+                new VisitType(type),
+                new VisitClassification(classification),
+                description != null ? new VisitDescription(description) : null,
+                new VisitIsComunicated(isComunicated),
+                new VisitIsDerived(isDerived),
+                traumaType != null ? new VisitTraumaType(traumaType) : null,
+                place != null ? new VisitPlace(place) : null,
+                new VisitDate(date),
+                new PatientId(patientId))
+            {
+                PatientInfo = patientInfo != null ? new VisitPatientInfo(patientInfo) : null
+            };
         }
 
 

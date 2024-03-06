@@ -20,5 +20,6 @@ namespace GestorEnfermeriaJoyfe.Domain.Visit
         Task<IEnumerable<Visit>> SearchByDateRangeAsync(DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1);
         Task<IEnumerable<Visit>> SearchByPatientIdAndDateRangeAsync(PatientId patientId, DateTime startDate, DateTime endDate, bool paginated = false, int perPage = 10, int page = 1);
         Task<IEnumerable<Visit>> SearchByPatientIdAndDateAsync(PatientId patientId, DateTime date, bool paginated = false, int perPage = 10, int page = 1);
+        Task<IEnumerable<Visit>> SearchByDayWithPatientInfo(DateTime date, bool paginated = false, int perPage = 10, int page = 1);
     }
 }

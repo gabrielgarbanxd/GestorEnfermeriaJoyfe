@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestorEnfermeriaJoyfe.Domain.Cite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +24,14 @@ namespace GestorEnfermeriaJoyfe.UI.Views
         {
             InitializeComponent();
         }
+
+        public Citaform(Cite cite)
+        {
+            InitializeComponent();
+            txtNote.Text = cite.Note.Value;
+            dpFechaInicio.SelectedDate = cite.Date.Value;
+        }
+
+        private void AceptarButton_Click(object sender, RoutedEventArgs e) => this.DialogResult = true;
     }
 }
